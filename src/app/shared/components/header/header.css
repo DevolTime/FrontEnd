@@ -1,0 +1,62 @@
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.navbar {
+    display: flex;
+    padding: 0 1rem;
+    justify-content: space-between;
+    background: #0f172a;
+    align-items: center;
+}
+
+.nav_links {
+    display: flex;
+    padding: 1rem;
+    gap: 2rem;
+    list-style: none;
+    align-items: center;
+}
+
+.nav_links a {
+    font-size: 2rem;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.nav_links a:hover {
+    color: rgb(226, 113, 43);
+    transform: scale(1.2);
+}
+
+.logo {
+    width: 50px;
+    filter: invert(80%);
+}
+
+.menu_toggle {
+    display: none;
+    font-size: 2.5rem;
+    cursor: pointer;
+}
+
+.cart_links {
+    display: flex;
+    font-size: 2rem;
+    list-style: none;
+}
+
+.cart_links a {
+    display: inline-block;
+    color: white;
+    transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.cart_links a:hover {
+    color: rgb(226, 113, 43);
+    transform: scale(1.2);
+}
