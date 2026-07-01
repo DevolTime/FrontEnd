@@ -1,0 +1,58 @@
+.page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Centra horizontalmente todo el bloque */
+    padding: 40px;
+    font-family: sans-serif;
+}
+
+/* 2. Estilo del título: alineado a la izquierda según tu imagen */
+.menu-title {
+    width: 100%;
+    max-width: 1200px;
+    text-align: left;
+    margin-bottom: 20px;
+    font-size: 2rem;
+}
+
+/* 3. El Grid: estructura de tarjetas */
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    width: 100%;
+}
+
+/* 4. Estilo de las tarjetas */
+.menu-card {
+    border: 3px solid #e31937;
+    /* Color rojo */
+    border-radius: 20px;
+    padding: 15px;
+    text-align: center;
+    text-decoration: none;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.2s;
+}
+
+.menu-card:hover {
+    transform: scale(1.03);
+}
+
+.menu-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+/* 5. Tarjeta promo con borde azul */
+.promo-card {
+    border-color: #007bff;
+}
