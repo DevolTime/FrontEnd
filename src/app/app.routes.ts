@@ -4,6 +4,7 @@ import { Home } from './features/home/home';
 export const routes: Routes = [
     { path: 'home', component: Home },
     { path: 'login', loadComponent: () => import('./features/login/login').then(m => m.Login) },
+    {path: 'user-new', loadComponent: ()=> import('./features/users/user-new-form/user-new-form').then(m=>m.UserNewForm)},
     { path: 'register', loadComponent: () => import('./features/register/register').then(m => m.Register) },
     { path: 'checkout', loadComponent: () => import('./features/checkout/checkout').then(m => m.Checkout) },
     { path: 'menu', loadComponent: () => import('./features/menu/menu').then(m => m.Menu) },
@@ -11,6 +12,7 @@ export const routes: Routes = [
     { path: 'contacto', loadComponent: () => import('./features/contacto/contacto').then(m => m.Contacto) },
     { path: '404', loadComponent: () => import('./features/page-not-found/page-not-found')},
     { path: 'products-details', loadComponent: () => import('./features/products-details/products-details').then(m => m.ProductsDetails) },
+    {path: 'user/list', loadComponent : ()=>import('./features/users/user-list/user-list')},
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: '**', redirectTo: '404', pathMatch: 'full' }
 ];

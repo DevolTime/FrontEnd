@@ -1,0 +1,35 @@
+<div class="page page-user">
+
+<p>user-new-form works!</p>
+<form [formGroup]="formData" (ngSubmit)="onSummit()" class="newUsers">
+    <label for="name">Nombre:</label>
+    <input type="text" formControlName="name" id="name" placeholder="Ingresa apellidos"required>
+
+    <label for="lastname">Apellido:</label>
+    <input type="text" formControlName="lastname" id="lastname" placeholder="Ingresa apellidos"required>
+
+    <label for="password">Contraseña:</label>
+    <input type="text" formControlName="password" id="password" placeholder="Ingresa contraseña" required>
+
+    <label for="email">Email:</label>
+    <input type="email" formControlName="email" id="email" placeholder="Ingresa  email personal"required>
+
+    <label for="status">Estado de usuario</label>
+    <input type="text" formControlName="status" id="status" placeholder="Ingresa el estado del usuario ">
+
+    <label for="avatar">Foto</label>
+    <input type="text" formControlName="avatar" id="">
+    <!-- <input type="file" accept="" id="avatar" placeholder="Fto del usuario"> -->
+
+    <label for="role"></label>
+    <select formControlName="role" id="role" required>
+        <option value="ADMIN">ADMIN</option>
+        <option value="EDITOR">EDITOR</option>
+        <option value="AUTHOR">AUTHOR</option>
+        <option value="SUBSCRIBER">SUBSCRIBER</option>
+    </select>
+
+    <button (click)="onSummit()"> Enviar</button>
+</form>
+
+</div>
