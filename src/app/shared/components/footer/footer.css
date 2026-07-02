@@ -5,7 +5,8 @@ body {
 }
 
 .info_footer {
-    background: white;
+    border-top:1px solid rgba(0, 0, 0, 0.08);
+    background: #f9f8eea3;
     color: black;
     padding-top: 50px;
     font-size: 1.6rem;

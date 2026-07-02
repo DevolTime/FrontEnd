@@ -1,1 +1,31 @@
-<p>category-new-form works!</p>
+<div class="container">
+    <h2 class="tittle-category">Registrar Categoría</h2>
+    <p class="subtittle-category">Ingrese los datos de la nueva categoría</p>
+    <form [formGroup]="formData" (ngSubmit)="onSubmit()" class="form-container">
+        <div class="form-category">
+            <label for="name">Nombre:</label>
+            <input formControlName="name" type="text" class="form-control" id="name" placeholder="Nombre:">
+        </div>
+        <div class="form-category">
+            <label for="description">Descripción:</label>
+            <textarea formControlName="description" class="form-control" id="description" rows="3" placeholder="Descripcion:"></textarea>
+        </div>
+        <div class="form-category">
+            <label for="stock">Stock:</label>
+            <input formControlName="stock" type="number" class="form-control" id="stock" placeholder="Stock:" required>
+        </div>
+        <div class="form-category">
+            <label for="img">Imagen:</label>
+            <input formControlName="image" type="file" class="form-control" id="img" accept="image/*">
+        </div>
+        <div class="form-category">
+            <label for="status">Estatus:</label>
+            <select formControlName="status" class="form-control" id="status" placeholder="estado">
+                <option value="">Seleccionar</option>
+                <option value="true">Activo</option>
+                <option value="false">Inactivo</option>
+            </select>
+        </div>
+        <button  type="submit" class="btn btn-primary">Guardar Producto</button>
+    </form>
+</div>
