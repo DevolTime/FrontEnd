@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { maxLength } from '@angular/forms/signals';
 
 @Component({
   selector: 'app-category-new-form',
@@ -11,17 +12,23 @@ export class CategoryNewForm {
   formData: FormGroup;
 
   constructor() {
-    // Define la estructura equivalente del formulario 
+    // Define la estructura equivalente del formulario
     this.formData = new FormGroup({
-      name: new FormControl(),
-      description: new FormControl(),
-      stock: new FormControl(),
-      image: new FormControl(),
-      status: new FormControl()
+      name: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
+      image: new FormControl(''),
+      status: new FormControl(true, Validators.required),
     });
   }
-  onSubmit(){
-    // Mostrar los valores
-    console.log(this.formData.value)
+  onSubmit() {
+    console.group('Estado deel name');
+    console.log('valid (formData)', this.formData.valid);
+    console.log('valid (name)', this.formData.get('name')?.valid);
+    console.groupEnd;
+
+    // Verifica si el formulario es valido
+    if (this.formData.valid) {
+      // Mostrar los valores
+      console.log(this.formData.value);
+    }
   }
 }
