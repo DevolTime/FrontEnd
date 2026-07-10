@@ -1,3 +1,7 @@
+:root {
+    --border-color: #635555;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -7,4 +11,10 @@
 html {
     font-size: 62.5%;
     background-color: #f9f8eea3;
+}
+
+.error{
+    color: red;
+    font-size: 14px;
+    font-style: italic;
 }

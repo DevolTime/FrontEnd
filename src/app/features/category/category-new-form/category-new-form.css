@@ -1,3 +1,19 @@
+.main-layout {
+    display: flex;
+    flex-direction: row-reverse;      /* Cambiado a fila para ponerlos al lado */
+    justify-content: center;  /* Centra el conjunto en la pantalla */
+    align-items: flex-start;  /* Alinea el formulario y botones arriba */
+    gap: 20px;                /* Espacio entre botones y formulario */
+    margin-top: 40px;         /* Espacio respecto al menú superior */
+}
+
+.side-actions {
+    display: flex;
+    flex-direction: column;   /* Mantiene los botones en columna */
+    gap: 10px;                /* Espacio entre botón Crear y Buscar */
+    margin-top: 40px;         /* Ajusta esto para alinear visualmente con el formulario */
+}
+
 .container {
     max-width: 500px;
     margin: 40px auto;
@@ -74,4 +90,8 @@ label {
 
 .btn-primary:hover {
     background-color: #0056b3;
+}
+
+.btn-delete {
+    background-color: red;
 }

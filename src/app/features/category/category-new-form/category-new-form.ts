@@ -1,34 +1,63 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { maxLength } from '@angular/forms/signals';
+import { HttpCategory } from '../../../core/services/http-category';
+import { NgIf } from '@angular/common';
+
 
 @Component({
   selector: 'app-category-new-form',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, NgIf],
   templateUrl: './category-new-form.html',
   styleUrl: './category-new-form.css',
 })
 export class CategoryNewForm {
+  private httpCategory = inject(HttpCategory);
   formData: FormGroup;
 
+  categoryId: string | null = null;
+
   constructor() {
-    // Define la estructura equivalente del formulario
     this.formData = new FormGroup({
       name: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
       image: new FormControl(''),
-      status: new FormControl(true, Validators.required),
+      status: new FormControl('', [Validators.required]),
     });
   }
-  onSubmit() {
-    console.group('Estado deel name');
-    console.log('valid (formData)', this.formData.valid);
-    console.log('valid (name)', this.formData.get('name')?.valid);
-    console.groupEnd;
 
-    // Verifica si el formulario es valido
+  onSubmit() {
     if (this.formData.valid) {
-      // Mostrar los valores
-      console.log(this.formData.value);
+      this.httpCategory.createCategory(this.formData.value).subscribe({
+        next: (data: any) => {
+          console.log('Creado con éxito', data);
+        },
+        error: (error: any) => {
+          console.error('Error al guardar', error);
+        }
+      });
     }
+  }
+
+  onDelete() {
+    // Si hay un ID (categoryId es verdadero), entonces ejecutamos el borrado
+    if (this.categoryId) {
+      this.httpCategory.deleteCategory(this.categoryId).subscribe({
+        next: () => {
+          console.log('Categoría eliminada con éxito');
+          this.formData.reset();
+          this.categoryId = null;
+        },
+        error: (err) => {
+          console.error('Error al eliminar', err);
+        }
+      });
+    } else {
+      console.warn('No hay un ID de categoría seleccionado para eliminar');
+    }
+  }
+
+  ngOnInit() {
+    // Esto es solo para pruebas temporales
+    // Pon aquí un ID real de tu base de datos para ver si el botón aparece
+    this.categoryId = '6a4f079af96142e7f59362fc';
   }
 }
