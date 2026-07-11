@@ -1,5 +1,5 @@
 <div class="app-header">
-    @if (router.url !== '/404') {
+    @if (router.url !== '/404' && router.url !== '/registrar-category') {
     <app-header></app-header>
     }
 
@@ -7,7 +7,7 @@
         <router-outlet></router-outlet>
     </main>
 
-    @if (router.url !== '/404') {
+    @if (router.url !== '/404' && router.url !== '/registrar-category') {
     <app-footer></app-footer>
     }
 </div>
