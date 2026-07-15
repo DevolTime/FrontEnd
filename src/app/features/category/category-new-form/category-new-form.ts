@@ -1,16 +1,20 @@
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpCategory } from '../../../core/services/http-category';
-import { NgIf } from '@angular/common';
+import { AsyncPipe, JsonPipe, NgIf } from '@angular/common';
+import { BehaviorSubject } from 'rxjs';
 
 
 @Component({
   selector: 'app-category-new-form',
-  imports: [ReactiveFormsModule, NgIf],
+  imports: [ReactiveFormsModule, NgIf, AsyncPipe, JsonPipe],
   templateUrl: './category-new-form.html',
   styleUrl: './category-new-form.css',
 })
 export class CategoryNewForm {
+
+  public categoryList$ = new BehaviorSubject<any>([]);
+
   private httpCategory = inject(HttpCategory);
   formData: FormGroup;
 
@@ -75,6 +79,20 @@ export class CategoryNewForm {
   }
 
   ngOnInit() {
+
+    this.httpCategory.getCategories().subscribe({
+      next: ( data ) => {
+        console.log( data );
+        // asignar lista de categorias a observable
+        this.categoryList$.next(data.data); // solo lista de categorias
+      } ,
+      error: ( err ) => {
+        console.error( err );
+      } ,
+      complete: () => {
+        console.log( 'Lista todos los usuarios' )
+      }
+    });
     // Esto es solo para pruebas temporales
     // Pon aquí un ID real de tu base de datos para ver si el botón aparece
     this.categoryId = '6a4f079af96142e7f59362fc';

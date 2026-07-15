@@ -65,14 +65,50 @@
         </div>
         }
 
+
+
         @if (viewMode === 'list') {
         <div class="container">
-            <h2>Categorías Existentes</h2>
-            <ul>
-                @for (cat of categories; track cat.id) {
-                <li>{{ cat.name }}</li>
-                }
-            </ul>
+            <div class="page page-Category-list">
+                <h2>Category list</h2>
+
+                <pre>{{categoryList$ | async | json}}</pre>
+
+                <div class="description">
+                </div>
+                <table>
+                    <tfoot>
+                        <tr>
+                            <td colspan="5">
+                                <small>No olvide que estas acciones solo pueden ser hechas por el ADMIN</small>
+                            </td>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @for (category of (categoryList$ | async); track $index) {
+                        <tr>
+                            <td>{{category.name}}</td>
+                            <td>{{category._id}}</td>
+                            <td>{{category.urlImage}}</td>
+                            <td>{{category.status}} </td>
+                            <td class="options">
+                                <a href="#" class="btn btn-edit">Edit</a>
+                                <a href="#" class="btn btn-delete">Delete</a>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>ID</th>
+                            <th>Img</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
         </div>
         }
     </div>
