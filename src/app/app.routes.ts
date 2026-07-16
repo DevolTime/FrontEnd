@@ -11,6 +11,7 @@ export const routes: Routes = [
     { path: 'categoria', loadComponent: () => import('./features/categoria/categoria').then(m => m.Categoria) },
     { path: 'contacto', loadComponent: () => import('./features/contacto/contacto').then(m => m.Contacto) },
     { path: '404', loadComponent: () => import('./features/page-not-found/page-not-found') },
+   { path: 'ProductosNewForm', loadComponent: () => import('./features/products/productos-new-form/productos-new-form') },
     { path: 'registrar-category', loadComponent: () => import('./features/category/category-new-form/category-new-form').then(m => m.CategoryNewForm) },
     { path: 'products-details', loadComponent: () => import('./features/products-details/products-details').then(m => m.ProductsDetails) },
     { path: '', redirectTo: 'home', pathMatch: 'full' },

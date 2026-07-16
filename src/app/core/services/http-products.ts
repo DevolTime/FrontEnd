@@ -6,7 +6,6 @@ export class HttpProducts {
     private htpp =inject(HttpClient);
     
     NewProduct (products: any ) {
-        return this.htpp.post ('',products) 
-
+        return this.htpp.post('http://localhost:3000/api/products', products);
     }
 }

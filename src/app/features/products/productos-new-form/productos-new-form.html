@@ -1,9 +1,35 @@
-<section class="container_form"> 
-<div class="header">
-    <h1 class="title-products"> Registrar producto nuevo </h1>
-    <p class="subtitle-products"> Ingresar su nuevo producto</p>
-    <form [formGroup]="formData"(ngSubmit)="onSubmit()" class="form-container"></form>
-</div>
 
+<section class="container_form">
+  
+    
+    <div class="header">
+        <h1 class="title-products">Registrar producto nuevo</h1>
+        <label class="Productnew">Ingresar nuevo producto</label>
 
+        <form [formGroup]="formData" (ngSubmit)="onSubmit()" class="form-container">
+
+            <label>Nombre</label>
+            <input formControlName="name" placeholder="Ingrese el nombre">
+
+            <label>Precio</label>
+            <input formControlName="price" placeholder="Ingrese el precio">
+
+            <label>Descripción</label>
+            <textarea formControlName="description" placeholder="Ingrese la descripción"></textarea>
+
+            <label>Estado</label>
+           <select formControlName="status">
+    <option value="">Seleccione un estado</option>
+
+    <option value="disponible">Disponible</option>
+    <option value="no disponible">No disponible</option>
+    <option value="pendiente">Pendiente</option>
+    <option value="refactorizar">Refactorizar</option>
+    <option value="enviado">Enviado</option>
+</select>
+
+            <button type="submit">Registrar Producto</button>
+
+        </form>
+    </div>
 </section>
