@@ -9,23 +9,23 @@
         <form [formGroup]="formData" (ngSubmit)="onSubmit()" class="form-container">
 
             <label>Dirección</label>
-            <input formControlDirección="direccion_entrega" placeholder="Ingrese la dirección">
-
+            <input formControlName="direccion_entrega" placeholder="Ingrese la dirección">
+            <label >Precio</label>
+            <input formControlName="precio_total" placeholder= "Ingrese el precio total"> 
             <label>Productos</label>
-            <input formControlName="Productos" placeholder="Ingrese el precio">
-
+            <input formControlName="Productos" placeholder="Ingrese el Producto">
             <label>Descripción</label>
             <textarea formControlName="description" placeholder="Ingrese la descripción"></textarea>
-
             <label>Estado</label>
            <select formControlName="status">
     <option value="">Seleccione un estado</option>
-
-    <option value="disponible">Disponible</option>
-    <option value="no disponible">No disponible</option>
-    <option value="pendiente">Pendiente</option>
-    <option value="refactorizar">Refactorizar</option>
-    <option value="enviado">Enviado</option>
+<option value="pendiente">pendiente</option>
+    <option value="Confirmado">Confirmado</option>
+    <option value="En preparación">En preparación</option>
+    <option value="Listo para recoger">Listo para recoger</option>
+    <option value="En camino">En camino</option>
+    <option value="Pedido retrasado">Pedido retrasado</option>
+    <option value="Pedido cancelado">Pedido cancelado</option>
 </select>
 
             <button type="submit">Registrar Producto</button>

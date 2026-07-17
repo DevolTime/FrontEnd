@@ -14,14 +14,13 @@ export  default class PedidosNewform {
   formData: FormGroup;
 
   constructor (){
-    this.formData = new FormGroup ({
-
-      direccion: new FormControl ('',[Validators.required, Validators.maxLength(50)]),
-      productos: new FormControl ('',[Validators.required]),
-      status: new FormControl ('',[Validators.required]),
-      id_pedido : new FormControl ('',[Validators.required]),
-
-    });
+    this.formData = new FormGroup({
+  direccion_entrega: new FormControl('', [Validators.required]),
+  precio_total: new FormControl('', [Validators.required]),
+  Productos: new FormControl('', [Validators.required]),
+  description: new FormControl('', [Validators.required]),
+  status: new FormControl('', [Validators.required]),
+});
   }
  onSubmit () {
   console.log("Botón presionado");
