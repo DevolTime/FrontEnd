@@ -1,10 +1,4 @@
 <section class="cantainer_form">
-
-    <div class="side-actions">
-        <button class="btn btn-secondary" (click)="showCreate()">Crear</button>
-        <button class="btn btn-secondary" (click)="showList()">Buscar</button>
-    </div>
-
     <div class="main-layout">
         @if (viewMode === 'form') {
         <div class="container">
@@ -63,50 +57,5 @@
         }
 
 
-
-        @if (viewMode === 'list') {
-        <div class="container">
-            <div class="page page-Category-list">
-                <h2>Category list</h2>
-
-                <!-- <pre>{{categoryList$ | async | json}}</pre> -->
-
-                <div class="description">
-                </div>
-                <table>
-                    <tfoot>
-                        <tr>
-                            <td colspan="5">
-                                <small>No olvide que estas acciones solo pueden ser hechas por el ADMIN</small>
-                            </td>
-                        </tr>
-                    </tfoot>
-                    <tbody>
-                        @for (category of (categoryList$ | async); track $index) {
-                        <tr>
-                            <td>{{category.name}}</td>
-                            <td>{{category._id}}</td>
-                            <td>{{category.urlImage}}</td>
-                            <td>{{category.status}} </td>
-                            <td class="options">
-                                <button (click)="onEdit(category._id)" class="btn btn-edit">Edit </button>
-                                <button (click)="onDelete(category._id)" class="btn btn-delete">Delete </button>
-                            </td>
-                        </tr>
-                        }
-                    </tbody>
-                    <thead>
-                        <tr>
-                            <th>Category</th>
-                            <th>ID</th>
-                            <th>Img</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-        </div>
-        }
     </div>
 </section>

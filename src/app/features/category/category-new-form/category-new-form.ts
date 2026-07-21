@@ -1,17 +1,17 @@
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpCategory } from '../../../core/services/http-category';
-import { AsyncPipe, JsonPipe, NgIf } from '@angular/common';
+import { AsyncPipe, JsonPipe } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
 
 
 @Component({
   selector: 'app-category-new-form',
-  imports: [ReactiveFormsModule, NgIf, AsyncPipe, JsonPipe],
+  imports: [ReactiveFormsModule, AsyncPipe],
   templateUrl: './category-new-form.html',
   styleUrl: './category-new-form.css',
 })
-export class CategoryNewForm {
+export default class CategoryNewForm {
 
   public categoryList$ = new BehaviorSubject<any>([]);
 
@@ -20,7 +20,7 @@ export class CategoryNewForm {
 
   categoryId: string | null = null;
 
-  viewMode: 'form' | 'list' = 'form'; 
+  viewMode: 'form' | 'list' = 'form';
   categories: any[] = [];
 
   constructor() {
@@ -34,7 +34,6 @@ export class CategoryNewForm {
   showCreate() {
     this.viewMode = 'form';
     this.formData.reset();
-    this.categoryId = null;
   }
 
   showList() {
@@ -60,10 +59,10 @@ export class CategoryNewForm {
     }
   }
 
-  onDelete() {
+  onDelete(id: string) {
     // Si hay un ID (categoryId es verdadero), entonces ejecutamos el borrado
-    if (this.categoryId) {
-      this.httpCategory.deleteCategory(this.categoryId).subscribe({
+    if (id) {
+      this.httpCategory.deleteCategory(id).subscribe({
         next: () => {
           console.log('Categoría eliminada con éxito');
           this.formData.reset();
@@ -81,20 +80,23 @@ export class CategoryNewForm {
   ngOnInit() {
 
     this.httpCategory.getCategories().subscribe({
-      next: ( data ) => {
-        console.log( data );
+      next: (data) => {
+        console.log(data);
         // asignar lista de categorias a observable
         this.categoryList$.next(data.data); // solo lista de categorias
-      } ,
-      error: ( err ) => {
-        console.error( err );
-      } ,
+      },
+      error: (err) => {
+        console.error(err);
+      },
       complete: () => {
-        console.log( 'Lista todos los usuarios' )
+        console.log('Lista todos los usuarios')
       }
     });
     // Esto es solo para pruebas temporales
     // Pon aquí un ID real de tu base de datos para ver si el botón aparece
-    this.categoryId = '6a4f079af96142e7f59362fc';
+  }
+
+  onEdit(id: string) {
+    console.log('edit', id);
   }
 }
