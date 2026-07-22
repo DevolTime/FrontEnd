@@ -1,53 +1,113 @@
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AsyncPipe } from '@angular/common';
+import { BehaviorSubject } from 'rxjs';
 import { HttpProducts } from '../../../core/services/http-products';
-import { form } from '@angular/forms/signals';
-
 
 @Component({
   selector: 'app-productos-new-form',
-  imports: [ReactiveFormsModule, ],
+  imports: [ReactiveFormsModule, AsyncPipe],
   templateUrl: './productos-new-form.html',
   styleUrl: './productos-new-form.css',
 })
 export default class ProductosNewForm {
-  private HttpProducts = inject (HttpProducts);
-    formData: FormGroup;
 
+  public productList$ = new BehaviorSubject<any>([]);
 
-  constructor (){
-  this.formData = new FormGroup ({
-       name: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
-     price : new FormControl ('',[Validators.required]),
-     description: new FormControl ('', [Validators.required]),
-      status: new FormControl('', [Validators.required]),
-  });
-}
-onSubmit() {
+  private httpProducts = inject(HttpProducts);
 
-  console.log("Botón presionado");
-  console.log(this.formData.value);
-  console.log("Formulario válido:", this.formData.valid);
+  formData: FormGroup;
 
-  if (this.formData.valid) {
+  ProductId: string | null = null;
 
-    this.HttpProducts.NewProduct(this.formData.value).subscribe({
-      next: (data: any) => {
-        console.log("Producto creado", data);
-      },
-      error: (error: any) => {
-        console.error("Error al guardar", error);
-      }
+  viewMode: 'form' | 'list' = 'form';
+
+  productos: any[] = [];
+
+  constructor() {
+    this.formData = new FormGroup({
+      name: new FormControl('', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(50)
+      ]),
+      price: new FormControl('', [
+        Validators.required
+      ]),
+      description: new FormControl('', [
+        Validators.required
+      ]),
+      status: new FormControl('', [
+        Validators.required
+      ])
     });
-
-  } else {
-    console.log("El formulario no es válido");
   }
 
+  showCreate() {
+    this.viewMode = 'form';
+    this.formData.reset();
+  }
+
+  showList() {
+    this.viewMode = 'list';
+    this.httpProducts.getProduct().subscribe({
+      next: (data: any) => {
+        this.ngOnInit ();
+        this.productos = data;
+      },
+      error: (err: any) => {
+        console.error('Error al listar', err);
+      }
+    });
+  }
+
+  onsubmit() {
+
+    if (this.formData.valid) {
+      this.httpProducts.NewProduct(this.formData.value).subscribe({
+        next: (data: any) => {
+          console.log('Creado con éxito', data);
+        },
+        error: (error: any) => {
+          console.error('Error al guardar', error);
+        }
+      });
+    }
+  }
+
+  onDelete(id: string) {
+    if (id) {
+      this.httpProducts.deleteproduct(id).subscribe({
+        next: () => {
+          console.log('producto eliminada con éxito');
+          this.formData.reset();
+          this.ProductId = null;
+        },
+        error: (err) => {
+          console.error('Error al eliminar', err);
+        }
+      });
+    } else {
+      console.warn('No hay un ID de producto seleccionado para eliminar');
+    }
+  }
+
+ngOnInit (){
+
+  this.httpProducts.getProduct().subscribe({
+    next : (data) => {
+      console.log (data);
+      this.productList$.next(data.data)
+    },
+    error: (err) => {
+      console.error (err)
+    },
+    complete: ()=> {
+      console.log ('lista todos los productos')
+    }
+  })
+}
 
 }
-};
-
-
 
 

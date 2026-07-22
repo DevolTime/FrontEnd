@@ -1,35 +1,90 @@
-
 <section class="container_form">
-  
-    
-    <div class="header">
-        <h1 class="title-products">Registrar producto nuevo</h1>
-        <label class="Productnew">Ingresar nuevo producto</label>
 
-        <form [formGroup]="formData" (ngSubmit)="onSubmit()" class="form-container">
+    <div class="side-actions">
+        <button class="btn btn-secondary" (click)="showCreate()">Crear</button>
+        <button class="btn btn-secondary" (click)="showList()">Buscar</button>
+    </div>
 
-            <label>Nombre</label>
-            <input formControlName="name" placeholder="Ingrese el nombre">
 
-            <label>Precio</label>
-            <input formControlName="price" placeholder="Ingrese el precio">
+    <div class="container_principal">
+        @if (viewMode === 'form') {
+        <div class="header">
+            <h1 class="title-products">Registrar producto nuevo</h1>
+            <label class="Productnew">Ingresar nuevo producto</label>
 
-            <label>Descripción</label>
-            <textarea formControlName="description" placeholder="Ingrese la descripción"></textarea>
+            <form [formGroup]="formData" (ngSubmit)="onsubmit()" class="form-container">
 
-            <label>Estado</label>
-           <select formControlName="status">
-    <option value="">Seleccione un estado</option>
+                <label>Nombre</label>
+                <input formControlName="name" placeholder="Ingrese el nombre">
 
-    <option value="disponible">Disponible</option>
-    <option value="no disponible">No disponible</option>
-    <option value="pendiente">Pendiente</option>
-    <option value="refactorizar">Refactorizar</option>
-    <option value="enviado">Enviado</option>
-</select>
+                <label>Precio</label>
+                <input formControlName="price" placeholder="Ingrese el precio">
 
-            <button type="submit">Registrar Producto</button>
+                <label>Descripción</label>
+                <textarea formControlName="description" placeholder="Ingrese la descripción"></textarea>
 
-        </form>
+                <label>Estado</label>
+                <select formControlName="status">
+                    <option value="">Seleccione un estado</option>
+
+                    <option value="disponible">Disponible</option>
+                    <option value="no disponible">No disponible</option>
+                    <option value="pendiente">Pendiente</option>
+                    <option value="refactorizar">Refactorizar</option>
+                    <option value="enviado">Enviado</option>
+                </select>
+
+                <button type="submit">Registrar Producto</button>
+
+            </form>
+        </div>
+        }
+
+
+
+        @if (viewMode === 'list') {
+        <div class="container">
+            <div class="page page-Category-list">
+                <h2>Product list</h2>
+
+                <!-- <pre>{{categoryList$ | async | json}}</pre> -->
+
+                <div class="description">
+                </div>
+                <table>
+                    <tfoot>
+                        <tr>
+                            <td colspan="5">
+                                <small>No olvide que estas acciones solo pueden ser hechas por el ADMIN</small>
+                            </td>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @for (product of (productList$ | async); track $index) {
+                        <tr>
+                            <td>{{product.name}}</td>
+                            <td>{{product._id}}</td>
+                            <td>{{product.status}} </td>
+
+                            <td class="options">
+                                <button (click)="onDelete(product._id)" class="btn btn-delete">Delete </button>
+                                
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                    <thead>
+                        <tr>
+                            <th>product</th>
+                            <th>ID</th>
+                            <th>Img</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        }
     </div>
 </section>

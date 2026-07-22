@@ -7,11 +7,14 @@
     padding: 20px;
 }
 
+
+
 .side-actions {
     display: flex;
     flex-direction: column;
     gap: 10px;
     margin-top: 40px; 
+    justify-content: end;
 }
 
 .main-layout {
