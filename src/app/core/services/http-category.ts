@@ -1,16 +1,21 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
+import { environment } from '../../../environments/environment.development';
 
-@Service ()
+
+@Service()
 export class HttpCategory {
     // Inyectar una dependencia usando el constructor.
     // constructor (private http: HttpClient){}
     // Inyectar una dependencia sin usar el constructor, implementarse en las funciones.
     private http = inject(HttpClient);
-    private apiUrl = 'http://localhost:3000/api/category'
+
+    BASE_URL: String = environment.apiUrl;
+
+    private apiUrl = `${this.BASE_URL}/category`;
+
 
     createCategory(category: any) {
-
         return this.http.post(this.apiUrl, category);
     }
 
@@ -26,7 +31,7 @@ export class HttpCategory {
         return this.http.get(`${this.apiUrl}/${id}`);
     }
 
-    updateCategory(id: string, category: any){
+    updateCategory(id: string, category: any) {
         return this.http.patch(`${this.apiUrl}/${id}`, category)
     }
 }

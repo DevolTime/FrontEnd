@@ -2,7 +2,7 @@
     <div class="main-layout">
         @if (viewMode === 'form') {
         <div class="container">
-            <h2 class="tittle-category">Registrar Categoría</h2>
+            <h2 class="tittle-category">Actualizar Categoría</h2>
             <p class="subtittle-category">Ingrese los datos de la nueva categoría</p>
             <form [formGroup]="formData" (ngSubmit)="onSubmit()" class="form-container">
                 <div class="form-category">
@@ -50,7 +50,7 @@
                     }
                 </div>
                 <div class="actions">
-                    <button type="submit" class="btn btn-primary">Registrar Categoría</button>
+                    <button type="submit" class="btn btn-primary">Actualizar</button>
                 </div>
             </form>
         </div>
