@@ -1,24 +1,13 @@
-<body>
-    <div class="page-container">
-        <h1 class="menu-title">MENÚ</h1>
-        <div class="menu-grid">
-            <!-- Ejemplo de tarjeta -->
-            <a href="#" class="menu-card">
-                <img src="https://comedera.com/wp-content/uploads/sites/9/2018/08/pollo-frito.jpg" alt="Producto">
-                <h3>Pollo</h3>
-            </a>
-            <a href="#" class="menu-card">
-                <img src="https://comedera.com/wp-content/uploads/sites/9/2018/08/pollo-frito.jpg" alt="Producto">
-                <h3>Pollo</h3>
-            </a>
-            <a href="#" class="menu-card">
-                <img src="https://comedera.com/wp-content/uploads/sites/9/2018/08/pollo-frito.jpg" alt="Producto">
-                <h3>Pollo</h3>
-            </a>
-            <a href="#" class="menu-card">
-                <img src="https://comedera.com/wp-content/uploads/sites/9/2018/08/pollo-frito.jpg" alt="Promo">
-                <h3>Pollo</h3>
-            </a>
-        </div>
+<div class="page-container">
+    <h1 class="menu-title">MENÚ</h1>
+
+    <div class="menu-grid">
+        @for (category of (categories$ | async); track category.id || category._id) {
+        <a href="#" class="menu-card">
+            <h3>{{ category.name }}</h3>
+        </a>
+        } @empty {
+        <p class="no-data">No hay categorías disponibles por el momento.</p>
+        }
     </div>
-</body>
+</div>
