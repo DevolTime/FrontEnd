@@ -9,22 +9,18 @@
         <a [routerLink]="['/menu', category._id || category.id]" class="menu-card">
             <!-- Contenedor con efecto visual en la imagen -->
             <div class="img-wrapper">
-                <img 
-                    [src]="category.urlImage" 
-                    [alt]="category.name" 
-                    class="category-img"
-                    (error)="handleImageError($event)"
-                    loading="lazy">
+                <img [src]="category.urlImage" [alt]="category.name" class="category-img"
+                    (error)="handleImageError($event)" loading="lazy">
                 <div class="img-overlay"></div>
             </div>
-
+            
             <!-- Contenido de la Card -->
             <div class="card-content">
                 <h3 class="category-title">{{ category.name }}</h3>
                 <span class="card-btn">
-                    Ver productos 
+                    Ver productos
                     <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                        <path d="M5 12h14M12 5l7 7-7 7" />
                     </svg>
                 </span>
             </div>
@@ -35,4 +31,5 @@
         </div>
         }
     </div>
+    <app-cart-floating></app-cart-floating>
 </div>

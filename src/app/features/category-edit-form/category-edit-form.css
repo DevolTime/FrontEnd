@@ -115,3 +115,10 @@ label {
 .btn {
     cursor: pointer;
 }
+
+.current-image-preview{
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #444;
+    font-weight: bold;
+}

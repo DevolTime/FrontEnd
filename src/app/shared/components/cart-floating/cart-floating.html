@@ -1,0 +1,12 @@
+<button *ngIf="isVisible" class="cart-floating-btn" (click)="openCart()">
+    <!-- Onda expansiva (Glow pulse) -->
+    <span class="pulse-wave"></span>
+
+    <!-- Contenedor del ícono -->
+    <div class="cart-icon-box">
+        <fa-icon [icon]="faShoppingCart"></fa-icon>
+    </div>
+
+    <!-- Badge contador -->
+    <span class="cart-badge" *ngIf="cartItemCount > 0">{{ cartItemCount }}</span>
+</button>
