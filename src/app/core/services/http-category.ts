@@ -37,14 +37,13 @@ export class HttpCategory {
     }
 
     // 3 crear categorias
-    createCategory(category: any) {
-        return this.http.post<any>(this.apiUrl, category).pipe(
+    createCategory(formData: FormData) {
+        return this.http.post<any>(this.apiUrl, formData).pipe(
             tap((response) => {
                 const currentList = this.categoriesSubject.getValue();
                 // Si el backend te devuelve { data: nuevaCategoria }, usas response.data
                 // Si devuelve directamente la categoría, usas response
                 const newCategory = response.data ? response.data : response;
-
                 this.categoriesSubject.next([...currentList, newCategory]);
             })
         );
@@ -61,8 +60,8 @@ export class HttpCategory {
     }
 
     // 5. Actualizar la categoría editada en la lista
-    updateCategory(id: string, category: any) {
-        return this.http.patch<any>(`${this.apiUrl}/${id}`, category).pipe(
+    updateCategory(id: string, formData: FormData) {
+        return this.http.patch<any>(`${this.apiUrl}/${id}`, formData).pipe(
             tap((updatedCategory) => {
                 const currentList = this.categoriesSubject.getValue();
                 const newList = currentList.map(c => (c.id === id || c._id === id) ? updatedCategory : c);

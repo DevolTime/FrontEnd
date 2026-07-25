@@ -4,7 +4,10 @@
     <div class="menu-grid">
         @for (category of (categories$ | async); track category.id || category._id) {
         <a href="#" class="menu-card">
-            <h3>{{ category.name }}</h3>
+
+            <img [src]="category.urlImage" [alt]="category.name"
+                class="category-img">
+            <h3>{{ category.name}}</h3>
         </a>
         } @empty {
         <p class="no-data">No hay categorías disponibles por el momento.</p>
