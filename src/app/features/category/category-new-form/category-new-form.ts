@@ -8,7 +8,6 @@ import { ActivatedRoute } from '@angular/router';
 
 import Swal from 'sweetalert2';
 
-
 @Component({
   selector: 'app-category-new-form',
   imports: [ReactiveFormsModule, AsyncPipe],
@@ -75,7 +74,6 @@ export default class CategoryNewForm {
       if (this.selectedFile) {
         body.append('image', this.selectedFile);
       }
-
       // Enviamos 'body' en lugar de 'this.formData.value'
       this.httpCategory.createCategory(body).subscribe({
         next: (data: any) => {
@@ -92,7 +90,6 @@ export default class CategoryNewForm {
   }
 
   onDelete(id: string) {
-
     // Ventana emergente de SweetAlert
     Swal.fire({
       title: "¿Seguro?",
@@ -103,23 +100,19 @@ export default class CategoryNewForm {
       cancelButtonColor: "#d33",
       confirmButtonText: "Eliminar!"
     }).then((result) => {
-
       // 1 Validamos si el usuario confirmo la accion
       if (result.isConfirmed) {
-
         // 2 Validacion si existe el ID antes de hacer la peticion
         if (id) {
           this.httpCategory.deleteCategory(id).subscribe({
             next: () => {
               console.log('Categoría eliminada con éxito');
-
               // 3 Mostramos el mensaje de exito
               Swal.fire({
                 title: "Eliminar!",
                 text: "Su archivo ha sido eliminado..",
                 icon: "success"
               });
-
               // 4 Actualizamos el estado
               this.formData.reset();
               this.categoryId = null;
@@ -152,7 +145,6 @@ export default class CategoryNewForm {
     // Cargamos los datos una sola vez al montar el componente
     this.loadCategories();
   }
-
   // Método dedicado exclusivamente a obtener y refrescar la lista
   loadCategories() {
     this.httpCategory.getCategories().subscribe({
@@ -165,7 +157,6 @@ export default class CategoryNewForm {
       error: (err) => console.error('Error al listar', err)
     });
   }
-
 
   onEdit(id: string) {
     console.log('edit', id);
