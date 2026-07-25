@@ -15,59 +15,48 @@ export default class CategoryEditForm {
   private Router = inject(Router)
   private httpCategory = inject(HttpCategory);
 
-  selectedFile: File | null = null; // Propiedad para la nueva imagen
   categoryId: string | null = null;
   formData: FormGroup;
   viewMode: 'form' | 'list' = 'form';
 
-  onFileSelected(event: Event) {
-    const element = event.currentTarget as HTMLInputElement;
-    if (element.files && element.files.length > 0) {
-      this.selectedFile = element.files[0];
-    }
-  }
+onSubmit() {
+  if (this.formData.valid && this.categoryId) {
+    Swal.fire({
+      title: "¿Estás seguro?", // Cambiado a un texto acorde
+      text: "¡Deseas actualizar esta categoría!", // Texto adaptado
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, actualizar" // Texto adaptado
+    }).then((result) => {
+      // Es una buena práctica usar llaves para el if
+      if (result.isConfirmed) {
+        this.httpCategory.updateCategory(this.categoryId!, this.formData.value).subscribe({
+          next: (data) => {
+            console.log('Categoría actualizada con éxito', data);
 
-  onSubmit() {
-    if (this.formData.valid && this.categoryId) {
-      Swal.fire({
-        title: "¿Estás seguro?",
-        text: "¡Deseas actualizar esta categoría!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Sí, actualizar"
-      }).then((result) => {
-        if (result.isConfirmed) {
-          // Construimos el FormData
-          const payload = new FormData();
-          payload.append('name', this.formData.get('name')?.value);
-          payload.append('status', this.formData.get('status')?.value);
-
-          // Adjuntamos el archivo solo si fue actualizado
-          if (this.selectedFile) {
-            payload.append('archivo', this.selectedFile);
+            Swal.fire({
+              title: "¡Actualizado!", // Título correcto
+              text: "La categoría ha sido actualizada correctamente.", // Texto correcto
+              icon: "success"
+            }).then(() => {
+              this.Router.navigate(['/registrar-category'], { queryParams: { tab: 'list' } });
+            });
+          },
+          error: (err) => {
+            console.error('Error al actualizar', err);
+            Swal.fire(
+              'Error',
+              'Hubo un problema al actualizar la categoría.',
+              'error'
+            );
           }
-
-          this.httpCategory.updateCategory(this.categoryId!, payload).subscribe({
-            next: (data) => {
-              Swal.fire({
-                title: "¡Actualizado!",
-                text: "La categoría ha sido actualizada correctamente.",
-                icon: "success"
-              }).then(() => {
-                this.Router.navigate(['/registrar-category'], { queryParams: { tab: 'list' } });
-              });
-            },
-            error: (err) => {
-              console.error('Error al actualizar', err);
-              Swal.fire('Error', 'Hubo un problema al actualizar la categoría.', 'error');
-            }
-          });
-        }
-      });
-    }
+        });
+      }
+    });
   }
+}
 
   selectedId!: string | null;
   private activatedRoutes = inject(ActivatedRoute)

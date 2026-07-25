@@ -35,8 +35,7 @@
                 </div>
                 <div class="form-category">
                     <label for="img">Imagen:</label>
-                    <input formControlName="image" type="file" class="form-control" id="img" accept="image/*"
-                        (change)="onFileSelected($event)">
+                    <input formControlName="image" type="file" class="form-control" id="img" accept="image/*" (change)="onFileSelected($event)">
                     @if (formData.get('image')?.invalid && (formData.get('image')?.dirty ||
                     formData.get('image')?.touched))
                     {
@@ -89,13 +88,7 @@
                         <tr>
                             <td>{{category.name}}</td>
                             <td>{{category._id}}</td>
-                            <td>@if (category.urlImage) {
-                                <img [src]="category.urlImage" alt="{{category.name}}"
-                                    style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
-                                } @else {
-                                <span>Sin imagen</span>
-                                }
-                            </td>
+                            <td>{{category.urlImage}}</td>
                             <td>{{category.status}} </td>
                             <td class="options">
                                 <a (click)="onEdit(category._id)" class="btn btn-edit">Edit</a>

@@ -1,9 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpCategory } from '../../../core/services/http-category';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, JsonPipe } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+
 import Swal from 'sweetalert2';
 
 
@@ -14,13 +16,16 @@ import Swal from 'sweetalert2';
   styleUrl: './category-new-form.css',
 })
 export default class CategoryNewForm {
-  public categoryList$ = new BehaviorSubject<any[]>([]);
 
-  private route = inject(ActivatedRoute);
+  public categoryList$ = new BehaviorSubject<any>([]);
+
+  private route = inject(ActivatedRoute)
   private httpCategory = inject(HttpCategory);
   private router = inject(Router);
 
+
   formData: FormGroup;
+
   categoryId: string | null = null;
   selectedFile: File | null = null;
   viewMode: 'form' | 'list' = 'form';
@@ -30,33 +35,30 @@ export default class CategoryNewForm {
     this.formData = new FormGroup({
       name: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
       image: new FormControl(''),
-      status: new FormControl(true, [Validators.required]),
+      status: new FormControl('', [Validators.required]),
     });
   }
 
-  onFileSelected(event: Event) {
-    const element = event.currentTarget as HTMLInputElement;
-    if (element.files && element.files.length > 0) {
-      this.selectedFile = element.files[0];
+  // Método para capturar la imagen desde el HTML
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
     }
   }
 
   showCreate() {
     this.viewMode = 'form';
-    this.formData.reset({ status: true });
+    this.formData.reset();
     this.selectedFile = null;
   }
 
   showList() {
     this.viewMode = 'list';
-    this.loadList();
-  }
-
-  loadList() {
     this.httpCategory.getCategories().subscribe({
       next: (data: any) => {
-        const list = data.data ? data.data : data;
-        this.categoryList$.next(list);
+        this.loadCategories(); // Refresca la lista sin loops
+        this.categories = data;
       },
       error: (err) => console.error('Error al listar', err)
     });
@@ -64,66 +66,109 @@ export default class CategoryNewForm {
 
   onSubmit() {
     if (this.formData.valid) {
-      // 1. Preparamos el FormData
-      const payload = new FormData();
-      payload.append('name', this.formData.get('name')?.value);
-      payload.append('status', this.formData.get('status')?.value);
+      // 🔹 Creamos el FormData para soportar multipart/form-data
+      const body = new FormData();
+      body.append('name', this.formData.get('name')?.value);
+      body.append('status', this.formData.get('status')?.value);
 
-      // 2. Adjuntamos la imagen con el nombre 'archivo' (debe coincidir con Multer)
+      // Adjuntamos el archivo físico con la clave 'image' (que espera Multer en el backend)
       if (this.selectedFile) {
-        payload.append('archivo', this.selectedFile);
+        body.append('image', this.selectedFile);
       }
 
-      // 3. ENVIAMOS 'payload' (NO this.formData.value)
-      this.httpCategory.createCategory(payload).subscribe({
+      // Enviamos 'body' en lugar de 'this.formData.value'
+      this.httpCategory.createCategory(body).subscribe({
         next: (data: any) => {
-          this.formData.reset({ status: true });
-          this.selectedFile = null;
-          Swal.fire('¡Éxito!', 'Categoría creada correctamente', 'success');
-          this.loadList(); // Refrescar lista
+          this.formData.reset();
+          this.selectedFile = null; // 🔹 Limpiamos el archivo guardado
+          console.log('Creado con éxito', data);
+          this.loadCategories(); // Refrescamos la lista
         },
         error: (error: any) => {
           console.error('Error al guardar', error);
-          Swal.fire('Error', 'Hubo un error al guardar la categoría', 'error');
         }
       });
     }
   }
 
   onDelete(id: string) {
+
+    // Ventana emergente de SweetAlert
     Swal.fire({
       title: "¿Seguro?",
-      text: "¡No se podrá revertir esto!",
+      text: "¡No se podra revertir esto!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Eliminar"
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Eliminar!"
     }).then((result) => {
-      if (result.isConfirmed && id) {
-        this.httpCategory.deleteCategory(id).subscribe({
-          next: () => {
-            Swal.fire("¡Eliminado!", "La categoría ha sido eliminada.", "success");
-            this.loadList();
-          },
-          error: (err) => {
-            Swal.fire('Error', 'Hubo un problema al eliminar la categoría.', 'error');
-          }
-        });
+
+      // 1 Validamos si el usuario confirmo la accion
+      if (result.isConfirmed) {
+
+        // 2 Validacion si existe el ID antes de hacer la peticion
+        if (id) {
+          this.httpCategory.deleteCategory(id).subscribe({
+            next: () => {
+              console.log('Categoría eliminada con éxito');
+
+              // 3 Mostramos el mensaje de exito
+              Swal.fire({
+                title: "Eliminar!",
+                text: "Su archivo ha sido eliminado..",
+                icon: "success"
+              });
+
+              // 4 Actualizamos el estado
+              this.formData.reset();
+              this.categoryId = null;
+              this.loadCategories(); // ✅ Refresca la lista sin llamar a ngOnInit
+            },
+            error: (err) => {
+              console.error('Error al eliminar', err);
+              Swal.fire(
+                'Error',
+                'Hubo un problema al eliminar la categoría.',
+                'error'
+              );
+            }
+          });
+        } else {
+          console.warn('No hay un ID de categoría seleccionado para eliminar');
+        }
       }
     });
   }
 
   ngOnInit() {
+    // Escuchamos la query param para cambiar de vista si viene ?tab=list
     this.route.queryParamMap.subscribe(params => {
       const tab = params.get('tab');
       if (tab === 'list') {
-        this.showList();
-      } else {
-        this.loadList();
+        this.viewMode = 'list';
       }
+    });
+    // Cargamos los datos una sola vez al montar el componente
+    this.loadCategories();
+  }
+
+  // Método dedicado exclusivamente a obtener y refrescar la lista
+  loadCategories() {
+    this.httpCategory.getCategories().subscribe({
+      next: (data: any) => {
+        const list = data.data ? data.data : data;
+        this.categoryList$.next(list);
+        this.categories = list;
+        console.log('Lista de las categorias');
+      },
+      error: (err) => console.error('Error al listar', err)
     });
   }
 
+
   onEdit(id: string) {
-    this.router.navigate(['categories/edit', id]);
+    console.log('edit', id);
+    this.router.navigate(['categories/edit', id])
   }
 }

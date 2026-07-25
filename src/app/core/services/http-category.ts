@@ -27,9 +27,8 @@ export class HttpCategory {
             tap((response) => {
                 const list = response.data ? response.data : response;
 
-                // Reemplaza 'status' por el nombre exacto de tu campo en el schema:
-                // (ej. c.status, c.active, c.isActive, c.state)
-                const activeCategories = list.filter((c: any) => c.status === true);
+                // 🔹 Aceptamos tanto booleano true como string "true"
+                const activeCategories = list.filter((c: any) => c.status === true || c.status === 'true');
 
                 this.categoriesSubject.next(activeCategories);
             })
@@ -41,10 +40,12 @@ export class HttpCategory {
         return this.http.post<any>(this.apiUrl, formData).pipe(
             tap((response) => {
                 const currentList = this.categoriesSubject.getValue();
-                // Si el backend te devuelve { data: nuevaCategoria }, usas response.data
-                // Si devuelve directamente la categoría, usas response
                 const newCategory = response.data ? response.data : response;
-                this.categoriesSubject.next([...currentList, newCategory]);
+
+                // 🔹 Solo la agregamos a la vista pública si está activa
+                if (newCategory.status === true || newCategory.status === 'true') {
+                    this.categoriesSubject.next([...currentList, newCategory]);
+                }
             })
         );
     }

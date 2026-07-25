@@ -1,16 +1,38 @@
 <div class="page-container">
-    <h1 class="menu-title">MENÚ</h1>
+    <div class="header-section">
+        <h1 class="menu-title">NUESTRO MENÚ</h1>
+        <p class="menu-subtitle">Elige tu categoría favorita y descubre el sabor</p>
+    </div>
 
     <div class="menu-grid">
-        @for (category of (categories$ | async); track category.id || category._id) {
-        <a href="#" class="menu-card">
+        @for (category of (categories$ | async); track category._id || category.id) {
+        <a [routerLink]="['/menu', category._id || category.id]" class="menu-card">
+            <!-- Contenedor con efecto visual en la imagen -->
+            <div class="img-wrapper">
+                <img 
+                    [src]="category.urlImage" 
+                    [alt]="category.name" 
+                    class="category-img"
+                    (error)="handleImageError($event)"
+                    loading="lazy">
+                <div class="img-overlay"></div>
+            </div>
 
-            <img [src]="category.urlImage" [alt]="category.name"
-                class="category-img">
-            <h3>{{ category.name}}</h3>
+            <!-- Contenido de la Card -->
+            <div class="card-content">
+                <h3 class="category-title">{{ category.name }}</h3>
+                <span class="card-btn">
+                    Ver productos 
+                    <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </span>
+            </div>
         </a>
         } @empty {
-        <p class="no-data">No hay categorías disponibles por el momento.</p>
+        <div class="no-data-container">
+            <p class="no-data">🍗 No hay categorías disponibles en este momento.</p>
+        </div>
         }
     </div>
 </div>

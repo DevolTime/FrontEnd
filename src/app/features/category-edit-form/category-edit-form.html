@@ -29,7 +29,7 @@
                 </div>
                 <div class="form-category">
                     <label for="img">Imagen:</label>
-                    <input formControlName="image" type="file" class="form-control" id="img" accept="image/*" (change)="onFileSelected($event)">
+                    <input formControlName="image" type="file" class="form-control" id="img" accept="image/*" >
                     @if (formData.get('image')?.invalid && (formData.get('image')?.dirty ||
                     formData.get('image')?.touched))
                     {
