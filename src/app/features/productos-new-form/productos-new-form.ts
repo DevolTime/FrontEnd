@@ -94,7 +94,7 @@ export default class ProductosNewForm {
     }
 
   }
-  
+
   OnEdit(id: string) {
     console.log('edit', id);
     this.router.navigate(['editproducts', id])
