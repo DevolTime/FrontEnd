@@ -2,7 +2,8 @@ import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AsyncPipe } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
-import { HttpProducts } from '../../../core/services/http-products';
+import { HttpProducts } from '../../core/services/http-products';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-productos-new-form',
@@ -15,6 +16,7 @@ export default class ProductosNewForm {
   public productList$ = new BehaviorSubject<any>([]);
 
   private httpProducts = inject(HttpProducts);
+  private router = inject(Router)
 
   formData: FormGroup;
 
@@ -52,7 +54,7 @@ export default class ProductosNewForm {
     this.viewMode = 'list';
     this.httpProducts.getProduct().subscribe({
       next: (data: any) => {
-        this.ngOnInit ();
+        this.ngOnInit();
         this.productos = data;
       },
       error: (err: any) => {
@@ -90,23 +92,29 @@ export default class ProductosNewForm {
     } else {
       console.warn('No hay un ID de producto seleccionado para eliminar');
     }
+
+  }
+  
+  OnEdit(id: string) {
+    console.log('edit', id);
+    this.router.navigate(['editproducts', id])
   }
 
-ngOnInit (){
+  ngOnInit() {
 
-  this.httpProducts.getProduct().subscribe({
-    next : (data) => {
-      console.log (data);
-      this.productList$.next(data.data)
-    },
-    error: (err) => {
-      console.error (err)
-    },
-    complete: ()=> {
-      console.log ('lista todos los productos')
-    }
-  })
-}
+    this.httpProducts.getProduct().subscribe({
+      next: (data) => {
+        console.log(data);
+        this.productList$.next(data.data)
+      },
+      error: (err) => {
+        console.error(err)
+      },
+      complete: () => {
+        console.log('lista todos los productos')
+      }
+    })
+  }
 
 }
 

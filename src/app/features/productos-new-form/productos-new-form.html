@@ -3,6 +3,7 @@
     <div class="side-actions">
         <button class="btn btn-secondary" (click)="showCreate()">Crear</button>
         <button class="btn btn-secondary" (click)="showList()">Buscar</button>
+
     </div>
 
 
@@ -67,8 +68,13 @@
                             <td>{{product.status}} </td>
 
                             <td class="options">
-                                <button (click)="onDelete(product._id)" class="btn btn-delete">Delete </button>
-                                
+                                <a href="javascript:void(0)" (click)="onDelete(product._id)" class="btn btn-delete">
+                                    Delete
+                                </a>
+
+                                <a href="javascript:void(0)" (click)="OnEdit(product._id)" class="btn btn-edit">
+                                    Edit
+                                </a>
                             </td>
                         </tr>
                         }
@@ -77,7 +83,7 @@
                         <tr>
                             <th>product</th>
                             <th>ID</th>
-                            <th>Img</th>
+
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
