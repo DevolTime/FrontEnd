@@ -12,26 +12,34 @@ import Swal from 'sweetalert2';
   styleUrl: './category-edit-form.css',
 })
 export default class CategoryEditForm implements OnInit {
+  // Inyección de servicios esenciales mediante inject()
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private httpCategory = inject(HttpCategory);
 
+  // Variables de estado del componente
   categoryId: string | null = null;
   formData: FormGroup;
   viewMode: 'form' | 'list' = 'form';
-  
-  // 🔹 Nuevas propiedades para manejar la imagen correctamente
+
+  // Control de imagen previa y nuevo archivo binario
   currentImageUrl: string = '';
   selectedFile: File | null = null;
 
   constructor() {
+    // Declaración del formulario reactivo con sus validaciones
     this.formData = new FormGroup({
-      name: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
+      name: new FormControl('', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(50)
+      ]),
       status: new FormControl('', [Validators.required]),
     });
   }
 
   ngOnInit(): void {
+    // 1. Capturamos el parámetro 'id' desde la ruta activa (/categories/edit/:id)
     this.route.paramMap.subscribe(params => {
       this.categoryId = params.get('id');
       if (this.categoryId) {
@@ -40,6 +48,7 @@ export default class CategoryEditForm implements OnInit {
     });
   }
 
+  // Consulta la categoría por su ID al backend y llena el formulario
   loadCategoryData(id: string): void {
     console.log('Cargando datos para la categoría con ID:', id);
 
@@ -47,10 +56,10 @@ export default class CategoryEditForm implements OnInit {
       next: (res: any) => {
         const categoryData = res.data || res;
 
-        // 1. Guardamos la URL de la imagen existente para mostrar la vista previa en el HTML
+        // Guarda la URL existente para mostrar la vista previa en el HTML
         this.currentImageUrl = categoryData.urlImage || categoryData.image || '';
 
-        // 2. Rellenamos el formulario SIN tocar el control de la imagen
+        // Rellena los valores en el formulario reactivo
         this.formData.patchValue({
           name: categoryData.name,
           status: categoryData.status
@@ -62,7 +71,7 @@ export default class CategoryEditForm implements OnInit {
     });
   }
 
-  // 🔹 Captura el archivo seleccionado por el usuario en el <input type="file">
+  // Captura el archivo binario desde el input de la plantilla HTML
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
@@ -70,8 +79,10 @@ export default class CategoryEditForm implements OnInit {
     }
   }
 
+  // Procesa la actualización enviando un objeto FormData al backend
   onSubmit(): void {
     if (this.formData.valid && this.categoryId) {
+      // Modal de confirmación con SweetAlert2
       Swal.fire({
         title: "¿Estás seguro?",
         text: "¡Deseas actualizar esta categoría!",
@@ -82,17 +93,18 @@ export default class CategoryEditForm implements OnInit {
         confirmButtonText: "Sí, actualizar"
       }).then((result) => {
         if (result.isConfirmed) {
-          
-          // 🔹 Creamos un FormData nativo para enviar texto y archivo (Multer)
+
+          // Construcción de FormData multipart/form-data
           const dataToSend = new FormData();
           dataToSend.append('name', this.formData.get('name')?.value);
           dataToSend.append('status', this.formData.get('status')?.value);
 
-          // Si el usuario seleccionó una imagen NUEVA, la agregamos
+          // Adjuntamos el archivo binario solo si el usuario seleccionó uno nuevo
           if (this.selectedFile) {
             dataToSend.append('image', this.selectedFile);
           }
 
+          // Envío de la petición PATCH mediante el servicio HTTP
           this.httpCategory.updateCategory(this.categoryId!, dataToSend).subscribe({
             next: (data) => {
               console.log('Categoría actualizada con éxito', data);
@@ -102,6 +114,7 @@ export default class CategoryEditForm implements OnInit {
                 text: "La categoría ha sido actualizada correctamente.",
                 icon: "success"
               }).then(() => {
+                // Navega de regreso al listado de categorías
                 this.router.navigate(['/registrar-category'], { queryParams: { tab: 'list' } });
               });
             },

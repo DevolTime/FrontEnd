@@ -1,20 +1,29 @@
 <div class="page-container">
+
     <div class="header-section">
         <h1 class="menu-title">NUESTRO MENÚ</h1>
         <p class="menu-subtitle">Elige tu categoría favorita y descubre el sabor</p>
     </div>
 
     <div class="menu-grid">
+        <!-- 
+          Bucle interactivo @for (Angular 17+)
+          - 'categories$ | async': Suscribe automáticamente al Observable traído del Backend
+          - 'track category._id || category.id': Identificador único para optimizar el DOM
+        -->
         @for (category of (categories$ | async); track category._id || category.id) {
+
+        <!-- Enlace de navegación hacia los productos de la categoría seleccionada -->
         <a [routerLink]="['/menu', category._id || category.id]" class="menu-card">
-            <!-- Contenedor con efecto visual en la imagen -->
+
+            <!-- Contenedor con la imagen principal de la categoría -->
             <div class="img-wrapper">
                 <img [src]="category.urlImage" [alt]="category.name" class="category-img"
                     (error)="handleImageError($event)" loading="lazy">
                 <div class="img-overlay"></div>
             </div>
-            
-            <!-- Contenido de la Card -->
+
+            <!-- Bloque de texto y acción de la tarjeta -->
             <div class="card-content">
                 <h3 class="category-title">{{ category.name }}</h3>
                 <span class="card-btn">
@@ -26,6 +35,7 @@
             </div>
         </a>
         } @empty {
+        <!-- Estado que se muestra si la API no devuelve categorías disponibles -->
         <div class="no-data-container">
             <p class="no-data">🍗 No hay categorías disponibles en este momento.</p>
         </div>

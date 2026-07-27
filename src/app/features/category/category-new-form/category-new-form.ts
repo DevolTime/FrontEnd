@@ -1,44 +1,64 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpCategory } from '../../../core/services/http-category';
-import { AsyncPipe, JsonPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
-import { Router } from '@angular/router';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
+// Librería para modales y alertas interactivas
 import Swal from 'sweetalert2';
+import { error } from 'console';
 
 @Component({
   selector: 'app-category-new-form',
+  standalone: true,
   imports: [ReactiveFormsModule, AsyncPipe],
   templateUrl: './category-new-form.html',
   styleUrl: './category-new-form.css',
 })
-export default class CategoryNewForm {
+export default class CategoryNewForm implements OnInit {
 
-  public categoryList$ = new BehaviorSubject<any>([]);
+  // Estado reactivo para la lista de categorías
+  public categoryList$ = new BehaviorSubject<any[]>([]);
 
-  private route = inject(ActivatedRoute)
+  // Inyección de servicios usando API inject() de Angular
+  private route = inject(ActivatedRoute);
   private httpCategory = inject(HttpCategory);
   private router = inject(Router);
 
-
+  // Formulario reactivo y variables de estado
   formData: FormGroup;
-
   categoryId: string | null = null;
   selectedFile: File | null = null;
   viewMode: 'form' | 'list' = 'form';
   categories: any[] = [];
 
   constructor() {
+    // Estructura y reglas de validación del formulario
     this.formData = new FormGroup({
-      name: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
+      name: new FormControl('', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(50)
+      ]),
       image: new FormControl(''),
       status: new FormControl('', [Validators.required]),
     });
   }
 
-  // Método para capturar la imagen desde el HTML
+  ngOnInit() {
+    // Escucha parámetros en la URL (ej: /categories?tab=list)
+    this.route.queryParamMap.subscribe(params => {
+      const tab = params.get('tab');
+      if (tab === 'list') {
+        this.viewMode = 'list';
+      }
+    });
+    // Carga inicial de datos desde la API
+    this.loadCategories();
+  }
+
+  // Captura el archivo de imagen subido desde el input de la plantilla.
   onFileSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
@@ -46,80 +66,95 @@ export default class CategoryNewForm {
     }
   }
 
+  // Cambia la vista al formulario de creación y resetea los campos.
   showCreate() {
     this.viewMode = 'form';
-    this.formData.reset();
+    this.resetForm();   // Usamos una función centralizada de reseteo.
+  }
+
+  //  Método helper para resetear el formulario.
+  private resetForm() {
+    this.formData.reset({
+      name: '',
+      image: '',
+      status: '',
+    });
     this.selectedFile = null;
   }
 
+  // Cambia la vista al listado y consulta las categorías actualizadas
   showList() {
     this.viewMode = 'list';
     this.httpCategory.getCategories().subscribe({
       next: (data: any) => {
-        this.loadCategories(); // Refresca la lista sin loops
-        this.categories = data;
+        this.loadCategories();
       },
-      error: (err) => console.error('Error al listar', err)
+      error: (err) => console.error('Error al listar categorías:', err)
     });
   }
 
+  // Obtiene y refresca la lista de categorías desde la API de Express
+  loadCategories() {
+    this.httpCategory.getCategories().subscribe({
+      next: (data: any) => {
+        // Maneja respuestas con o sin wrapper 'data'
+        const list = data.data ? data.data : data;
+        this.categoryList$.next(list);
+        this.categories = list;
+      },
+      error: (err) => console.error('Error al cargar categorías:', err)
+    });
+  }
+
+  // Procesa el envío del formulario mediante multipart/form-data
   onSubmit() {
     if (this.formData.valid) {
-      // 🔹 Creamos el FormData para soportar multipart/form-data
+      // Objeto FormData para enviar texto + archivo binario
       const body = new FormData();
       body.append('name', this.formData.get('name')?.value);
       body.append('status', this.formData.get('status')?.value);
-
-      // Adjuntamos el archivo físico con la clave 'image' (que espera Multer en el backend)
+      // Si seleccionó imagen, la adjunta con la clave 'image' que espera Multer
       if (this.selectedFile) {
         body.append('image', this.selectedFile);
       }
-      // Enviamos 'body' en lugar de 'this.formData.value'
       this.httpCategory.createCategory(body).subscribe({
         next: (data: any) => {
-          this.formData.reset();
-          this.selectedFile = null; // 🔹 Limpiamos el archivo guardado
-          console.log('Creado con éxito', data);
-          this.loadCategories(); // Refrescamos la lista
+          this.resetForm();      // Usamos el mismo reseteo aquí
+          this.loadCategories(); // Refresca el listado automáticamente
         },
         error: (error: any) => {
-          console.error('Error al guardar', error);
+          console.error('Error al crear categoría:', error);
         }
       });
     }
   }
 
+  // Muestra confirmación modal antes de eliminar un registro
   onDelete(id: string) {
-    // Ventana emergente de SweetAlert
     Swal.fire({
       title: "¿Seguro?",
-      text: "¡No se podra revertir esto!",
+      text: "¡No se podrá revertir esto!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Eliminar!"
+      confirmButtonText: "¡Sí, eliminar!"
     }).then((result) => {
-      // 1 Validamos si el usuario confirmo la accion
       if (result.isConfirmed) {
-        // 2 Validacion si existe el ID antes de hacer la peticion
         if (id) {
           this.httpCategory.deleteCategory(id).subscribe({
             next: () => {
-              console.log('Categoría eliminada con éxito');
-              // 3 Mostramos el mensaje de exito
               Swal.fire({
-                title: "Eliminar!",
-                text: "Su archivo ha sido eliminado..",
+                title: "¡Eliminado!",
+                text: "La categoría y su imagen han sido eliminadas.",
                 icon: "success"
               });
-              // 4 Actualizamos el estado
               this.formData.reset();
               this.categoryId = null;
-              this.loadCategories(); // ✅ Refresca la lista sin llamar a ngOnInit
+              this.loadCategories();
             },
             error: (err) => {
-              console.error('Error al eliminar', err);
+              console.error('Error al eliminar categoría:', err);
               Swal.fire(
                 'Error',
                 'Hubo un problema al eliminar la categoría.',
@@ -127,39 +162,47 @@ export default class CategoryNewForm {
               );
             }
           });
-        } else {
-          console.warn('No hay un ID de categoría seleccionado para eliminar');
         }
       }
     });
   }
 
-  ngOnInit() {
-    // Escuchamos la query param para cambiar de vista si viene ?tab=list
-    this.route.queryParamMap.subscribe(params => {
-      const tab = params.get('tab');
-      if (tab === 'list') {
-        this.viewMode = 'list';
-      }
-    });
-    // Cargamos los datos una sola vez al montar el componente
-    this.loadCategories();
-  }
-  // Método dedicado exclusivamente a obtener y refrescar la lista
-  loadCategories() {
-    this.httpCategory.getCategories().subscribe({
-      next: (data: any) => {
-        const list = data.data ? data.data : data;
-        this.categoryList$.next(list);
-        this.categories = list;
-        console.log('Lista de las categorias');
+  // Cambia el estado de la categoria desde el listado
+  toggleStatus(category: any): void {
+    // Invierte el valor booleano
+    const newStatus = !category.status;
+
+    // Creamos un FormData si tu endpoint requiere FormData
+    const body = new FormData();
+    body.append('name', category.name);
+    body.append('status', String(newStatus));
+
+    // Petición a la API
+    this.httpCategory.updateCategory(category._id, body).subscribe({
+      next: () => {
+        // 1. Actualizamos el arreglo local
+        this.categories = this.categories.map(item => {
+          if (item._id === category._id) {
+            return { ...item, status: newStatus };
+          }
+          return item;
+        });
+
+        // 2. Emitimos la copia del arreglo actualizado DENTRO del next
+        // Esto hace que el pipe '| async' actualice el HTML en tiempo real
+        this.categoryList$.next([...this.categories]);
       },
-      error: (err) => console.error('Error al listar', err)
+      error: (err: any) => {
+        console.error('Error al cambiar el estatus:', err);
+        Swal.fire('Error', 'No se pudo actualizar el estatus', 'error');
+      }
     });
   }
 
-  onEdit(id: string) {
-    console.log('edit', id);
-    this.router.navigate(['categories/edit', id])
-  }
+
+
+// Redirige al módulo de edición de la categoría seleccionada
+onEdit(id: string) {
+  this.router.navigate(['categories/edit', id]);
+}
 }
