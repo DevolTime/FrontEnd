@@ -1,0 +1,142 @@
+:host {
+    display: block;
+}
+
+/* --- BOTÓN PRINCIPAL --- */
+.cart-floating-btn {
+    position: fixed !important;
+    bottom: 100px !important;
+    right: 25px !important;
+    z-index: 99999 !important;
+
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+
+    background: linear-gradient(135deg, #ff3d00 0%, #ff7043 50%, #d9531e 100%);
+    color: #ffffff;
+    border: 3px solid #ffffff;
+
+    box-shadow:
+        0 8px 20px rgba(255, 61, 0, 0.35),
+        0 4px 10px rgba(0, 0, 0, 0.15);
+
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+
+    /* 🌿 Transición natural utilizando ease-out orgánico */
+    transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1),
+        box-shadow 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+
+    will-change: transform, box-shadow;
+    /* Optimización de rendimiento para renderizado suave */
+}
+
+/* --- EFECTO HOVER NATURAL --- */
+.cart-floating-btn:hover {
+    /* Elevación y zoom sutil sin rotación brusca */
+    transform: translateY(-4px) scale(1.06);
+    box-shadow:
+        0 14px 28px rgba(255, 61, 0, 0.5),
+        0 6px 14px rgba(0, 0, 0, 0.2);
+}
+
+/* --- CLICK (ACTIVE) --- */
+.cart-floating-btn:active {
+    transform: translateY(-1px) scale(0.98);
+    box-shadow:
+        0 6px 14px rgba(255, 61, 0, 0.4),
+        0 2px 6px rgba(0, 0, 0, 0.15);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+/* --- ÍCONO INTERNO --- */
+.cart-icon-box {
+    font-size: 2.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+
+    /* Acompaña el movimiento de forma fluida */
+    transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.cart-floating-btn:hover .cart-icon-box {
+    transform: scale(1.05);
+}
+
+/* --- BADGE / CONTADOR FLOTANTE --- */
+.cart-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+
+    background: #ffffff;
+    color: #ff3d00;
+    font-size: 1.15rem;
+    font-weight: 900;
+
+    min-width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    padding: 0 4px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 2px solid #ff3d00;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+
+    animation: badgePop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* --- ONDA EXPANSIVA --- */
+.pulse-wave {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: rgba(255, 61, 0, 0.35);
+    z-index: -1;
+    animation: wavePulse 3s infinite;
+}
+
+/* --- KEYFRAMES --- */
+@keyframes wavePulse {
+    0% {
+        transform: scale(0.95);
+        opacity: 0.7;
+    }
+
+    70% {
+        transform: scale(1.4);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+}
+
+@keyframes badgePop {
+    0% {
+        transform: scale(0);
+    }
+
+    80% {
+        transform: scale(1.2);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
