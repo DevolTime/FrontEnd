@@ -195,5 +195,6 @@ tfoot td{
     transform:translateY(-2px);
     box-shadow:0 14px 30px rgba(220,38,38,.35);
 }
-.form-actions button:active{transform:scale(.98);
+.form-actions button:active{
+    transform:scale(.98);
 }
