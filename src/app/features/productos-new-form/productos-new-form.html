@@ -24,15 +24,30 @@
                 <label>Descripción</label>
                 <textarea formControlName="description" placeholder="Ingrese la descripción"></textarea>
 
+<div class="form-category">
+                    <label for="img">Imagen:</label>
+
+                    <!-- Muestra la vista previa de la imagen actual (o la seleccionada) -->
+                    @if (currentImageUrl) {
+                    <div class="current-image-preview">
+                        <p>Imagen actual / previa:</p>
+                        <img [src]="currentImageUrl" alt="Vista previa de la categoría" class="preview-thumb">
+                    </div>
+                    }
+
+                    <!-- Input file sin formControlName (correctamente capturado por evento) -->
+                    <input type="file" class="form-control" id="img" accept="image/*" (change)="onFileSelected($event)">
+                </div>
+                
                 <label>Estado</label>
                 <select formControlName="status">
                     <option value="">Seleccione un estado</option>
 
                     <option value="disponible">Disponible</option>
                     <option value="no disponible">No disponible</option>
-                    <option value="pendiente">Pendiente</option>
-                    <option value="refactorizar">Refactorizar</option>
-                    <option value="enviado">Enviado</option>
+                   
+                  
+                    
                 </select>
 
                 <button type="submit">Registrar Producto</button>

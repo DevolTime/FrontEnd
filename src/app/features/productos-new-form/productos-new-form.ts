@@ -17,6 +17,9 @@ export default class ProductosNewForm {
 
   private httpProducts = inject(HttpProducts);
   private router = inject(Router)
+   // Control de imagen previa y nuevo archivo binario
+  currentImageUrl: string = '';
+  selectedFile: File | null = null;
 
   formData: FormGroup;
 
@@ -114,6 +117,12 @@ export default class ProductosNewForm {
         console.log('lista todos los productos')
       }
     })
+  }
+   onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
+    }
   }
 
 }
