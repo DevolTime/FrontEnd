@@ -1,0 +1,144 @@
+<section class="cantainer_form">
+
+    <!-- Acciones superiores: Conmutadores para alternar la vista actual -->
+    <div class="side-actions">
+        <button class="btn btn-secondary" [class.active]="viewMode === 'form'" (click)="showCreate()">
+            Crear
+        </button>
+        <button class="btn btn-secondary" [class.active]="viewMode === 'list'" (click)="showList()">
+            Buscar
+        </button>
+    </div>
+
+    <div class="main-layout">
+        <!-- VISTA 1: FORMULARIO DE REGISTRO            -->
+        @if (viewMode === 'form') {
+        <div class="container">
+            <h2 class="tittle-category">Registrar Categoría</h2>
+            <p class="subtittle-category">Ingrese los datos de la nueva categoría</p>
+
+            <form [formGroup]="formData" (ngSubmit)="onSubmit()" class="form-container">
+
+                <!-- Campo: Nombre -->
+                <div class="form-category">
+                    <label for="name">Nombre:</label>
+                    <input formControlName="name" type="text" class="form-control" id="name" placeholder="Nombre:">
+
+                    <!-- Validaciones en tiempo real para Nombre -->
+                    @if (formData.get('name')?.invalid && (formData.get('name')?.dirty ||
+                    formData.get('name')?.touched)) {
+
+                    @if (formData.get('name')?.errors?.['required']) {
+                    <small class="error">El nombre es obligatorio</small>
+                    }
+
+                    @if (formData.get('name')?.errors?.['minlength']) {
+                    <small class="error">El nombre debe contener al menos 3 caracteres</small>
+                    }
+
+                    @if (formData.get('name')?.errors?.['maxlength']) {
+                    <small class="error">El nombre debe contener hasta 50 caracteres</small>
+                    }
+                    }
+                </div>
+
+                <!-- Campo: Imagen (Subida de archivo para Multer) -->
+                <div class="form-category">
+                    <label for="img">Imagen:</label>
+                    <input formControlName="image" type="file" class="form-control" id="img" accept="image/*"
+                        (change)="onFileSelected($event)">
+
+                    @if (formData.get('image')?.invalid && (formData.get('image')?.dirty ||
+                    formData.get('image')?.touched)) {
+                    <small class="error">Error en la imagen</small>
+                    }
+                </div>
+
+                <!-- Campo: Status                      -->
+                <div class="form-category">
+                    <label for="status">Estatus:</label>
+                    <select formControlName="status" class="form-control" id="status">
+                        <option value="">Seleccionar</option>
+                        <option [value]="true">Activo</option>
+                        <option [value]="false">Inactivo</option>
+                    </select>
+
+                    @if (formData.get('status')?.invalid && (formData.get('status')?.dirty ||
+                    formData.get('status')?.touched)) {
+                    <small class="error">El status es obligatorio</small>
+                    }
+                </div>
+
+                <!-- Botón de guardado -->
+                <div class="actions">
+                    <button type="submit" class="btn btn-primary">Registrar Categoría</button>
+                </div>
+            </form>
+        </div>
+        }
+
+        <!-- VISTA 2: LISTADO / TABLA DE CATEGORÍAS     -->
+        @if (viewMode === 'list') {
+        <div class="container">
+            <div class="page page-Category-list">
+                <h2 class="tittle-category">Categorias</h2>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>ID</th>
+                            <th>Img</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Itera sobre el BehaviorSubject consumiendo la suscripción asíncrona -->
+                        @for (category of (categoryList$ | async); track $index) {
+                        <tr>
+                            <td>{{category.name}}</td>
+                            <td>{{category._id}}</td>
+
+                            <!-- Renderizado de la miniatura de la imagen -->
+                            <td>
+                                @if (category.urlImage) {
+                                <img [src]="category.urlImage" [alt]="category.name" class="table-img">
+                                } @else {
+                                <span class="no-img">Sin imagen</span>
+                                }
+                            </td>
+
+                            <!-- Columna de Status con Switch Moderno e Híbrido -->
+                            <td>
+                                <button type="button" class="switch-toggle" [class.active]="category.status"
+                                    (click)="toggleStatus(category)"
+                                    [title]="category.status ? 'Desactivar categoría' : 'Activar categoría'">
+                                    <!-- Indicador interno deslizable -->
+                                    <span class="switch-circle"></span>
+                                </button>
+                            </td>
+
+                            <!-- Botones de Acción -->
+                            <td>
+                                <div class="options">
+                                    <a (click)="onEdit(category._id)" class="btn btn-edit">Edit</a>
+                                    <a (click)="onDelete(category._id)" class="btn btn-delete">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="5">
+                                <small>No olvide que estas acciones solo pueden ser hechas por el ADMIN</small>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        }
+    </div>
+</section>

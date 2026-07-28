@@ -1,0 +1,206 @@
+/* 1. ESTRUCTURA Y LAYOUT PRINCIPAL */
+.cantainer_form {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 20px;
+}
+
+/* Botones laterales Crear y Buscar */
+.side-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 40px;
+}
+
+/* Contenedor central de vistas */
+.main-layout {
+    display: block;
+    width: 100%;
+    max-width: 1000px;
+}
+
+/* Tarjeta contenedora blanca con sombra */
+.container {
+    margin: 40px 0;
+    padding: 25px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* 2. TIPOGRAFÍA Y ENCABEZADOS */
+.tittle-category {
+    display: flex;
+    justify-content: center;
+    text-decoration: underline;
+    margin-top: 0;
+    color: #333;
+    font-size: 2rem;
+}
+
+.subtittle-category {
+    display: flex;
+    justify-content: center;
+    color: #666;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #444;
+    font-size: 1.5rem;
+}
+
+/* 3. CONTROLES Y CAMPOS DE FORMULARIO */
+.form-category {
+    margin-bottom: 15px;
+}
+
+#description {
+    resize: none;
+    max-height: 80px;
+    overflow-y: auto;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+}
+
+/* 4. BOTONES Y ESTADOS */
+.btn {
+    cursor: pointer;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-delete {
+    background-color: #dc3545;
+    font-weight: 600;
+}
+
+.btn-edit {
+    background-color: #28a745;
+    font-weight: 600;
+}
+
+/* 5. VISTA DE TABLA Y ACCIONES */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    font-size: 1.5rem;
+}
+
+th {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+tbody tr:last-child td {
+    border-bottom: 1px solid #ddd;
+}
+
+tfoot td {
+    border-bottom: none;
+    padding-top: 15px;
+}
+
+.options {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.options .btn {
+    padding: 6px 12px;
+    font-size: 14px;
+    text-decoration: none;
+    border-radius: 4px;
+    color: white;
+    text-align: center;
+}
+
+/* 6. IMÁGENES Y MINIATURAS */
+.table-img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    /* Mantiene la proporción y recorta sin deformar */
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: block;
+    margin: 0 auto;
+}
+
+.no-img {
+    font-size: 1.2rem;
+    color: #888;
+    font-style: italic;
+}
+
+/* 7. ADICIONES PARA EL FORMULARIO DE EDICIÓN */
+.current-image-preview {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 8px;
+}
+
+.preview-thumb {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-top: 5px;
+    display: block;
+}
+
+.error {
+    color: #dc3545;
+    font-size: 1.2rem;
+    margin-top: 5px;
+    display: block;
+}

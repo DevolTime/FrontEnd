@@ -1,0 +1,35 @@
+
+<section class="container_form">
+  
+    
+    <div class="header">
+        <h1 class="title-products">Registrar Pedido nuevo</h1>
+        <label class="Productnew">Ingresar nuevo Pedido</label>
+
+        <form [formGroup]="formData" (ngSubmit)="onSubmit()" class="form-container">
+
+            <label>Dirección</label>
+            <input formControlName="direccion_entrega" placeholder="Ingrese la dirección">
+            <label >Precio</label>
+            <input formControlName="precio_total" placeholder= "Ingrese el precio total"> 
+            <label>Productos</label>
+            <input formControlName="Productos" placeholder="Ingrese el Producto">
+            <label>Descripción</label>
+            <textarea formControlName="description" placeholder="Ingrese la descripción"></textarea>
+            <label>Estado</label>
+           <select formControlName="status">
+    <option value="">Seleccione un estado</option>
+<option value="pendiente">pendiente</option>
+    <option value="Confirmado">Confirmado</option>
+    <option value="En preparación">En preparación</option>
+    <option value="Listo para recoger">Listo para recoger</option>
+    <option value="En camino">En camino</option>
+    <option value="Pedido retrasado">Pedido retrasado</option>
+    <option value="Pedido cancelado">Pedido cancelado</option>
+</select>
+
+            <button type="submit">Registrar Producto</button>
+
+        </form>
+    </div>
+</section>

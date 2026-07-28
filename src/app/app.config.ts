@@ -9,8 +9,8 @@ import { provideClientHydration } from '@angular/platform-browser';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideRouter(routes),
-    provideHttpClient()
-  
+
+    provideRouter(routes), provideClientHydration(),
+    provideHttpClient(),
   ]
 };

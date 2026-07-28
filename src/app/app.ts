@@ -10,6 +10,5 @@ import { RouterOutlet, Router } from '@angular/router'; // Importamos Router
   styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('Fronted');
-  protected router = inject(Router); //  Inyectamos el Router
+  router = inject(Router); //  Inyectamos el Router
 }

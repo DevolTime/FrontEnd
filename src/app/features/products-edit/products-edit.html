@@ -1,0 +1,99 @@
+<section class="container_form">
+
+    <div class="container_principal">
+        @if (viewMode === 'form') {
+        <div class="container">
+            <h2 class="title-products">Editar Producto</h2>
+            <p class="Productnew">Modifique los datos del producto</p>
+
+            <form [formGroup]="formData" (ngSubmit)="onSubmit()" class="form-container">
+
+                <div class="form-product">
+                    <label for="name">Nombre:</label>
+                    <input
+                        formControlName="name"
+                        type="text"
+                        class="form-control"
+                        id="name"
+                        placeholder="Nombre del producto">
+
+                    @if (formData.get('name')?.invalid &&
+                    (formData.get('name')?.dirty ||
+                    formData.get('name')?.touched)) {
+
+                        @if (formData.get('name')?.errors?.['required']) {
+                            <small class="error">El nombre es obligatorio</small>
+                        }
+
+                        @if (formData.get('name')?.errors?.['minlength']) {
+                            <small class="error">El nombre debe contener al menos 3 caracteres</small>
+                        }
+                    }
+                </div>
+
+                <div class="form-product">
+                    <label for="price">Precio:</label>
+                    <input
+                        formControlName="price"
+                        type="number"
+                        class="form-control"
+                        id="price"
+                        placeholder="Precio">
+
+                    @if (formData.get('price')?.invalid &&
+                    (formData.get('price')?.dirty ||
+                    formData.get('price')?.touched)) {
+                        <small class="error">El precio es obligatorio</small>
+                    }
+                </div>
+
+                <div class="form-product">
+                    <label for="description">Descripción:</label>
+                    <textarea
+                        formControlName="description"
+                        class="form-control"
+                        id="description"
+                        placeholder="Descripción del producto">
+                    </textarea>
+
+                    @if (formData.get('description')?.invalid &&
+                    (formData.get('description')?.dirty ||
+                    formData.get('description')?.touched)) {
+                        <small class="error">La descripción es obligatoria</small>
+                    }
+                </div>
+
+                <div class="form-product">
+                    <label for="status">Estado:</label>
+                    <select
+                        formControlName="status"
+                        class="form-control"
+                        id="status">
+
+                        <option value="">Seleccione un estado</option>
+                        <option value="disponible">Disponible</option>
+                        <option value="no disponible">No disponible</option>
+                        <option value="pendiente">Pendiente</option>
+                        <option value="refactorizar">Refactorizar</option>
+                        <option value="enviado">Enviado</option>
+                    </select>
+
+                    @if (formData.get('status')?.invalid &&
+                    (formData.get('status')?.dirty ||
+                    formData.get('status')?.touched)) {
+                        <small class="error">El estado es obligatorio</small>
+                    }
+                </div>
+
+                <div class="actions">
+                    <button type="submit" class="btn btn-primary">
+                        Actualizar Producto
+                    </button>
+                </div>
+
+            </form>
+        </div>
+        }
+    </div>
+
+</section>

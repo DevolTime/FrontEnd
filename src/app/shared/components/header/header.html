@@ -4,9 +4,8 @@
             <img src="/assets/images/Logo.png" class="logo">
         </a>
         <div class="menu_toggle" id="menu_toggle">
-            <i class="fa-solid fa-bars"></i>
+            <fa-icon [icon]="faBars"></fa-icon>
         </div>
-
         <ul class="nav_links" id="nav_links">
             <li class="nav_list"><a routerLink="/home">Inicio</a></li>
             <li class="nav_list"><a routerLink="/menu">Menu</a></li>
@@ -16,7 +15,7 @@
             <li class="nav_list"><a routerLink="/user/list">Lista usuarios</a></li>
         </ul>
         <ul class="cart_links" id="cart_links">
-            <li><a href=""><i class="fa-solid fa-cart-shopping"></i></a></li>
+            <li><a href=""><fa-icon [icon]="faCartShopping"></fa-icon></a></li>
         </ul>
     </nav>
 </header>
