@@ -1,9 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AsyncPipe } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
 import { HttpProducts } from '../../core/services/http-products';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { error } from 'console';
 
 @Component({
   selector: 'app-productos-new-form',
@@ -11,14 +12,16 @@ import { Router } from '@angular/router';
   templateUrl: './productos-new-form.html',
   styleUrl: './productos-new-form.css',
 })
-export default class ProductosNewForm {
+export default class ProductosNewForm implements OnInit{
 
   public productList$ = new BehaviorSubject<any>([]);
 
+  private route = inject(ActivatedRoute)
   private httpProducts = inject(HttpProducts);
   private router = inject(Router)
    // Control de imagen previa y nuevo archivo binario
   currentImageUrl: string = '';
+
   selectedFile: File | null = null;
 
   formData: FormGroup;
@@ -50,25 +53,51 @@ export default class ProductosNewForm {
 
   showCreate() {
     this.viewMode = 'form';
-    this.formData.reset();
+    this.resetform()
+
   }
+private resetform(){
+  this.formData.reset ({
+    name : '',
+    Image : '',
+    status : '',
+    description : '',
+    price : ''
+  });
+  this.selectedFile = null
+}
 
   showList() {
     this.viewMode = 'list';
     this.httpProducts.getProduct().subscribe({
       next: (data: any) => {
-        this.ngOnInit();
-        this.productos = data;
+this.loadproducts ()
       },
       error: (err: any) => {
         console.error('Error al listar', err);
       }
     });
   }
-
+loadproducts (){
+  this.httpProducts.getProduct().subscribe({
+    next : (data: any) => {
+      const list = data.data? data.data: data
+      this.productList$.next (list)
+      this.productos=list 
+    },
+    error: (err) =>  console.error('error al cargar productos', error)
+  })
+}
   onsubmit() {
 
     if (this.formData.valid) {
+const body = new FormData ();
+body.append ('name', this.formData.get ('name')?.value)
+body.append ('status', this.formData.get ('status')?.value)
+
+
+
+
       this.httpProducts.NewProduct(this.formData.value).subscribe({
         next: (data: any) => {
           console.log('Creado con éxito', data);
@@ -82,7 +111,7 @@ export default class ProductosNewForm {
 
   onDelete(id: string) {
     if (id) {
-      this.httpProducts.deleteproduct(id).subscribe({
+      this.httpProducts.deleteproducts(id).subscribe({
         next: () => {
           console.log('producto eliminada con éxito');
           this.formData.reset();
@@ -105,23 +134,18 @@ export default class ProductosNewForm {
 
   ngOnInit() {
 
-    this.httpProducts.getProduct().subscribe({
-      next: (data) => {
-        console.log(data);
-        this.productList$.next(data.data)
-      },
-      error: (err) => {
-        console.error(err)
-      },
-      complete: () => {
-        console.log('lista todos los productos')
-      }
-    })
+   this.route.queryParamMap.subscribe (params =>{
+    const tab = params.get ('tab');
+    if (tab==='list '){
+      this.viewMode = 'list'
+    }
+   })
+   this.loadproducts()
   }
-   onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      this.selectedFile = input.files[0];
+   onFileSelected(event: any) {
+    const files = event.target.files [0];
+    if (files){
+      this.selectedFile=files
     }
   }
 

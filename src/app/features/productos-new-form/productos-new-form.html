@@ -24,7 +24,7 @@
                 <label>Descripción</label>
                 <textarea formControlName="description" placeholder="Ingrese la descripción"></textarea>
 
-<div class="form-category">
+                <div class="form-category">
                     <label for="img">Imagen:</label>
 
                     <!-- Muestra la vista previa de la imagen actual (o la seleccionada) -->
@@ -38,16 +38,16 @@
                     <!-- Input file sin formControlName (correctamente capturado por evento) -->
                     <input type="file" class="form-control" id="img" accept="image/*" (change)="onFileSelected($event)">
                 </div>
-                
+
                 <label>Estado</label>
                 <select formControlName="status">
                     <option value="">Seleccione un estado</option>
 
                     <option value="disponible">Disponible</option>
                     <option value="no disponible">No disponible</option>
-                   
-                  
-                    
+
+
+
                 </select>
 
                 <button type="submit">Registrar Producto</button>
@@ -81,6 +81,25 @@
                             <td>{{product.name}}</td>
                             <td>{{product._id}}</td>
                             <td>{{product.status}} </td>
+                            <td>{{product.description}} </td>
+
+                            <td>
+                                @if (productos.urlImage) {
+                                <img [src]="productos.urlImage" [alt]="productos.name" class="table-img">
+                                } @else {
+                                <span class="no-img">Sin imagen</span>
+                                }
+                            </td>
+
+                            <!-- Columna de Status con Switch Moderno e Híbrido -->
+                            <td>
+                                <button type="button" class="switch-toggle" [class.active]="productos.status"
+                                    (click)="toggleStatus(productos)"
+                                    [title]="productos.status ? 'Desactivar categoría' : 'Activar categoría'">
+                                    <!-- Indicador interno deslizable -->
+                                    <span class="switch-circle"></span>
+                                </button>
+                            </td>
 
                             <td class="options">
                                 <a href="javascript:void(0)" (click)="onDelete(product._id)" class="btn btn-delete">
@@ -93,6 +112,7 @@
                             </td>
                         </tr>
                         }
+
                     </tbody>
                     <thead>
                         <tr>

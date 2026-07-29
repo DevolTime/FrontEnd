@@ -11,21 +11,21 @@
           - 'categories$ | async': Suscribe automáticamente al Observable traído del Backend
           - 'track category._id || category.id': Identificador único para optimizar el DOM
         -->
-        @for (category of (categories$ | async); track category._id || category.id) {
+        @for (product of (products$ | async); track product._id || product.id) {
 
         <!-- Enlace de navegación hacia los productos de la categoría seleccionada -->
-        <a [routerLink]="['/menu', category._id || category.id]" class="menu-card">
+        <a [routerLink]="['/menu', product._id || product.id]" class="menu-card">
 
             <!-- Contenedor con la imagen principal de la categoría -->
             <div class="img-wrapper">
-                <img [src]="category.urlImage" [alt]="category.name" class="category-img"
+                <img [src]="product.urlImage" [alt]="product.name" class="category-img"
                     (error)="handleImageError($event)" loading="lazy">
                 <div class="img-overlay"></div>
             </div>
 
             <!-- Bloque de texto y acción de la tarjeta -->
             <div class="card-content">
-                <h3 class="category-title">{{ category.name }}</h3>
+                <h3 class="category-title">{{ product.name }}</h3>
                 <span class="card-btn">
                     Ver productos
                     <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
