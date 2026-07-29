@@ -19,13 +19,13 @@
           "options": {
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
+            "polyfills": ["zone.js"],
             "assets": [
               {
                 "glob": "**/*",
                 "input": "public"
               }
             ],
-            "polyfills": ["zone.js"],
             "styles": ["src/styles.css"],
             "server": "src/main.server.ts",
             "outputMode": "server",

@@ -1,0 +1,39 @@
+  
+  <div class="page-user">
+
+  <h2 class="title-form">Lista de Usuarios</h2>
+
+  <a routerLink="/user-new" class="btn-new">Usuario Nuevo</a>
+
+  <table>
+    <tfoot>
+          <tr>
+    <td colspan="5"> <small>MODIFICACIONES SOLO LAS PUEDE REALIZAR EL ADMI</small></td>
+  </tr>
+    </tfoot>
+<tbody>
+    @for (user of (userList$ | async ); track $index) {
+  <tr>
+    <td> {{user.name}}</td>
+    <td>{{user.lastname}}</td>
+    <td>{{user.email}}</td>
+    <td>{{user.role}}</td>
+    <td class="Options"> 
+      <button  (click)="onEdit ( user._id)" class="btn-edit">edit</button> 
+       <button (click)="onDelete( user._id)" class="btn-delete">delete</button>
+</td>
+  </tr>
+}
+
+  </tbody>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Last name</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+</table>
+</div>

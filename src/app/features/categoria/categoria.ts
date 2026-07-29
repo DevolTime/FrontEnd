@@ -3,13 +3,12 @@ import { AsyncPipe, CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
 import { HttpCategory } from '../../core/services/http-category';  // Revisa que esta ruta sea correcta
 import { RouterLink } from '@angular/router';
-import { CartFloating } from "../../shared/components/cart-floating/cart-floating";
 
 
 @Component({
   selector: 'app-categoria',
   standalone: true,
-  imports: [CommonModule, RouterLink, CartFloating],
+  imports: [CommonModule, RouterLink],
   templateUrl: './categoria.html',
   styleUrl: './categoria.css',
 })

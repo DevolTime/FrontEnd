@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { CartFloating } from '../../shared/components/cart-floating/cart-floating';
 
 @Component({
   selector: 'app-home',
-  imports: [],
+  imports: [CartFloating],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
