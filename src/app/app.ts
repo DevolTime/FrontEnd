@@ -1,7 +1,7 @@
 import { Component, signal, inject } from '@angular/core';
-import { Header } from './shared/components/header/header';
 import { Footer } from './shared/components/footer/footer';
 import { RouterOutlet, Router } from '@angular/router'; // Importamos Router
+import { Header } from './shared/components/header/header';
 
 @Component({
   selector: 'app-root',
