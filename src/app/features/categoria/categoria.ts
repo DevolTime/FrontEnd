@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { HttpCategory } from '../../core/services/http-category';  // Revisa que esta ruta sea correcta
 import { RouterLink } from '@angular/router';
 
-
 @Component({
   selector: 'app-categoria',
   standalone: true,

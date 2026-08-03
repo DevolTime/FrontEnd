@@ -13,7 +13,6 @@ import { faTiktok, faInstagram, faYoutube } from '@fortawesome/free-brands-svg-i
 })
 export class Footer {
   faCoffee = faCoffee;
-
   faTiktok = faTiktok;
   faInstagram = faInstagram;
   faYoutube = faYoutube;

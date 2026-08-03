@@ -125,7 +125,6 @@ tfoot td{
     grid-template-columns:repeat(2,minmax(0,1fr));
     gap:2rem;
 }
-
 .items{
     display:flex;
     flex-direction:column;
@@ -208,4 +207,24 @@ tfoot td{
     color: red;
     font-size: 14px;
     font-style: italic;
+}
+.login-form{
+    max-width: 50rem;
+    grid-template-columns: 1fr;
+    margin: 5rem auto;
+    padding: 4rem;
+}
+
+.login-form .items{
+    width:100%;
+}
+
+.login-form .form-actions{
+    margin-top:2rem;
+}
+.Re_correo{
+    grid-column: 1 / -1;
+}
+.hand{
+    cursor: pointer;;
 }
