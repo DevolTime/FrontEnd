@@ -84,8 +84,8 @@
                             <td>{{product.description}} </td>
 
                             <td>
-                                @if (productos.urlImage) {
-                                <img [src]="productos.urlImage" [alt]="productos.name" class="table-img">
+                                @if (product.urlImage) {
+                                <img [src]="product.urlImage" [alt]="product.name" class="table-img">
                                 } @else {
                                 <span class="no-img">Sin imagen</span>
                                 }
@@ -93,9 +93,9 @@
 
                             <!-- Columna de Status con Switch Moderno e Híbrido -->
                             <td>
-                                <button type="button" class="switch-toggle" [class.active]="productos.status"
+                                <button type="button" class="switch-toggle" [class.active]="product.status"
                                     (click)="toggleStatus(productos)"
-                                    [title]="productos.status ? 'Desactivar categoría' : 'Activar categoría'">
+                                    [title]="product.status ? 'Desactivar categoría' : 'Activar categoría'">
                                     <!-- Indicador interno deslizable -->
                                     <span class="switch-circle"></span>
                                 </button>
