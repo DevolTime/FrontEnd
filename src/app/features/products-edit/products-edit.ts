@@ -99,7 +99,7 @@ onFileSelected(event: Event): void {
           dataToSend.append('status', this.formData.get('status')?.value)
           dataToSend.append('price', this.formData.get('price')?.value)
           dataToSend.append('description', this.formData.get('description')?.value)
-          if (this.selectedFile) { dataToSend.append('image', this.selectedFile) }
+          if (this.selectedFile) { dataToSend.append('urlImage', this.selectedFile) }
           this.httpProducts.updateproducts(this.productosbyid!, dataToSend).subscribe({
             next: (data) => {
               console.log('producto actualizado con exito', data)

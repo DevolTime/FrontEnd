@@ -20,7 +20,7 @@ export class HttpProducts {
                 const list = response.data ? response.data : response;
 
                 // 🔹 Aceptamos tanto booleano true como string "true"
-                const activeproducts = list.filter((c: any) => c.status === true || c.status === 'true');
+                const activeproducts = list.filter((c: any) => c.status === true || c.status === 'disponible');
 
                 this.productsSubject.next(activeproducts);
             })
@@ -34,15 +34,13 @@ export class HttpProducts {
                 const newproducts = response.data ? response.data : response;
 
                 // 🔹 Solo la agregamos a la vista pública si está activa
-                if (newproducts.status === true || newproducts.status === 'true') {
+                if (newproducts.status === true || newproducts.status === 'disponible') {
                     this.productsSubject.next([...currentList, newproducts]);
                 }
-
             })
-
         );
-
     }
+
      deleteproducts(id: string) {
         return this.htpp.delete(`${this.apiUrl}/${id}`).pipe(
             tap(() => {
@@ -68,7 +66,7 @@ export class HttpProducts {
         return this.htpp.get<any>('http://localhost:3000/api/products');
     }
     getproductbyid(id: string) {
-        return this.htpp.get(`http://localhost:3000/api/products${id}`)
+        return this.htpp.get(`http://localhost:3000/api/products/${id}`)
     }
 }
 
