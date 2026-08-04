@@ -5,11 +5,12 @@ import { features } from 'process';
 export const routes: Routes = [
     { path: 'home', component: Home },
 
-    { path: 'login', loadComponent: () => import('./features/login/login') },
-    { path: 'dashboard/user-new', loadComponent: () => import('./features/users/user-new-form/user-new-form').then(m => m.UserNewForm) },
-    { path: 'dashboard/user/edit/:id', loadComponent: () => import('./features/users/user-edit-form/user-edit-form') },
-    { path: 'register', loadComponent: () => import('./features/register/register') },
-    { path: 'dashboard/checkout', loadComponent: () => import('./features/checkout/checkout').then(m => m.Checkout) },
+
+    { path: 'login', loadComponent: () => import('./features/login/login')},
+    {path: 'dashboard/user-new', loadComponent: ()=> import('./features/users/user-new-form/user-new-form').then(m=>m.UserNewForm)},
+    {path: 'dashboard/user/edit/:id', loadComponent:()=> import('./features/users/user-edit-form/user-edit-form')},
+    { path: 'register', loadComponent: () => import('./features/register/register')},
+    //{ path: 'dashboard/checkout', loadComponent: () => import('./features/checkout/checkout').then(m => m.Checkout) },
     { path: 'menu', loadComponent: () => import('./features/menu/menu').then(m => m.Menu) },
     { path: 'dashboard', loadComponent: () => import('./features/dashboard/dashboard') },
     { path: 'categoria', loadComponent: () => import('./features/categoria/categoria').then(m => m.Categoria) },
