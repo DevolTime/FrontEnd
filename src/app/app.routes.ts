@@ -4,6 +4,7 @@ import { features } from 'process';
 
 export const routes: Routes = [
     { path: 'home', component: Home },
+
     { path: 'login', loadComponent: () => import('./features/login/login')},
     {path: 'dashboard/user-new', loadComponent: ()=> import('./features/users/user-new-form/user-new-form').then(m=>m.UserNewForm)},
     {path: 'dashboard/user/edit/:id', loadComponent:()=> import('./features/users/user-edit-form/user-edit-form')},
@@ -13,6 +14,7 @@ export const routes: Routes = [
     { path: 'dashboard', loadComponent: () => import('./features/dashboard/dashboard')},
     { path: 'categoria', loadComponent: () => import('./features/categoria/categoria').then(m => m.Categoria) },
     { path: 'contacto', loadComponent: () => import('./features/contacto/contacto').then(m => m.Contacto) },
+
     { path:'dashboard/user/list', loadComponent:()=> import('./features/users/user-list/user-list') },
     { path: 'cart', loadComponent: () => import('./shared/components/cart-floating/cart-floating').then(m => m.CartFloating)},
     { path: '404', loadComponent: () => import('./features/page-not-found/page-not-found') },

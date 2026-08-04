@@ -52,6 +52,7 @@
         <label for="status">Estado de usuario:</label>
         <select formControlName="status" id="status">
           <option value="">Selecciona un estado...</option>
+
           @for (status of (statusList$ | async); track $index) {
               <option [value]="status.id">{{status.name}}</option>
           }
@@ -72,6 +73,7 @@
         <label for="role">Rol de usuario:</label>
         <select formControlName="role" id="role">
           <option value="">Selecciona un rol...</option>
+
           @for (role of (roleList$ | async); track $index) {
               <option [value]="role.id">{{role.name}}</option>
           }

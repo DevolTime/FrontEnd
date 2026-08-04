@@ -1,10 +1,12 @@
 import { Component, OnInit, inject  } from '@angular/core';
 import { CartFloating } from '../../shared/components/cart-floating/cart-floating';
 import { Observable } from 'rxjs';
-import { HttpCategory } from '../../core/services/http-category';  // Revisa que esta ruta sea correcta
+
 
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { HttpProducts } from '../../core/services/http-products';
+
 
 @Component({
   selector: 'app-menu',
@@ -13,14 +15,14 @@ import { CommonModule } from '@angular/common';
   styleUrl: './menu.css',
 })
 export class Menu {
-    private categoryService = inject(HttpCategory);
+    private productsService = inject(HttpProducts);
 
   // Observable conectado directamente al servicio
-  categories$: Observable<any[]> = this.categoryService.categories$;
+  products$: Observable<any[]> = this.productsService.products$;
 
   ngOnInit(): void {
     // ¡Ojo aquí! Si no ejecutas esta línea, las categorías nunca se traen del servidor.
-    this.categoryService.loadCategory();
+    this.productsService.loadproducts();
   }
 
   // 🔹 Manejador si una imagen falla al cargar
