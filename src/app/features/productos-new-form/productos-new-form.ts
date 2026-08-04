@@ -93,33 +93,34 @@ export default class ProductosNewForm implements OnInit {
     })
   }
 
-onsubmit() {
-  if (this.formData.valid) {
-    const body = new FormData();
-    
-    // Agregamos los campos de texto
-    body.append('name', this.formData.get('name')?.value);
-    body.append('status', this.formData.get('status')?.value);
-    body.append('description', this.formData.get('description')?.value);
-    body.append('price', this.formData.get('price')?.value);
+  onsubmit() {
+    if (this.formData.valid) {
+      const body = new FormData();
 
-    // 🔴 CAMBIO AQUÍ: Debe llamarse 'urlImage' para coincidir con upload.single('urlImage') del backend
-    if (this.selectedFile) {
-      body.append('urlImage', this.selectedFile);
-    }
+      // Agregamos los campos de texto
+      body.append('name', this.formData.get('name')?.value);
+      body.append('status', this.formData.get('status')?.value);
+      body.append('description', this.formData.get('description')?.value);
+      body.append('price', this.formData.get('price')?.value);
 
-    this.httpProducts.createproducts(body).subscribe({
-      next: (data: any) => {
-        console.log('Creado con éxito', data);
-        this.resetform();
-        this.loadproducts();
-      },
-      error: (error: any) => {
-        console.error('Error al guardar', error);
+      // 🔴 CAMBIO AQUÍ: Debe llamarse 'urlImage' para coincidir con upload.single('urlImage') del backend
+      if (this.selectedFile) {
+        body.append('urlImage', this.selectedFile);
       }
-    });
+
+
+      this.httpProducts.createproducts(body).subscribe({
+        next: (data: any) => {
+          console.log('Creado con éxito', data);
+          this.resetform();
+          this.loadproducts();
+        },
+        error: (error: any) => {
+          console.error('Error al guardar', error);
+        }
+      });
+    }
   }
-}
 
   onDelete(id: string) {
     Swal.fire({
@@ -165,15 +166,17 @@ onsubmit() {
   toggleStatus(products: any): void {
     // Invierte el valor booleano
 
-    const newStatus = !products.status; // Convierte a true/false
-    // Creamos un FormData si tu endpoint requiere FormData
-   const body = new FormData();
+    const newStatus =
+      products.status === 'disponible'
+        ? 'no disponible'
+        : 'disponible';
 
-body.append('name', products.name);
-body.append('description', products.description);
-body.append('price', String(products.price));
-body.append('status', String(newStatus));
+    const body = new FormData();
 
+    body.append('name', products.name);
+    body.append('description', products.description);
+    body.append('price', String(products.price));
+    body.append('status', newStatus);
     // Petición a la API
     this.httpProducts.updateproducts(products._id, body).subscribe({
       next: () => {

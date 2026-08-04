@@ -11,7 +11,6 @@
           - 'categories$ | async': Suscribe automáticamente al Observable traído del Backend
           - 'track category._id || category.id': Identificador único para optimizar el DOM
         -->
-
         @for (product of (products$ | async); track product._id || product.id) {
 
         <!-- Enlace de navegación hacia los productos de la categoría seleccionada -->
@@ -28,7 +27,7 @@
             <!-- Bloque de texto y acción de la tarjeta -->
             <div class="card-content">
                 <h3 class="category-title">{{ product.name }}</h3>
-
+                <h4 class="category-description">{{ product.description }}</h4>
 
                 <span class="card-btn">
                     Ver productos
@@ -41,7 +40,7 @@
         } @empty {
         <!-- Estado que se muestra si la API no devuelve categorías disponibles -->
         <div class="no-data-container">
-            <p class="no-data">🍗 No hay categorías disponibles en este momento.</p>
+            <p class="no-data">🍗 No hay productos disponibles en este momento.</p>
         </div>
         }
         <app-cart-floating></app-cart-floating>

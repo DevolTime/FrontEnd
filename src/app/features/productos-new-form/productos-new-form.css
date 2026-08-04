@@ -105,3 +105,32 @@ th, td {
     display: flex;
     gap: 5px;
 }
+
+
+
+.options .btn {
+  padding: 6px 12px;
+  font-size: 14px;
+  text-decoration: none;
+  border-radius: 4px;
+  color: white;
+  text-align: center;
+}
+
+/* 6. IMÁGENES Y MINIATURAS */
+.table-img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  /* Mantiene la proporción y recorta sin deformar */
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: block;
+  margin: 0 auto;
+}
+
+.no-img {
+  font-size: 1.2rem;
+  color: #888;
+  font-style: italic;
+}
