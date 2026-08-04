@@ -11,7 +11,7 @@ export interface User {
     updatedAt: string
 }
 
-export interface ResponseUsers{
+export interface ResponseUsers {
     msg: string,
     data: [User]
 }
