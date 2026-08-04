@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 import { map } from 'rxjs';
-import { ResponseUsers } from '../models/Users';
+import { ResponseUsers } from '../../core/Models/users';
 import { environment } from '../../../environments/environment';
 
 @Service()
