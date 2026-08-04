@@ -1,11 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 import { map } from 'rxjs';
-<<<<<<< HEAD
 import { ResponseUsers } from '../../core/Models/users';
-=======
-import { ResponseUsers } from '../models/users';
->>>>>>> 5a89f2ca501f8638ba5418b2f43f41372bdb5dd4
 import { environment } from '../../../environments/environment';
 
 @Service()
