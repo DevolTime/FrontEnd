@@ -13,7 +13,7 @@ export class HttpAuth {
   private platformId = inject(PLATFORM_ID)
 
   private isBrowser: boolean = isPlatformBrowser(this.platformId)
-  currentUser$ = new BehaviorSubject<any>(this.getUserFromStorage())
+  currentUser$ = new BehaviorSubject<any>(this.getTokenFromStorage())
   currentToken$ = new BehaviorSubject<any>(this.getTokenFromStorage())
 
 
@@ -53,8 +53,8 @@ export class HttpAuth {
   saveDataLocalStorage(token: any, user: any) {
     //VERIFICAMOS QIE EL TIPO DE APLICATIVO QUE ESTQAMOAS EJECUTANDOW
     if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem( this.TOKEN_KEY, token)
+      localStorage.setItem(this.USER_KEY, user)
     }
     this.currentUser$.next(user)
     this.currentToken$.next(token)
@@ -63,10 +63,10 @@ export class HttpAuth {
     let user
     let token
     if (isPlatformBrowser(this.platformId)) {
-      const ValeuKeyToken = localStorage.getItem(`token`)
-      token = ValeuKeyToken ? ValeuKeyToken : null
+      const ValeuKeyToken = localStorage.getItem(this.TOKEN_KEY)
+      token = ValeuKeyToken ? JSON.parse(ValeuKeyToken) : null
 
-      const ValeuKeyUser = localStorage.getItem('user')
+      const ValeuKeyUser = localStorage.getItem(this.USER_KEY)
       user = ValeuKeyUser ? JSON.parse(ValeuKeyUser) : null;
 
       this.currentToken$.next(token),
@@ -77,7 +77,7 @@ export class HttpAuth {
       }
     }
   }
-   clearAuthData(){
+  clearAuthData(){
     this.token=null,
     this.user=null
 
@@ -91,16 +91,15 @@ export class HttpAuth {
   }
   private getTokenFromStorage():string |null{
     if(this.isBrowser){
-      return localStorage.getItem(this.TOKEN_KEY)
+      return localStorage.getItem(`token`)
     }
     return null
   }
   private getUserFromStorage():any{
     if(this.isBrowser){
-      const user = localStorage.getItem(this.USER_KEY)
-      return user ? JSON.parse(user):null
+      const user =localStorage.getItem(`user`)
+      return user?JSON.parse(user):null
     }
-    return null
   }
 
   set token(token: string | null) {
