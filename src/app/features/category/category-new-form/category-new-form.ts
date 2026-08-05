@@ -201,6 +201,6 @@ export default class CategoryNewForm implements OnInit {
 
 // Redirige al módulo de edición de la categoría seleccionada
 onEdit(id: string) {
-  this.router.navigate(['categories/edit', id]);
+  this.router.navigate(['dashboard/categories/edit/', id]);
 }
 }
