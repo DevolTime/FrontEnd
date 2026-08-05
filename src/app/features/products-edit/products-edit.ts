@@ -108,7 +108,7 @@ export default class ProductsEdit {
                 text: "El producto ha sido actualizado correctamente",
                 icon: "success"
               }).then(() => {
-                this.router.navigate(['ProductosNewForm'], { queryParams: { tab: 'list' } })
+                this.router.navigate(['dashboard/ProductosNewForm'], { queryParams: { tab: 'list' } })
               })
             },
             error: (err) => {
