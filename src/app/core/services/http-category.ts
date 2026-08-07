@@ -13,7 +13,7 @@ export class HttpCategory {
     // Inyectar una dependencia sin usar el constructor, implementarse en las funciones.
     private http = inject(HttpClient);
 
-    BASE_URL: String = environment.apiUrl;
+    BASE_URL: string = environment.apiUrl;
 
     private apiUrl = `${this.BASE_URL}/category`;
 

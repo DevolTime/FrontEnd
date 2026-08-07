@@ -1,131 +1,169 @@
-<section class="container_form">
+<div class="side-actions">
+    <a class="btn-new" (click)="showCreate()">Crear</a>
+    <a class="btn-new" (click)="showList()">Buscar</a>
+</div>
 
-    <div class="side-actions">
-        <button class="btn btn-secondary" (click)="showCreate()">Crear</button>
-        <button class="btn btn-secondary" (click)="showList()">Buscar</button>
+<div class="page-user">
 
-    </div>
+    <!-- ========================= FORMULARIO ========================= -->
+    @if (viewMode === 'form') {
+
+    <h1 class="title-form">Registrar producto nuevo</h1>
 
 
-    <div class="container_principal">
-        @if (viewMode === 'form') {
-        <div class="header">
-            <h1 class="title-products">Registrar producto nuevo</h1>
-            <label class="Productnew">Ingresar nuevo producto</label>
+    <pre>
+        {{categorylist$|async|json}}
+    </pre>
 
-            <form [formGroup]="formData" (ngSubmit)="onsubmit()" class="form-container">
+    <form [formGroup]="formData" (ngSubmit)="onsubmit()" class="newUsers">
 
-                <label>Nombre</label>
-                <input formControlName="name" placeholder="Ingrese el nombre">
+        <div class="items">
+            <label>Nombre</label>
+            <input type="text" formControlName="name" placeholder="Ingrese el nombre">
+        </div>
 
-                <label>Precio</label>
-                <input formControlName="price" placeholder="Ingrese el precio">
+        <div class="items">
+            <label>Precio</label>
+            <input type="number" formControlName="price" placeholder="Ingrese el precio">
+        </div>
 
-                <label>Descripción</label>
-                <textarea formControlName="description" placeholder="Ingrese la descripción"></textarea>
+        <div class="items">
+            <label>Categorias</label>
+            <select formControlName="category">
+                <option value="">Selecciona una categoria</option>
+               @for (cat of (categorylist$|async); track $index) {
+                <option [value]="cat._id">{{cat.name}}</option>
+               }
+            </select>
+        </div>
 
-                <div class="form-category">
-                    <label for="img">Imagen:</label>
+        <div class="items">
+            <label>Estado</label>
+            <select formControlName="status">
+                <option value="">Seleccione un estado</option>
+                <option value="disponible">Disponible</option>
+                <option value="no disponible">No disponible</option>
+            </select>
+        </div>
 
-                    <!-- Muestra la vista previa de la imagen actual (o la seleccionada) -->
-                    @if (currentImageUrl) {
-                    <div class="current-image-preview">
-                        <p>Imagen actual / previa:</p>
-                        <img [src]="currentImageUrl" alt="Vista previa de la categoría" class="preview-thumb">
-                    </div>
+        <div class="items">
+            <label for="img">Imagen</label>
+
+            @if (currentImageUrl) {
+            <div class="current-image-preview">
+                <img [src]="currentImageUrl" alt="Vista previa" class="preview-thumb">
+            </div>
+            }
+
+            <input type="file" id="img" class="form-control" accept="image/*" (change)="onFileSelected($event)">
+        </div>
+
+        <div class="items">
+            <label>Descripción</label>
+            <textarea formControlName="description" placeholder="Ingrese la descripción"></textarea>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit">
+                Registrar Producto
+            </button>
+        </div>
+
+    </form>
+
+    }
+
+    <!-- ========================= LISTA ========================= -->
+
+    @if (viewMode === 'list') {
+
+    <h1 class="title-form">Lista de Productos</h1>
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>ID</th>
+                <th>Estado</th>
+                <th>Descripción</th>
+                <th>Imagen</th>
+                <th>Switch</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @for (product of (productList$ | async); track $index) {
+
+            <tr>
+
+                <td>{{ product.name }}</td>
+
+                <td>{{ product._id }}</td>
+
+                <td>{{ product.status }}</td>
+
+                <td>{{ product.description }}</td>
+
+                <td>
+
+                    @if (product.urlImage) {
+
+                    <img [src]="product.urlImage" [alt]="product.name" class="table-img">
+
+                    } @else {
+
+                    <span>Sin imagen</span>
+
                     }
 
-                    <!-- Input file sin formControlName (correctamente capturado por evento) -->
-                    <input type="file" class="form-control" id="img" accept="image/*" (change)="onFileSelected($event)">
-                </div>
+                </td>
 
-                <label>Estado</label>
-                <select formControlName="status">
-                    <option value="">Seleccione un estado</option>
+                <td>
 
-                    <option value="disponible">Disponible</option>
-                    <option value="no disponible">No disponible</option>
+                    <button type="button" class="switch-toggle" [class.active]="product.status === 'disponible'"
+                        (click)="toggleStatus(product)" [title]="product.status === 'disponible'
+                        ? 'Desactivar producto'
+                        : 'Activar producto'">
 
+                        <span class="switch-circle"></span>
 
+                    </button>
 
-                </select>
+                </td>
 
-                <button type="submit">Registrar Producto</button>
+                <td class="Options">
 
-            </form>
-        </div>
-        }
+                    <a href="javascript:void(0)" class="btn-delete" (click)="onDelete(product._id)">
+                        Eliminar
+                    </a>
 
+                    <a href="javascript:void(0)" class="btn-edit" (click)="OnEdit(product._id)">
+                        Editar
+                    </a>
 
+                </td>
 
-        @if (viewMode === 'list') {
-        <div class="container">
-            <div class="page page-Category-list">
-                <h2>Product list</h2>
+            </tr>
 
-                <!-- <pre>{{categoryList$ | async | json}}</pre> -->
+            }
 
-                <div class="description">
-                </div>
-                <table>
-                    <tfoot>
-                        <tr>
-                            <td colspan="5">
-                                <small>No olvide que estas acciones solo pueden ser hechas por el ADMIN</small>
-                            </td>
-                        </tr>
-                    </tfoot>
-                    <tbody>
-                        @for (product of (productList$ | async); track $index) {
-                        <tr>
-                            <td>{{product.name}}</td>
-                            <td>{{product._id}}</td>
-                            <td>{{product.status}} </td>
-                            <td>{{product.description}} </td>
+        </tbody>
 
-                            <td>
-                                @if (product.urlImage) {
-                                <img [src]="product.urlImage" [alt]="product.name" class="table-img">
-                                } @else {
-                                <span class="no-img">Sin imagen</span>
-                                }
-                            </td>
+        <tfoot>
+            <tr>
+                <td colspan="7">
+                    <small>
+                        No olvide que estas acciones solo pueden ser realizadas por el ADMIN.
+                    </small>
+                </td>
+            </tr>
+        </tfoot>
 
-                            <!-- Columna de Status con Switch Moderno e Híbrido -->
-                            <td>
-                                <button type="button" class="switch-toggle" [class.active]="product.status"
-                                    (click)="toggleStatus(productos)"
-                                    [title]="product.status ? 'Desactivar categoría' : 'Activar categoría'">
-                                    <!-- Indicador interno deslizable -->
-                                    <span class="switch-circle"></span>
-                                </button>
-                            </td>
+    </table>
 
-                            <td class="options">
-                                <a href="javascript:void(0)" (click)="onDelete(product._id)" class="btn btn-delete">
-                                    Delete
-                                </a>
+    }
 
-                                <a href="javascript:void(0)" (click)="OnEdit(product._id)" class="btn btn-edit">
-                                    Edit
-                                </a>
-                            </td>
-                        </tr>
-                        }
-
-                    </tbody>
-                    <thead>
-                        <tr>
-                            <th>product</th>
-                            <th>ID</th>
-                            <th>Img</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-        </div>
-        }
-    </div>
-</section>
+</div>

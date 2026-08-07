@@ -19,7 +19,7 @@ export const routes: Routes = [
     { path: 'dashboard/user/list', loadComponent: () => import('./features/users/user-list/user-list') },
     { path: 'cart', loadComponent: () => import('./shared/components/cart-floating/cart-floating').then(m => m.CartFloating) },
     { path: '404', loadComponent: () => import('./features/page-not-found/page-not-found') },
-    { path: 'dashboard/ProductosNewForm', loadComponent: () => import('./features/productos-new-form/productos-new-form') },
+    { path: 'dashboard/products', loadComponent: () => import('./features/productos-new-form/productos-new-form') },
     { path: 'dashboard/editproducts/:id', loadComponent: () => import('./features/products-edit/products-edit') },
     { path: 'dashboard/PedidosNewForm', loadComponent: () => import('./features/pedidos/pedidos-newform/pedidos-newform') },
     { path: 'dashboard/categories/edit/:id', loadComponent: () => import('./features/category-edit-form/category-edit-form') },

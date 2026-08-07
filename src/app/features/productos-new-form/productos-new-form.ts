@@ -1,25 +1,29 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, JsonPipe } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
 import { HttpProducts } from '../../core/services/http-products';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { validate } from '@angular/forms/signals';
+import { HttpCategory } from '../../core/services/http-category';
 
 @Component({
   selector: 'app-productos-new-form',
   standalone: true,
-  imports: [ReactiveFormsModule, AsyncPipe],
+  imports: [ReactiveFormsModule, AsyncPipe, JsonPipe],
   templateUrl: './productos-new-form.html',
   styleUrl: './productos-new-form.css',
 })
 export default class ProductosNewForm implements OnInit {
 
   public productList$ = new BehaviorSubject<any>([]);
+  public categorylist$ = new BehaviorSubject<any>([]);
 
   private route = inject(ActivatedRoute)
   private httpProducts = inject(HttpProducts);
   private router = inject(Router)
+  private httpcategorys = inject(HttpCategory);
   // Control de imagen previa y nuevo archivo binario
   currentImageUrl: string = '';
 
@@ -48,6 +52,10 @@ export default class ProductosNewForm implements OnInit {
       ]),
       status: new FormControl('', [
         Validators.required
+      ]),
+      urlImage: new FormControl('', []),
+      category: new FormControl('', [
+        Validators.required
       ])
     });
   }
@@ -57,6 +65,7 @@ export default class ProductosNewForm implements OnInit {
     this.resetform()
 
   }
+
   private resetform() {
     this.formData.reset({
       name: '',
@@ -113,7 +122,9 @@ export default class ProductosNewForm implements OnInit {
         next: (data: any) => {
           console.log('Creado con éxito', data);
           this.resetform();
-          this.loadproducts();
+          this.router.navigateByUrl('')
+
+           this.loadproducts();
         },
         error: (error: any) => {
           console.error('Error al guardar', error);
@@ -143,7 +154,7 @@ export default class ProductosNewForm implements OnInit {
 
             this.formData.reset();
             this.ProductId = null;
-            this.loadproducts();
+             this.loadproducts();
           },
           error: (err) => {
             console.error('Error al eliminar categoría:', err);
@@ -199,12 +210,24 @@ export default class ProductosNewForm implements OnInit {
 
 
   ngOnInit() {
+    this.httpcategorys.getCategories().subscribe({
+      next: (res) => {
+        console.log(res)
+
+        this.categorylist$.next(res.data)
+      },
+      error: (error) => {
+        console.error(error)
+      }
+
+    })
 
     this.route.queryParamMap.subscribe(params => {
       const tab = params.get('tab');
       if (tab === 'list') {
         this.viewMode = 'list'
       }
+
     })
     this.loadproducts()
   }
