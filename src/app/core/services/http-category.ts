@@ -27,7 +27,6 @@ export class HttpCategory {
 
         return new HttpHeaders({
             'X-Token': token || '',
-            'content-type': 'application/json'
         })
     };
 
@@ -86,7 +85,9 @@ export class HttpCategory {
     }
 
     getCategoryById(id: string) {
-        return this.http.get(`${this.apiUrl}/${id}`);
+        return this.http.get(`${this.apiUrl}/${id}`, {
+            headers: this.Headers()
+        });
     }
 
 
