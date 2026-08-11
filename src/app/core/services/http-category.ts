@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable, Service } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { BehaviorSubject, tap } from 'rxjs';
+import { HttpAuth } from './http-auth';
 
 
 @Injectable({
@@ -13,7 +14,8 @@ export class HttpCategory {
     // Inyectar una dependencia sin usar el constructor, implementarse en las funciones.
     private http = inject(HttpClient);
 
-    BASE_URL: string = environment.apiUrl;
+    private httpAuth = inject(HttpAuth);
+    BASE_URL: String = environment.apiUrl;
 
     private apiUrl = `${this.BASE_URL}/category`;
 
@@ -21,9 +23,17 @@ export class HttpCategory {
     private categoriesSubject = new BehaviorSubject<any[]>([]);
     public categories$ = this.categoriesSubject.asObservable();
 
+    Headers(): HttpHeaders {
+        const token = this.httpAuth.token;
+
+        return new HttpHeaders({
+            'X-Token': token || '',
+        })
+    };
+
     // 2 Cargar las categorias y guardarel estado
     loadCategory() {
-        return this.http.get<any>(this.apiUrl).pipe(
+        return this.http.get<any>(this.apiUrl, { headers: this.Headers() }).pipe(
             tap((response) => {
                 const list = response.data ? response.data : response;
 
@@ -37,7 +47,7 @@ export class HttpCategory {
 
     // 3 crear categorias
     createCategory(formData: FormData) {
-        return this.http.post<any>(this.apiUrl, formData).pipe(
+        return this.http.post<any>(this.apiUrl, formData, { headers: this.Headers() }).pipe(
             tap((response) => {
                 const currentList = this.categoriesSubject.getValue();
                 const newCategory = response.data ? response.data : response;
@@ -52,7 +62,7 @@ export class HttpCategory {
 
     // 4. Eliminar y remover directamente de la lista
     deleteCategory(id: string) {
-        return this.http.delete(`${this.apiUrl}/${id}`).pipe(
+        return this.http.delete(`${this.apiUrl}/${id}`, { headers: this.Headers() }).pipe(
             tap(() => {
                 const currentList = this.categoriesSubject.getValue();
                 this.categoriesSubject.next(currentList.filter(c => c.id !== id && c._id !== id));
@@ -62,7 +72,7 @@ export class HttpCategory {
 
     // 5. Actualizar la categoría editada en la lista
     updateCategory(id: string, formData: FormData) {
-        return this.http.patch<any>(`${this.apiUrl}/${id}`, formData).pipe(
+        return this.http.patch<any>(`${this.apiUrl}/${id}`, formData, { headers: this.Headers() }).pipe(
             tap((updatedCategory) => {
                 const currentList = this.categoriesSubject.getValue();
                 const newList = currentList.map(c => (c.id === id || c._id === id) ? updatedCategory : c);
@@ -76,8 +86,10 @@ export class HttpCategory {
     }
 
     getCategoryById(id: string) {
-        return this.http.get(`${this.apiUrl}/${id}`);
+        return this.http.get(`${this.apiUrl}/${id}`, {
+            headers: this.Headers()
+        });
     }
 
-    
+
 }

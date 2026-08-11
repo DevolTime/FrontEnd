@@ -1,5 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
+<<<<<<< HEAD
+=======
+import { map } from 'rxjs';
+import { ResponseUsers } from '../models/users';
+>>>>>>> features/auth-category
 import { environment } from '../../../environments/environment';
 
 @Service()
