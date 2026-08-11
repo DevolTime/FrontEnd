@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AsyncPipe, JsonPipe } from '@angular/common';
+import { AsyncPipe  } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
 import { HttpProducts } from '../../core/services/http-products';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,7 +11,7 @@ import { HttpCategory } from '../../core/services/http-category';
 @Component({
   selector: 'app-productos-new-form',
   standalone: true,
-  imports: [ReactiveFormsModule, AsyncPipe, JsonPipe],
+  imports: [ReactiveFormsModule, AsyncPipe],
   templateUrl: './productos-new-form.html',
   styleUrl: './productos-new-form.css',
 })
@@ -68,14 +68,14 @@ export default class ProductosNewForm implements OnInit {
 
   private resetform() {
     this.formData.reset({
-     name: '',
-        price: '',
-        description: '',
-        status: '',
-        urlImage: '',
-        category: ''
+      name: '',
+      price: '',
+      description: '',
+      status: '',
+      urlImage: '',
+      category: ''
     });
-      this.selectedFile = null;
+    this.selectedFile = null;
     this.currentImageUrl = '';
   }
 
@@ -127,7 +127,7 @@ export default class ProductosNewForm implements OnInit {
           this.resetform();
           this.router.navigateByUrl('')
 
-           this.loadproducts();
+          this.loadproducts();
         },
         error: (error: any) => {
           console.error('Error al guardar', error);
@@ -157,7 +157,7 @@ export default class ProductosNewForm implements OnInit {
 
             this.formData.reset();
             this.ProductId = null;
-             this.loadproducts();
+            this.loadproducts();
           },
           error: (err) => {
             console.error('Error al eliminar categoría:', err);
