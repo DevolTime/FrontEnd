@@ -68,13 +68,15 @@ export default class ProductosNewForm implements OnInit {
 
   private resetform() {
     this.formData.reset({
-      name: '',
-      image: '',
-      status: '',
-      description: '',
-      price: ''
+     name: '',
+        price: '',
+        description: '',
+        status: '',
+        urlImage: '',
+        category: ''
     });
-    this.selectedFile = null
+      this.selectedFile = null;
+    this.currentImageUrl = '';
   }
 
   showList() {
@@ -111,6 +113,7 @@ export default class ProductosNewForm implements OnInit {
       body.append('status', this.formData.get('status')?.value);
       body.append('description', this.formData.get('description')?.value);
       body.append('price', this.formData.get('price')?.value);
+      body.append('category', this.formData.get('category')?.value);
 
       // 🔴 CAMBIO AQUÍ: Debe llamarse 'urlImage' para coincidir con upload.single('urlImage') del backend
       if (this.selectedFile) {
@@ -171,7 +174,7 @@ export default class ProductosNewForm implements OnInit {
 
 
   OnEdit(id: string) {
-    this.router.navigate(['dashboard/editproducts', id])
+    this.router.navigate(['/dashboard/editproducts', id])
   }
 
   toggleStatus(products: any): void {

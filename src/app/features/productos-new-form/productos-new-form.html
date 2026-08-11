@@ -10,11 +10,6 @@
 
     <h1 class="title-form">Registrar producto nuevo</h1>
 
-
-    <pre>
-        {{categorylist$|async|json}}
-    </pre>
-
     <form [formGroup]="formData" (ngSubmit)="onsubmit()" class="newUsers">
 
         <div class="items">
@@ -90,6 +85,8 @@
                 <th>Imagen</th>
                 <th>Switch</th>
                 <th>Acciones</th>
+                <th>Categoría</th>
+                
             </tr>
         </thead>
 
@@ -106,6 +103,7 @@
                 <td>{{ product.status }}</td>
 
                 <td>{{ product.description }}</td>
+                <td>{{ product.category?.name }}</td>
 
                 <td>
 
