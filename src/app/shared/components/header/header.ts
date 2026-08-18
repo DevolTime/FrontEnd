@@ -12,11 +12,11 @@ import { AsyncPipe } from '@angular/common';
   styleUrl: './header.css',
 })
 export class Header {
-  public httpAuth =inject(HttpAuth)
+  public httpAuth = inject(HttpAuth)
   faCoffee = faCoffee
   faCartShopping = faCartShopping;
   faBars = faBars;
-  logout(){
+  logout() {
     this.httpAuth.logoutUser();
   }
 }

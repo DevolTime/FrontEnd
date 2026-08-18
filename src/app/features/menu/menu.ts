@@ -1,34 +1,92 @@
-import { Component, OnInit, inject  } from '@angular/core';
+import { Component, OnInit, inject, TemplateRef } from '@angular/core';
 import { CartFloating } from '../../shared/components/cart-floating/cart-floating';
 import { Observable } from 'rxjs';
-
-
-import { RouterLink } from '@angular/router';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpProducts } from '../../core/services/http-products';
-
+import { ProductsCard } from '../products-card/products-card';
 
 @Component({
   selector: 'app-menu',
-  imports: [CartFloating, CommonModule, RouterLink],
+  standalone: true,
+  imports: [
+    CartFloating,
+    CommonModule,
+    RouterLink,
+    ProductsCard,
+    MatDialogModule
+  ],
   templateUrl: './menu.html',
   styleUrl: './menu.css',
 })
-export class Menu {
-    private productsService = inject(HttpProducts);
+export class Menu implements OnInit {
 
-  // Observable conectado directamente al servicio
+  private productsService = inject(HttpProducts);
+  private route = inject(ActivatedRoute);
+  private dialog = inject(MatDialog);
+
   products$: Observable<any[]> = this.productsService.products$;
+  productsList: any[] = [];
+  selectedCategoryId: string | null = null;
+  private productSnapshot: any[] = [];
 
   ngOnInit(): void {
-    // ¡Ojo aquí! Si no ejecutas esta línea, las categorías nunca se traen del servidor.
+
     this.productsService.loadproducts();
+
+    this.productsService.products$.subscribe((items) => {
+      this.productSnapshot = items;
+      this.productsList = this.filterProducts(items);
+    });
+
+    this.route.paramMap.subscribe((params) => {
+      this.selectedCategoryId = params.get('categoryId');
+      this.productsList = this.filterProducts(this.productSnapshot);
+    });
   }
 
-  // 🔹 Manejador si una imagen falla al cargar
+  private filterProducts(list: any[]): any[] {
+
+    if (!this.selectedCategoryId) {
+      return list;
+    }
+
+    return list.filter((product: any) => {
+
+      const categoryValue = product.category;
+
+      if (!categoryValue) {
+        return false;
+      }
+
+      return (
+        categoryValue === this.selectedCategoryId ||
+        categoryValue?._id === this.selectedCategoryId ||
+        categoryValue?.id === this.selectedCategoryId ||
+        categoryValue?.name === this.selectedCategoryId
+      );
+    });
+  }
+
   handleImageError(event: Event): void {
+
     const imgElement = event.target as HTMLImageElement;
-    // Imagen por defecto si la URL no responde o está rota
-    imgElement.src = 'assets/images/placeholder.png'; 
+
+    imgElement.src = 'assets/images/placeholder.png';
+  }
+
+  openProduct(
+    product: any,
+    template: TemplateRef<any>
+  ): void {
+
+    this.dialog.open(template, {
+      width: '900px',
+      maxWidth: '95vw',
+      maxHeight: '95vh',
+      panelClass: 'product-dialog',
+      data: product
+    });
   }
 }

@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
+import { map } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { HttpAuth } from './http-auth';
 

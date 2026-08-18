@@ -46,35 +46,35 @@ export default class ProductsEdit {
 
   ngOnInit(): void {
 
-    this.activatedRoute.paramMap.subscribe (params=>{
+    this.activatedRoute.paramMap.subscribe(params => {
       this.productosbyid = params.get('id')
-      if (this.productosbyid){
-        this.loadproductsdata (this.productosbyid)
-        
+      if (this.productosbyid) {
+        this.loadproductsdata(this.productosbyid)
+
       }
     })
 
 
   }
-loadproductsdata (id:string): void {
-  console.log ('cargando datos', id)
-  this.httpProducts.getproductbyid(id).subscribe({
-    next : (res: any)=>{
-      const productsdata = res.data || res
-      this.currentImageUrl = productsdata.urlImage || productsdata.image || ''
-    this.formData.patchValue({
-     name : productsdata.name,
-     status: productsdata.status,
-     price: productsdata.price,
-     description : productsdata.description
+  loadproductsdata(id: string): void {
+    console.log('cargando datos', id)
+    this.httpProducts.getproductbyid(id).subscribe({
+      next: (res: any) => {
+        const productsdata = res.data || res
+        this.currentImageUrl = productsdata.urlImage || productsdata.image || ''
+        this.formData.patchValue({
+          name: productsdata.name,
+          status: productsdata.status,
+          price: productsdata.price,
+          description: productsdata.description
+        })
+      },
+      error: (err) => {
+        console.error('error al cargar el producto', err)
+      }
     })
-    },
-    error : (err)=>{
-      console.error('error al cargar el producto', err)
-    }
-  })
-}
-onFileSelected(event: Event): void {
+  }
+  onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       this.selectedFile = input.files[0];
@@ -99,7 +99,7 @@ onFileSelected(event: Event): void {
           dataToSend.append('status', this.formData.get('status')?.value)
           dataToSend.append('price', this.formData.get('price')?.value)
           dataToSend.append('description', this.formData.get('description')?.value)
-          if (this.selectedFile) { dataToSend.append('image', this.selectedFile) }
+          if (this.selectedFile) { dataToSend.append('urlImage', this.selectedFile) }
           this.httpProducts.updateproducts(this.productosbyid!, dataToSend).subscribe({
             next: (data) => {
               console.log('producto actualizado con exito', data)
@@ -107,13 +107,13 @@ onFileSelected(event: Event): void {
                 title: "!actualizado!",
                 text: "El producto ha sido actualizado correctamente",
                 icon: "success"
-              }).then(() => { 
-                this.router.navigate(['ProductosNewForm'], { queryParams: { tab: 'list' }})
-               })
-            }, 
-            error:(err)=>{
-              console.error ('error al actualizar',err)
-              Swal.fire ('error', 'hubo un problema al actualizar el producto', 'error')
+              }).then(() => {
+                this.router.navigate(['/dashboard/products'], { queryParams: { tab: 'list' } })
+              })
+            },
+            error: (err) => {
+              console.error('error al actualizar', err)
+              Swal.fire('error', 'hubo un problema al actualizar el producto', 'error')
 
             }
           })

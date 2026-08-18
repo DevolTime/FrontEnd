@@ -1,7 +1,8 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { AsyncPipe, CommonModule } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
-import { HttpCategory } from '../../core/services/http-category';  // Revisa que esta ruta sea correcta
+import { HttpCategory } from '../../core/services/http-category';
+import { HttpProducts } from '../../core/services/http-products';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -13,19 +14,34 @@ import { RouterLink } from '@angular/router';
 })
 export class Categoria implements OnInit {
   private categoryService = inject(HttpCategory);
+  private productsService = inject(HttpProducts);
 
-  // Observable conectado directamente al servicio
   categories$: Observable<any[]> = this.categoryService.categories$;
+  products$: Observable<any[]> = this.productsService.products$;
 
   ngOnInit(): void {
-    // ¡Ojo aquí! Si no ejecutas esta línea, las categorías nunca se traen del servidor.
     this.categoryService.loadCategory();
+    this.productsService.loadproducts();
   }
 
-  // 🔹 Manejador si una imagen falla al cargar
+  productMatchesCategory(product: any, category: any): boolean {
+    const categoryId = category?._id ?? category?.id;
+    const productCategory = product?.category;
+
+    if (!categoryId || !productCategory) {
+      return false;
+    }
+
+    return (
+      productCategory === categoryId ||
+      productCategory?._id === categoryId ||
+      productCategory?.id === categoryId ||
+      productCategory?.name === category?.name
+    );
+  }
+
   handleImageError(event: Event): void {
     const imgElement = event.target as HTMLImageElement;
-    // Imagen por defecto si la URL no responde o está rota
-    imgElement.src = 'assets/images/placeholder.png'; 
+    imgElement.src = 'assets/images/placeholder.png';
   }
 }

@@ -54,13 +54,13 @@
                     }
                 </div>
 
-                <!-- Campo: Status                      -->
+                <!-- Campo: Status -->
                 <div class="form-category">
                     <label for="status">Estatus:</label>
                     <select formControlName="status" class="form-control" id="status">
-                        <option value="">Seleccionar</option>
-                        <option [value]="true">Activo</option>
-                        <option [value]="false">Inactivo</option>
+                        <option value="" selected>Seleccionar</option>
+                        <option value="true">Activo</option>
+                        <option value="false">Inactivo</option>
                     </select>
 
                     @if (formData.get('status')?.invalid && (formData.get('status')?.dirty ||

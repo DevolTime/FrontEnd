@@ -1,10 +1,12 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe  } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
 import { HttpProducts } from '../../core/services/http-products';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { validate } from '@angular/forms/signals';
+import { HttpCategory } from '../../core/services/http-category';
 
 @Component({
   selector: 'app-productos-new-form',
@@ -16,10 +18,12 @@ import Swal from 'sweetalert2';
 export default class ProductosNewForm implements OnInit {
 
   public productList$ = new BehaviorSubject<any>([]);
+  public categorylist$ = new BehaviorSubject<any>([]);
 
   private route = inject(ActivatedRoute)
   private httpProducts = inject(HttpProducts);
   private router = inject(Router)
+  private httpcategorys = inject(HttpCategory);
   // Control de imagen previa y nuevo archivo binario
   currentImageUrl: string = '';
 
@@ -48,6 +52,10 @@ export default class ProductosNewForm implements OnInit {
       ]),
       status: new FormControl('', [
         Validators.required
+      ]),
+      urlImage: new FormControl('', []),
+      category: new FormControl('', [
+        Validators.required
       ])
     });
   }
@@ -57,15 +65,18 @@ export default class ProductosNewForm implements OnInit {
     this.resetform()
 
   }
+
   private resetform() {
     this.formData.reset({
       name: '',
-      image: '',
-      status: '',
+      price: '',
       description: '',
-      price: ''
+      status: '',
+      urlImage: '',
+      category: ''
     });
-    this.selectedFile = null
+    this.selectedFile = null;
+    this.currentImageUrl = '';
   }
 
   showList() {
@@ -93,33 +104,37 @@ export default class ProductosNewForm implements OnInit {
     })
   }
 
-onsubmit() {
-  if (this.formData.valid) {
-    const body = new FormData();
-    
-    // Agregamos los campos de texto
-    body.append('name', this.formData.get('name')?.value);
-    body.append('status', this.formData.get('status')?.value);
-    body.append('description', this.formData.get('description')?.value);
-    body.append('price', this.formData.get('price')?.value);
+  onsubmit() {
+    if (this.formData.valid) {
+      const body = new FormData();
 
-    // 🔴 CAMBIO AQUÍ: Debe llamarse 'urlImage' para coincidir con upload.single('urlImage') del backend
-    if (this.selectedFile) {
-      body.append('urlImage', this.selectedFile);
-    }
+      // Agregamos los campos de texto
+      body.append('name', this.formData.get('name')?.value);
+      body.append('status', this.formData.get('status')?.value);
+      body.append('description', this.formData.get('description')?.value);
+      body.append('price', this.formData.get('price')?.value);
+      body.append('category', this.formData.get('category')?.value);
 
-    this.httpProducts.createproducts(body).subscribe({
-      next: (data: any) => {
-        console.log('Creado con éxito', data);
-        this.resetform();
-        this.loadproducts();
-      },
-      error: (error: any) => {
-        console.error('Error al guardar', error);
+      // 🔴 CAMBIO AQUÍ: Debe llamarse 'urlImage' para coincidir con upload.single('urlImage') del backend
+      if (this.selectedFile) {
+        body.append('urlImage', this.selectedFile);
       }
-    });
+
+
+      this.httpProducts.createproducts(body).subscribe({
+        next: (data: any) => {
+          console.log('Creado con éxito', data);
+          this.resetform();
+          this.router.navigateByUrl('')
+
+          this.loadproducts();
+        },
+        error: (error: any) => {
+          console.error('Error al guardar', error);
+        }
+      });
+    }
   }
-}
 
   onDelete(id: string) {
     Swal.fire({
@@ -159,21 +174,23 @@ onsubmit() {
 
 
   OnEdit(id: string) {
-    this.router.navigate(['editproducts', id])
+    this.router.navigate(['/dashboard/editproducts', id])
   }
 
   toggleStatus(products: any): void {
     // Invierte el valor booleano
 
-    const newStatus = !products.status; // Convierte a true/false
-    // Creamos un FormData si tu endpoint requiere FormData
-   const body = new FormData();
+    const newStatus =
+      products.status === 'disponible'
+        ? 'no disponible'
+        : 'disponible';
 
-body.append('name', products.name);
-body.append('description', products.description);
-body.append('price', String(products.price));
-body.append('status', String(newStatus));
+    const body = new FormData();
 
+    body.append('name', products.name);
+    body.append('description', products.description);
+    body.append('price', String(products.price));
+    body.append('status', newStatus);
     // Petición a la API
     this.httpProducts.updateproducts(products._id, body).subscribe({
       next: () => {
@@ -196,12 +213,24 @@ body.append('status', String(newStatus));
 
 
   ngOnInit() {
+    this.httpcategorys.getCategories().subscribe({
+      next: (res) => {
+        console.log(res)
+
+        this.categorylist$.next(res.data)
+      },
+      error: (error) => {
+        console.error(error)
+      }
+
+    })
 
     this.route.queryParamMap.subscribe(params => {
       const tab = params.get('tab');
       if (tab === 'list') {
         this.viewMode = 'list'
       }
+
     })
     this.loadproducts()
   }

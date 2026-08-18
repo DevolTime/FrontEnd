@@ -1,49 +1,126 @@
-<div class="page-container">
+<div class="menu-grid">
 
-    <div class="header-section">
-        <h1 class="menu-title">NUESTRO MENÚ</h1>
-        <p class="menu-subtitle">Elige tu categoría favorita y descubre el sabor</p>
-    </div>
+    <!-- ========================= -->
+    <!-- CATEGORÍAS -->
+    <!-- ========================= -->
 
-    <div class="menu-grid">
-        <!-- 
-          Bucle interactivo @for (Angular 17+)
-          - 'categories$ | async': Suscribe automáticamente al Observable traído del Backend
-          - 'track category._id || category.id': Identificador único para optimizar el DOM
-        -->
+    @if (!selectedCategoryId) {
 
-        @for (product of (products$ | async); track product._id || product.id) {
+    @for (product of productsList; track product._id || product.id) {
 
-        <!-- Enlace de navegación hacia los productos de la categoría seleccionada -->
-        <a [routerLink]="['/menu', product._id || product.id]" class="menu-card">
+    <a [routerLink]="['/menu', product._id || product.id]" class="menu-card">
 
-            <!-- Contenedor con la imagen principal de la categoría -->
-            <div class="img-wrapper">
-                <img [src]="product.urlImage" [alt]="product.name" class="category-img"
+        <div class="img-wrapper">
 
-                    (error)="handleImageError($event)" loading="lazy">
-                <div class="img-overlay"></div>
-            </div>
+            <img [src]="product.urlImage" [alt]="product.name" class="category-img" (error)="handleImageError($event)"
+                loading="lazy">
 
-            <!-- Bloque de texto y acción de la tarjeta -->
-            <div class="card-content">
-                <h3 class="category-title">{{ product.name }}</h3>
+            <div class="img-overlay"></div>
 
-
-                <span class="card-btn">
-                    Ver productos
-                    <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M5 12h14M12 5l7 7-7 7" />
-                    </svg>
-                </span>
-            </div>
-        </a>
-        } @empty {
-        <!-- Estado que se muestra si la API no devuelve categorías disponibles -->
-        <div class="no-data-container">
-            <p class="no-data">🍗 No hay categorías disponibles en este momento.</p>
         </div>
-        }
-        <app-cart-floating></app-cart-floating>
+
+        <div class="card-content">
+
+            <h3 class="category-title">
+                {{ product.name }}
+            </h3>
+
+            <h4 class="category-description">
+                {{ product.description }}
+            </h4>
+
+            <h4 class="category-price">
+                {{ product.price }}
+            </h4>
+
+            <span class="card-btn">
+
+                Ver productos
+
+                <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+
+                </svg>
+
+            </span>
+
+        </div>
+
+    </a>
+
+    }
+
+    }
+
+
+    <!-- ========================= -->
+    <!-- PRODUCTOS DE LA CATEGORÍA -->
+    <!-- ========================= -->
+
+    @if (selectedCategoryId) {
+
+    @for (product of productsList; track product._id || product.id) {
+
+    <app-products-card [producto]="product" (productClick)="openProduct($event, productDialog)">
+    </app-products-card>
+
+    }
+
+    }
+
+
+    @if (productsList.length === 0) {
+
+    <div class="no-data-container">
+
+        <p class="no-data">
+            🍗 No hay productos disponibles en este momento.
+        </p>
+
     </div>
+
+    }
+
+
+    <app-cart-floating></app-cart-floating>
+
 </div>
+
+<ng-template #productDialog let-product>
+
+    <div class="product-dialog-content">
+
+        <button mat-dialog-close class="dialog-close">
+            ×
+        </button>
+
+        <div class="dialog-image">
+
+            <img [src]="product.urlImage" [alt]="product.name" (error)="handleImageError($event)">
+
+        </div>
+
+        <div class="dialog-info">
+
+            <h2>
+                {{ product.name }}
+            </h2>
+
+            <p class="dialog-description">
+                {{ product.description }}
+            </p>
+
+            <div class="dialog-price">
+                ${{ product.price | number:'1.0-0' }}
+            </div>
+
+            <button class="add-button">
+                Agregar
+            </button>
+
+        </div>
+
+    </div>
+
+</ng-template>

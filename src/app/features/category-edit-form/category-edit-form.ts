@@ -115,7 +115,7 @@ export default class CategoryEditForm implements OnInit {
                 icon: "success"
               }).then(() => {
                 // Navega de regreso al listado de categorías
-                this.router.navigate(['/registrar-category'], { queryParams: { tab: 'list' } });
+                this.router.navigate(['/dashboard/registrar-category'], { queryParams: { tab: 'list' } });
               });
             },
             error: (err) => {

@@ -1,107 +1,85 @@
+/* 6. IMÁGENES Y MINIATURAS */
+.table-img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  /* Mantiene la proporción y recorta sin deformar */
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: block;
+  margin: 0 auto;
+}
 
-
-.container_form{
-    min-height: calc(100vh - 70px); /* Ajusta según la altura de tu navbar */
-    background-image: url('/assets/images/fondo_pollo.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.no-img {
+  font-size: 1.2rem;
+  color: #888;
+  font-style: italic;
 }
 
 
-.header{
-    width: 420px;
-    background: #fff;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+/* SWITCH HÍBRIDO: VIBRANTE, HUNDIDO Y MODERNO */
+.switch-toggle {
+  position: relative;
+  width: 56px;
+  height: 30px;
+  border: none;
+  border-radius: 50px;
+  padding: 3px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  outline: none;
+
+  /* Base del 1ro: Fondo Rojo Inactivo + Efecto Hundido Profundo */
+  background: #ff4d4d;
+  box-shadow: inset 2px 3px 5px rgba(0, 0, 0, 0.3),
+    inset -1px -1px 3px rgba(255, 255, 255, 0.2);
+
+  /* Animaciones suaves del 2do */
+  transition: background 0.4s ease, box-shadow 0.4s ease, transform 0.2s ease;
 }
 
-.title-products{
-    text-align: center;
-    margin-bottom: 10px;
-    font-size: 28px;
-    color: #333;
+/* ESTADO ACTIVO: Gradiente Verde Esmeralda + Resplandor Glow (2do) con Sombra Hundida (1ro) */
+.switch-toggle.active {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.45),
+    inset 2px 3px 5px rgba(0, 0, 0, 0.25),
+    inset -1px -1px 2px rgba(255, 255, 255, 0.3);
 }
 
-.Productnew{
-    display: block;
-    text-align: center;
-    margin-bottom: 20px;
-    color: #777;
-    font-size: 15px;
+/* DESLIZADOR BLANCO 3D (Bolita) */
+.switch-circle {
+  width: 24px;
+  height: 24px;
+  background: linear-gradient(180deg, #ffffff 0%, #f0f0f0 100%);
+  border-radius: 50%;
+
+  /* Sombras 3D combinadas para sobresalir del carril hundido */
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25),
+    0 1px 2px rgba(0, 0, 0, 0.15);
+
+  /* Animación Elástica al Deslizar (2do) */
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+  transform: translateX(0);
 }
 
-.form-container{
-    display: flex;
-    flex-direction: column;
+/* Desplazamiento a la derecha cuando está activo (26px para alineación perfecta) */
+.switch-toggle.active .switch-circle {
+  transform: translateX(26px);
 }
 
-.form-container label{
-    margin-bottom: 6px;
-    margin-top: 12px;
-    font-size: 20px;
-    font-weight: bold;
-    color: #444;
+/* INTERACCIONES Y HOVER */
+.switch-toggle:hover {
+  transform: scale(1.04);
+  /* Escalado suave del 2do */
 }
 
-.form-container input,
-.form-container textarea,
-.form-container select{
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #d8d8d8;
-    border-radius: 6px;
-    font-size: 14px;
-    outline: none;
-    transition: .3s;
+.switch-toggle:hover .switch-circle {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  /* La sombra de la bolita se intensifica */
 }
 
-.form-container textarea{
-    resize: none;
-    height: 90px;
-}
-
-.form-container input:focus,
-.form-container textarea:focus,
-.form-container select:focus{
-    border-color: #ff5f7a;
-    box-shadow: 0 0 5px rgba(255,95,122,.4);
-}
-
-button{
-    margin-top: 25px;
-    padding: 12px;
-    border: none;
-    border-radius: 6px;
-    background: #ff5f7a;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    transition: .3s;
-}
-
-button:hover{
-    background: #e84a67;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    background-color: white;
-    font-size: 1.5rem;
-}
-th, td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-.options {
-    display: flex;
-    gap: 5px;
-}
+.switch-toggle:active {
+  transform: scale(0.96);
+  /* Feedback táctil al hacer clic */
+} 
