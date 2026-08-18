@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { HttpRoles } from '../../../app/core/services/http-roles';
 import { HttpStatus } from '../../../app/core/services/http-status';
 import { HttpUsers } from '../../../app/core/services/http-users';
+import { HttpAuth } from '../../core/services/http-auth';
 
 @Component({
   selector: 'app-user-new-form',
@@ -19,6 +20,7 @@ import { HttpUsers } from '../../../app/core/services/http-users';
 export default class UserNewForm {
 
   private httpUsers = inject(HttpUsers);
+  private httpAuth= inject(HttpAuth)
   private router = inject(Router);
 
   roleList$ = new BehaviorSubject<any[]>([]);
@@ -51,7 +53,7 @@ export default class UserNewForm {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Si, Editar!"
+      confirmButtonText: "Si, Registrar!"
     }).then((result) => {
 
       if (result.isConfirmed) {
@@ -66,9 +68,10 @@ export default class UserNewForm {
 
       next: (res) => {
 
+console.log('Entró al register');
         console.log(res);
-        this.formData.reset();
-        this.router.navigateByUrl('/user/list');
+  
+        this.router.navigateByUrl('/dashboard');
 
       },
 
@@ -85,9 +88,6 @@ export default class UserNewForm {
   });
 
       }
-    //    if (this.password?.value !== this.confirmPassword?.value) {
-    //   return;
-    // }
 
     if (this.formData.invalid) {
       return;

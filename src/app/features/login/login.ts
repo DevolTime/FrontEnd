@@ -1,15 +1,21 @@
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpAuth } from '../../core/services/http-auth';
+import { RouterLink } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faEgg } from '@fortawesome/free-solid-svg-icons';
+
 
 @Component({
   selector: 'app-login',
-  imports: [ ReactiveFormsModule ],
+  imports: [ ReactiveFormsModule,RouterLink,FontAwesomeModule],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
 export default class Login {
 
+  faegg=faEgg
+  
   formData: FormGroup;
   private httpAuth = inject( HttpAuth );
 

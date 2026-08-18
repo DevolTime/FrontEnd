@@ -1,8 +1,6 @@
 <div class="page-user">
 <h2 class="title-form">Registro</h2>
 
-    <a routerLink="/home" class="btn-new">Volver</a>
-
 <form [formGroup]="formData" (ngSubmit)="onSubmit()" class="newUsers">
     <div class="items">
         <label for="name">Nombre:</label>
@@ -57,5 +55,9 @@
         [class.btn-disable]="formData.invalid"
         >Registrar</button>
       </div>
+       <div class="form-actions">
+      <li  class="pollo_nopollo"><a routerLink="/login">¿Ya tienes un pollo?🐔</a></li>
+
+       </div>
     </form>
     </div>

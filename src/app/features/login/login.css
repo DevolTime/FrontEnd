@@ -1,0 +1,23 @@
+
+.pollo_nopollo{
+    list-style: none;
+    text-align: center;
+
+}
+.pollo_nopollo a{
+    display: inline-block;
+    color: black;
+    font-size:1.5rem;
+    text-decoration: none;
+    transition: all .2s ease;
+
+ 
+}
+.pollo_nopollo a:hover{
+    color: #b91c1c;
+ transform: translateY(-2px); 
+
+}
+.huevo{
+    color:#b91c1c;
+}
