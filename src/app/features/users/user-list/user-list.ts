@@ -51,7 +51,7 @@ subcriberDeleteUser! : Subscription
   }
   onEdit(id: string){
 console.log('Edit', id)
-this.router.navigateByUrl(`/user/edit/${id}`)
+this.router.navigateByUrl(`/dashboard/user/edit/${id}`)
   }
 
   
@@ -83,7 +83,8 @@ this.router.navigateByUrl(`/user/edit/${id}`)
             
             console.log( data );
             this.loadUser();      // Ejecutar
-            this.router.navigateByUrl('/user/list')
+    this.router.navigateByUrl('/dashboard/user/list')
+
 
           },
           error: ( err ) => {

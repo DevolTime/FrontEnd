@@ -37,8 +37,8 @@ export default class UserEditForm {
     this.formData = new FormGroup({
       name: new FormControl('', [Validators.required]),
       lastname: new FormControl('', [Validators.required]),
-      password: new FormControl('', [Validators.required]),
-      confirmPassword: new FormControl('', [Validators.required]),
+      //password: new FormControl('', [Validators.required]),
+      //confirmPassword: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.email]),
       status: new FormControl('', [Validators.required]),
       avatar: new FormControl(),
@@ -138,7 +138,7 @@ console.log(this.formData.value)
 this.httpUsers.updateUserById(this.selectedId, this.formData.value).subscribe({
   next:(data)=>{
     console.log(data)
-    this.router.navigateByUrl('/user/list')
+    this.router.navigateByUrl('/dashboard/user/list')
   }
     ,
   error:(err)=>{

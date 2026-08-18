@@ -1,1 +1,58 @@
-<p>dashboard works!</p>
+<div class="adminDasboard">
+
+  <aside class="sidebar">
+    <div class="sidebarConte">
+      <h2 class="title">Categories</h2>
+
+      <nav class="navlist">
+        <a *ngFor="let item of navItems"
+           [routerLink]="item.route"
+           routerLinkActive="active"
+           class="icono">
+          <span class="navicon">{{ item.icon }}</span>
+          <span class="nav-label">{{ item.label }}</span>
+          <span class="nav-arrow">›</span>
+        </a>
+      </nav>
+      <div class="promocard">
+        <span class="promoicon">⚡</span>
+        <p class="promotitle">Resumen rápido</p>
+        <p class="promotext">{{ totalUsers |async }} usuarios registrados</p>
+        <button class="promobtn" (click)="logout()">Cerrar sesión</button>
+      </div>
+
+    </div>
+  </aside>
+  <main class="content">
+
+    <header class="content-header">
+      <h1>Dashboard</h1>
+    </header>
+
+    <!-- Solo aparece si "error" tiene texto -->
+    <p *ngIf="error" class="error-msg">{{ error }}</p>
+
+    <!-- Grid con las 4 tarjetas de estadísticas -->
+    <section class="stats-grid">
+      <div class="card">
+        <span class="cardlabel">Usuarios</span>
+        <span class="valor">{{ totalUsers | async}}</span>
+      </div>
+      <div class="card">
+        <span class="cardlabel">Categorías</span>
+        <span class="valor">{{ totalCategorias | async}}</span>
+      </div>
+      <div class="card">
+        <span class="cardlabel">Productos</span>
+        <span class="valor">{{ totalProductos | async }}</span>
+      </div>
+      <div class="card">
+        <span class="cardlabel">Pedidos</span>
+        <span class="valor">{{ totalPedidos | async }}</span>
+      </div>
+
+    </section>
+    <router-outlet></router-outlet>
+
+  </main>
+</div>

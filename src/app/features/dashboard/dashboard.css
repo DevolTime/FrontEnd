@@ -1,0 +1,158 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 62.5%;
+    background-color: #f9f8eea3;
+} 
+
+
+.adminDasboard {
+  display: flex;          
+  min-height: 100%;     
+  background: #faf7f5;   
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+.sidebar {
+  display: flex;
+  width: 260px;                 
+  background: #fff;
+  border-right: 1px solid #eee; 
+}
+
+.sidebarConte{
+  flex: 1;           
+  padding: 24px 16px;  
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 700; 
+  margin-bottom: 16px;
+  color: #1a1a1a;
+}
+
+.navlist {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;               
+}
+.icono {
+  display: flex;
+  align-items: center;   /* centra verticalmente icono + texto + flecha */
+  gap: 10px;              /* espacio entre icono, texto y flecha */
+  padding: 12px 14px;
+  border-radius: 12px;   /* bordes redondeados */
+  background: #f0bdbd6b;   /* fondo lila clarito por defecto */
+  color: #333;
+  text-decoration: none; /* quita el subrayado típico de los links */
+  font-weight: 500;
+  transition: background .15s ease, color .15s ease; /* animación suave al hacer hover/active */
+}
+
+.icono:hover {
+  background: #dc2626a1;  /* fondo un poco más oscuro al pasar el mouse */
+}
+.icono.active {
+  background: #dc2626;  /* fondo naranja/marrón */
+  color: #fff;           /* texto blanco */
+}
+.navicon {
+  font-size: 16px;
+}
+.nav-label {
+  flex: 1;   /* empuja la flecha hacia el extremo derecho */
+}
+.nav-arrow {
+  opacity: .6;  /* la hace un poco transparente, más discreta */
+}
+
+.promocard {
+  margin-top: 32px;
+  background: #ffb9b9;    /* fondo durazno clarito */
+  border-radius: 16px;
+  padding: 18px;
+  text-align: left;
+}
+
+.promoicon {
+  font-size: 20px;
+}
+
+.promotitle {
+  font-weight: 700;
+  color:#cf1616;
+  margin: 8px 0 4px;
+}
+
+.promotext {
+  font-size: 13px;
+  color: #d73030;
+  margin-bottom: 12px;
+}
+
+.promobtn {
+  background: #dc2626;
+  color: #fff;
+  border: none;       
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-weight: 600;
+  cursor: pointer;       
+}
+
+.content {
+  flex: 1;         
+  padding: 32px;
+}
+
+.content-header h1 {
+  margin: 0 0 4px;
+  font-size: 24px;
+}
+
+.content-header p {
+  color: #777;
+  margin: 0 0 24px;
+}
+
+.error-msg {
+  color: #c0392b;     
+  background: #fdecea;    
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.stats-grid {
+  display: grid;
+  /* auto-fit + minmax: crea tantas columnas como quepan de mínimo 160px,
+     y si sobra espacio, las estira parejo (1fr) */
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px; /* espacio entre tarjetas */
+}
+
+.card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.05); /* sombra suave para efecto "tarjeta flotante" */
+}
+
+.cardlabel {
+  display: block;
+  font-size: 13px;
+  color: #999;       /* gris, texto secundario */
+  margin-bottom: 6px;
+}
+
+.valor {
+  font-size: 26px;
+  font-weight: 700;
+  color: #1a1a1a;    /* casi negro, texto principal grande */
+}  

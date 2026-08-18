@@ -75,7 +75,7 @@ export class UserNewForm {
 
         this.formData.reset();
 
-        this.router.navigateByUrl('/user/list');
+        this.router.navigateByUrl('/dashboard/user/list');
 
       },
 
