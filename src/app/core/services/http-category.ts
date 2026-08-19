@@ -85,8 +85,8 @@ export class HttpCategory {
         return this.http.get<any>(this.apiUrl);
     }
 
-    getCategoryById(id: string) {
-        return this.http.get(`${this.apiUrl}/${id}`, {
+    getCategoryById(id: string | null) {
+        return this.http.get<any>(`${this.apiUrl}/${id}`, {
             headers: this.Headers()
         });
     }

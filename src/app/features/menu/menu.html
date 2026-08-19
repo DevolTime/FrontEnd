@@ -1,5 +1,7 @@
 <div class="menu-grid">
 
+    <h1>{{ titleCategory$ | async }}</h1>
+
     <!-- ========================= -->
     <!-- CATEGORÍAS -->
     <!-- ========================= -->
@@ -58,12 +60,44 @@
     <!-- PRODUCTOS DE LA CATEGORÍA -->
     <!-- ========================= -->
 
+
     @if (selectedCategoryId) {
 
     @for (product of productsList; track product._id || product.id) {
 
-    <app-products-card [producto]="product" (productClick)="openProduct($event, productDialog)">
-    </app-products-card>
+    <div class="product-card" (click)="openProduct(product, productDialog)">
+
+        <div class="product-image">
+
+            @if (product?.urlImage) {
+            <img [src]="product.urlImage" [alt]="product.name" (error)="handleImageError($event)">
+            } @else {
+            <span>Sin imagen</span>
+            }
+
+        </div>
+
+        <div class="product-info">
+
+            <h2>{{ product?.name }}</h2>
+
+            <p>{{ product?.description }}</p>
+
+            <div class="product-bottom">
+
+                <strong>
+                    ${{ product?.price | number:'1.0-0' }}
+                </strong>
+
+                <button type="button" (click)="$event.stopPropagation()">
+                    +
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
 
     }
 
@@ -86,6 +120,7 @@
     <app-cart-floating></app-cart-floating>
 
 </div>
+
 
 <ng-template #productDialog let-product>
 

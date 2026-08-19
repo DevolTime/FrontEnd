@@ -1,11 +1,11 @@
 import { Component, OnInit, inject, TemplateRef } from '@angular/core';
 import { CartFloating } from '../../shared/components/cart-floating/cart-floating';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpProducts } from '../../core/services/http-products';
-import { ProductsCard } from '../products-card/products-card';
+import { HttpCategory } from '../../core/services/http-category';
 
 @Component({
   selector: 'app-menu',
@@ -14,7 +14,6 @@ import { ProductsCard } from '../products-card/products-card';
     CartFloating,
     CommonModule,
     RouterLink,
-    ProductsCard,
     MatDialogModule
   ],
   templateUrl: './menu.html',
@@ -23,6 +22,7 @@ import { ProductsCard } from '../products-card/products-card';
 export class Menu implements OnInit {
 
   private productsService = inject(HttpProducts);
+  private categoryService = inject(HttpCategory);
   private route = inject(ActivatedRoute);
   private dialog = inject(MatDialog);
 
@@ -30,6 +30,7 @@ export class Menu implements OnInit {
   productsList: any[] = [];
   selectedCategoryId: string | null = null;
   private productSnapshot: any[] = [];
+  titleCategory$ = new BehaviorSubject<string>('');
 
   ngOnInit(): void {
 
@@ -43,6 +44,20 @@ export class Menu implements OnInit {
     this.route.paramMap.subscribe((params) => {
       this.selectedCategoryId = params.get('categoryId');
       this.productsList = this.filterProducts(this.productSnapshot);
+
+      if (this.selectedCategoryId) {
+        this.categoryService.getCategoryById(this.selectedCategoryId).subscribe({
+          next: (res) => {
+            console.log(res);
+            this.titleCategory$.next(res.data.name);
+          },
+          error: (err) => {
+            console.error(err);
+          },
+        });
+      } else {
+        this.titleCategory$.next('');
+      }
     });
   }
 
