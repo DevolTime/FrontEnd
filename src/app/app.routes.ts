@@ -9,6 +9,7 @@ export const routes: Routes = [
     { path: 'login', loadComponent: () => import('./features/login/login')},
     { path: 'register', loadComponent: () => import('./features/register/register')},
     //{ path: 'dashboard/checkout', loadComponent: () => import('./features/checkout/checkout').then(m => m.Checkout) },
+    { path: 'menu/:categoryId', loadComponent: () => import('./features/menu/menu').then(m => m.Menu) },
     { path: 'menu', loadComponent: () => import('./features/menu/menu').then(m => m.Menu) },
     { path: 'categoria', loadComponent: () => import('./features/categoria/categoria').then(m => m.Categoria) },
     { path: 'contacto', loadComponent: () => import('./features/contacto/contacto').then(m => m.Contacto) },
