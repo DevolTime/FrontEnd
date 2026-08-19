@@ -29,7 +29,6 @@ export const routes: Routes = [
             { path: 'ProductosNewForm', loadComponent: () => import('./features/productos-new-form/productos-new-form') },
             { path: 'PedidosNewForm', loadComponent: () => import('./features/pedidos/pedidos-newform/pedidos-newform') },
         ]
-
     },
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: '**', redirectTo: '404', pathMatch: 'full' }

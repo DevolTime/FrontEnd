@@ -2,7 +2,7 @@ import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { HttpAuth } from '../services/http-auth';
 import { inject } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
-import { Router } from 'express';
+import { Router } from '@angular/router';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
