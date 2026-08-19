@@ -7,6 +7,7 @@ export class HttpStatus {
 
     getStatus(){
 
-        return this.http.get<any>('http://localhost:3000/api/dashboard/status')
+        return this.http.get<any>('http://localhost:3000/api/status')
+        
     }
 }

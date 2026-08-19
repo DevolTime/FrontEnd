@@ -75,19 +75,19 @@ export class UserNewForm {
 
         this.formData.reset();
 
-        this.router.navigateByUrl('/user/list');
+        this.router.navigateByUrl('/dashboard/user/list');
 
       },
 
       error: (err) => {
 
         if (err.status === 409) {
-          this.formData.get('email')?.setErrors({emailExists:true});
+          this.formData.get('email')?.setErrors({ emailExists: true });
         }
         console.error(err);
 
       }
-      
+
 
     });
 

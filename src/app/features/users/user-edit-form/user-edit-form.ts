@@ -21,7 +21,7 @@ export default class UserEditForm {
   private router = inject(Router)
   private httpRoles = inject(HttpRoles);
   private httpStatus = inject(HttpStatus)
-  private httpUsers =inject(HttpUsers)
+  private httpUsers = inject(HttpUsers)
 
   private activatedRoute = inject(ActivatedRoute)
   roleList$ = new BehaviorSubject<any[]>([]);
@@ -37,8 +37,8 @@ export default class UserEditForm {
     this.formData = new FormGroup({
       name: new FormControl('', [Validators.required]),
       lastname: new FormControl('', [Validators.required]),
-      password: new FormControl('', [Validators.required]),
-      confirmPassword: new FormControl('', [Validators.required]),
+      //password: new FormControl('', [Validators.required]),
+      //confirmPassword: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.email]),
       status: new FormControl('', [Validators.required]),
       avatar: new FormControl(),
@@ -55,65 +55,66 @@ export default class UserEditForm {
 
   }
 
-private getDataFillForm(){
-  this.httpUsers.getUserById(this.selectedId).subscribe({
-   next: (data) => {
-      console.log(data)
+  private getDataFillForm() {
+    this.httpUsers.getUserById(this.selectedId).subscribe({
+      next: (data) => {
+        console.log(data)
 
-      //desustructurar 
-    const {name, lastname,email,status,role,avatar} =data.data
+        //desustructurar 
+        const { name, lastname, email, status, role, avatar } = data.data
 
-      //se va a inyectar llos datos de la bd al formulario por el id 
-      this.formData.patchValue({
-        name,
-        lastname,
-        email,
-        status,
-        avatar,
-        role
-      })
-    },
-    error: (err) => {
-      console.error(err)
-    },
-    complete: () => {
-      console.log('Realiza peticion para atualizar el usuario por ID')
-    }
-})} 
-
-
-private getRoles(){
-  this.httpRoles.getRoles().subscribe({
-    next: (roles) => {
-      console.log(roles),
-        this.roleList$.next(roles.data);
-    },
-    error: (err) => {
-      console.error(err)
-    },
-    complete: () => {
-      console.log('complete siempre se ejecuta ')
-    }
-  })
-  this.httpStatus.getStatus().subscribe({
-    next: (status) => {
-      console.log(status),
-        this.statusList$.next(status.data)
-    },
-    error: (err) => {
-      console.error(err)
-    },
-    complete: () => {
-      console.log('siempre se ejecuta')
-    }
-
-  })
+        //se va a inyectar llos datos de la bd al formulario por el id 
+        this.formData.patchValue({
+          name,
+          lastname,
+          email,
+          status,
+          avatar,
+          role
+        })
+      },
+      error: (err) => {
+        console.error(err)
+      },
+      complete: () => {
+        console.log('Realiza peticion para atualizar el usuario por ID')
+      }
+    })
+  }
 
 
-}
-onSubmit(){
-//validar que el fromilario sea valido n
-Swal.fire({
+  private getRoles() {
+    this.httpRoles.getRoles().subscribe({
+      next: (roles) => {
+        console.log(roles),
+          this.roleList$.next(roles.data);
+      },
+      error: (err) => {
+        console.error(err)
+      },
+      complete: () => {
+        console.log('complete siempre se ejecuta ')
+      }
+    })
+    this.httpStatus.getStatus().subscribe({
+      next: (status) => {
+        console.log(status),
+          this.statusList$.next(status.data)
+      },
+      error: (err) => {
+        console.error(err)
+      },
+      complete: () => {
+        console.log('siempre se ejecuta')
+      }
+
+    })
+
+
+  }
+  onSubmit() {
+    //validar que el fromilario sea valido n
+    Swal.fire({
       title: "¿Estas Seguro?",
       text: "El Usuario se editara. ",
       icon: "warning",
@@ -132,36 +133,39 @@ Swal.fire({
         });
 
 
-  if (this.formData.valid){
-console.log(this.formData.value)
+        if (this.formData.valid) {
+          console.log(this.formData.value)
 
-this.httpUsers.updateUserById(this.selectedId, this.formData.value).subscribe({
-  next:(data)=>{
-    console.log(data)
-    this.router.navigateByUrl('/user/list')
-  }
-    ,
-  error:(err)=>{
-    console.error(err)},
-  complete:()=>{
-    console.log('actulizar usuarios') }
-  }
-)}
+          this.httpUsers.updateUserById(this.selectedId, this.formData.value).subscribe({
+            next: (data) => {
+              console.log(data)
+              this.router.navigateByUrl('/dashboard/user/list')
+            }
+            ,
+            error: (err) => {
+              console.error(err)
+            },
+            complete: () => {
+              console.log('actulizar usuarios')
+            }
+          }
+          )
+        }
 
-//ejecutirar el servicio que permite actualizar los datos del formulario
-else{
-  console.log('formulario invalido')
- }
- }
+        //ejecutirar el servicio que permite actualizar los datos del formulario
+        else {
+          console.log('formulario invalido')
+        }
+      }
 
     });
 
 
-}
-get password (){
-  return this.formData.get('password')
-}
-get confirmPassword (){
-  return this.formData.get('password')
-}
+  }
+  get password() {
+    return this.formData.get('password')
+  }
+  get confirmPassword() {
+    return this.formData.get('password')
+  }
 }

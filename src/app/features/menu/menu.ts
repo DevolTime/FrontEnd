@@ -1,14 +1,16 @@
 import { Component, OnInit, inject, TemplateRef } from '@angular/core';
 import { CartFloating } from '../../shared/components/cart-floating/cart-floating';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpProducts } from '../../core/services/http-products';
 import { HttpCart } from '../../core/services/http-cart';
 import { HttpAuth } from '../../core/services/http-auth';
-import { ProductsCard } from '../products-card/products-card';
+import { ProductsCard } from '../products-card/products-card' ;
 import Swal from 'sweetalert2';
+import { HttpCategory } from '../../core/services/http-category';
+
 
 @Component({
   selector: 'app-menu',
@@ -17,7 +19,6 @@ import Swal from 'sweetalert2';
     CartFloating,
     CommonModule,
     RouterLink,
-    ProductsCard,
     MatDialogModule
   ],
   templateUrl: './menu.html',
@@ -28,6 +29,7 @@ export class Menu implements OnInit {
   private productsService = inject(HttpProducts);
   private cartService = inject(HttpCart);
   private httpAuth = inject(HttpAuth);
+  private categoryService = inject(HttpCategory);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private dialog = inject(MatDialog);
@@ -36,6 +38,7 @@ export class Menu implements OnInit {
   productsList: any[] = [];
   selectedCategoryId: string | null = null;
   private productSnapshot: any[] = [];
+  titleCategory$ = new BehaviorSubject<string>('');
 
   ngOnInit(): void {
 
@@ -49,6 +52,20 @@ export class Menu implements OnInit {
     this.route.paramMap.subscribe((params) => {
       this.selectedCategoryId = params.get('categoryId');
       this.productsList = this.filterProducts(this.productSnapshot);
+
+      if (this.selectedCategoryId) {
+        this.categoryService.getCategoryById(this.selectedCategoryId).subscribe({
+          next: (res) => {
+            console.log(res);
+            this.titleCategory$.next(res.data.name);
+          },
+          error: (err) => {
+            console.error(err);
+          },
+        });
+      } else {
+        this.titleCategory$.next('');
+      }
     });
   }
 

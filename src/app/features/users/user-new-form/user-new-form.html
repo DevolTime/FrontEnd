@@ -1,7 +1,7 @@
 <div class="page-user">
   <h2 class="title-form">Nuevo Usuario</h2>
+  <a routerLink="/dashboard/user/list" class="btn-new">Volver</a>
 
-  <a routerLink="/user/list" class="btn-new">Volver</a>
 
   <form [formGroup]="formData" (ngSubmit)="onSubmit()" class="newUsers">
     <div class="items">
@@ -41,11 +41,6 @@
       @if (formData.get('email')?.errors?.['email']) {
       <small class="error">Ingresa un correo válido</small>
       }
-
-      <!-- @if (formData.get('email')?.errors?.[]) {
-      <small class="error">Este correo ya está registrado</small>
-    } -->
-
       }
     </div>
 
