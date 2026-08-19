@@ -2,10 +2,13 @@ import { Component, OnInit, inject, TemplateRef } from '@angular/core';
 import { CartFloating } from '../../shared/components/cart-floating/cart-floating';
 import { Observable } from 'rxjs';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpProducts } from '../../core/services/http-products';
+import { HttpCart } from '../../core/services/http-cart';
+import { HttpAuth } from '../../core/services/http-auth';
 import { ProductsCard } from '../products-card/products-card';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-menu',
@@ -23,7 +26,10 @@ import { ProductsCard } from '../products-card/products-card';
 export class Menu implements OnInit {
 
   private productsService = inject(HttpProducts);
+  private cartService = inject(HttpCart);
+  private httpAuth = inject(HttpAuth);
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private dialog = inject(MatDialog);
 
   products$: Observable<any[]> = this.productsService.products$;
@@ -87,6 +93,55 @@ export class Menu implements OnInit {
       maxHeight: '95vh',
       panelClass: 'product-dialog',
       data: product
+    });
+  }
+
+  addToCart(product: any): void {
+    const productId = product?._id ?? product?.id;
+
+    if (!productId) {
+      return;
+    }
+
+    if (!this.httpAuth.token) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Inicia sesión',
+        text: 'Debes iniciar sesión para agregar productos al carrito.',
+        showCancelButton: true,
+        confirmButtonText: 'Iniciar sesión',
+        cancelButtonText: 'Cancelar',
+        confirmButtonColor: '#E65100'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.router.navigate(['/login']);
+        }
+      });
+      return;
+    }
+
+    this.cartService.addItem(productId).subscribe({
+      next: () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Agregado al carrito',
+          text: product.name,
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 1500,
+          timerProgressBar: true
+        });
+      },
+      error: (err) => {
+        const msg = err?.error?.msg || 'No se pudo agregar el producto al carrito';
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: msg,
+          confirmButtonColor: '#E65100'
+        });
+      }
     });
   }
 }

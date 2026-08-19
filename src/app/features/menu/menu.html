@@ -62,7 +62,8 @@
 
     @for (product of productsList; track product._id || product.id) {
 
-    <app-products-card [producto]="product" (productClick)="openProduct($event, productDialog)">
+    <app-products-card [producto]="product" (productClick)="openProduct($event, productDialog)"
+        (addToCart)="addToCart($event)">
     </app-products-card>
 
     }
@@ -115,7 +116,7 @@
                 ${{ product.price | number:'1.0-0' }}
             </div>
 
-            <button class="add-button">
+            <button class="add-button" (click)="addToCart(product)">
                 Agregar
             </button>
 

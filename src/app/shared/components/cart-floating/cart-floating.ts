@@ -4,6 +4,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { HttpCart } from '../../../core/services/http-cart';
 
 @Component({
   selector: 'app-cart-floating',
@@ -14,6 +15,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 })
 export class CartFloating implements OnInit {
   private router = inject(Router);
+  private cartService = inject(HttpCart);
 
   faShoppingCart = faShoppingCart;
   isVisible = false;
@@ -31,16 +33,22 @@ export class CartFloating implements OnInit {
       .subscribe((event: NavigationEnd) => {
         this.checkVisibility(event.urlAfterRedirects);
       });
+
+    // 3. Mantener el contador sincronizado con el backend
+    // (la carga del carrito la gestiona HttpCart al detectar sesión)
+    this.cartService.cartCount$.subscribe((count) => {
+      this.cartItemCount = count;
+    });
   }
 
   private checkVisibility(currentUrl: string): void {
     // Compara si la URL empieza con alguna de las rutas permitidas
-    this.isVisible = this.allowedRoutes.some(route => 
+    this.isVisible = this.allowedRoutes.some(route =>
       route === '/' ? currentUrl === '/' : currentUrl.startsWith(route)
     );
   }
 
   openCart(): void {
-    console.log('Abriendo carrito...');
+    this.router.navigate(['/cart']);
   }
 }

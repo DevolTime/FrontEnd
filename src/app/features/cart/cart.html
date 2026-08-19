@@ -1,0 +1,96 @@
+<div class="cart-page">
+
+    <h1 class="cart-title">Mi Carrito</h1>
+
+    @if (items.length === 0) {
+
+    <div class="cart-empty">
+        <p class="cart-empty-text">
+            Tu carrito está vacío.
+        </p>
+
+        <a routerLink="/categoria" class="cart-continue">
+            Ir al menú
+        </a>
+    </div>
+
+    } @else {
+
+    <div class="cart-layout">
+
+        <div class="cart-items">
+
+            @for (item of items; track $index) {
+
+            <div class="cart-item">
+
+                <div class="cart-item-image">
+                    @if (productImage(item)) {
+                    <img [src]="productImage(item)" [alt]="productName(item)">
+                    } @else {
+                    <span>Sin imagen</span>
+                    }
+                </div>
+
+                <div class="cart-item-info">
+
+                    <h3 class="cart-item-name">
+                        {{ productName(item) }}
+                    </h3>
+
+                    <span class="cart-item-price">
+                        ${{ itemPrice(item) | number:'1.0-0' }}
+                    </span>
+
+                    <span class="cart-item-quantity">
+                        Cantidad: {{ item.quantity }}
+                    </span>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="cart-item-remove"
+                    (click)="removeItem(item)"
+                    aria-label="Eliminar producto">
+                    ×
+                </button>
+
+            </div>
+
+            }
+
+        </div>
+
+        <aside class="cart-summary">
+
+            <h2 class="cart-summary-title">Resumen</h2>
+
+            <div class="cart-summary-row">
+                <span>Productos</span>
+                <span>{{ items.length }}</span>
+            </div>
+
+            <div class="cart-summary-row cart-summary-total">
+                <span>Total</span>
+                <span>${{ total | number:'1.0-0' }}</span>
+            </div>
+
+            <button
+                type="button"
+                class="cart-checkout"
+                (click)="clearCart()">
+                Vaciar carrito
+            </button>
+
+            <a routerLink="/categoria" class="cart-continue-link">
+                Seguir comprando
+            </a>
+
+        </aside>
+
+    </div>
+
+    }
+
+</div>

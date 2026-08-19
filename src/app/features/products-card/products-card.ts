@@ -14,8 +14,14 @@ export class ProductsCard {
 
   @Output() productClick = new EventEmitter<any>();
 
+  @Output() addToCart = new EventEmitter<any>();
+
   openProduct(): void {
     this.productClick.emit(this.producto);
+  }
+
+  onAddToCart(): void {
+    this.addToCart.emit(this.producto);
   }
 
 }
