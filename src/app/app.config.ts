@@ -1,9 +1,11 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
+import { loggerInterceptor } from './core/interceptor/logger-interceptor';
+import { authInterceptor } from './core/interceptor/auth-interceptor';
 
 
 export const appConfig: ApplicationConfig = {
@@ -11,6 +13,7 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
 
     provideRouter(routes), provideClientHydration(),
-    provideHttpClient(),
+    provideHttpClient(
+      withInterceptors([authInterceptor, loggerInterceptor])),
   ]
 };

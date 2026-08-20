@@ -82,12 +82,12 @@ export class UserNewForm {
       error: (err) => {
 
         if (err.status === 409) {
-          this.formData.get('email')?.setErrors({emailExists:true});
+          this.formData.get('email')?.setErrors({ emailExists: true });
         }
         console.error(err);
 
       }
-      
+
 
     });
 

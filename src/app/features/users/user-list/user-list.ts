@@ -13,49 +13,49 @@ import Swal from 'sweetalert2';
   styleUrl: './user-list.css',
 })
 export default class UserList {
-subscriberUser! : Subscription // signo de exclamacion aca es para que pase por alto en ese caso Subscriber user sea definido como un valor uindefin 
-subcriberDeleteUser! : Subscription
+  subscriberUser!: Subscription // signo de exclamacion aca es para que pase por alto en ese caso Subscriber user sea definido como un valor uindefin 
+  subcriberDeleteUser!: Subscription
 
-  public userList$ = new BehaviorSubject<any> ([])
-  private httpUsers= inject(HttpUsers);
-  private router = inject(Router) 
+  public userList$ = new BehaviorSubject<any>([])
+  private httpUsers = inject(HttpUsers);
+  private router = inject(Router)
   //saber cunado se inicaliza
-  ngOnInit(){
+  ngOnInit() {
     this.loadUser()
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     //verifica si existe una subscription activa para finalizaral 
-    if(this.subscriberUser){
+    if (this.subscriberUser) {
       this.subscriberUser.unsubscribe();
     }
-    if(this.subcriberDeleteUser){
+    if (this.subcriberDeleteUser) {
       this.subcriberDeleteUser.unsubscribe();
     }
   }
 
- private loadUser(){
+  private loadUser() {
     this.subscriberUser = this.httpUsers.getUsers().subscribe({
-      next: (data )=>{
-        console.log (data)
-//asignar la lista de  ussuarios
+      next: (data) => {
+        console.log(data)
+        //asignar la lista de  ussuarios
         this.userList$.next(data.data)
       },
-      error: (err)=>{
+      error: (err) => {
         console.error(err)
       },
-      complete: ()=>{
+      complete: () => {
         console.log('lista de todos los usarios')
       }
     });
   }
-  onEdit(id: string){
-console.log('Edit', id)
-this.router.navigateByUrl(`/dashboard/user/edit/${id}`)
+  onEdit(id: string) {
+    console.log('Edit', id)
+    this.router.navigateByUrl(`/dashboard/user/edit/${id}`)
   }
 
-  
-   onDelete( id: string ) {
+
+  onDelete(id: string) {
 
     // Implementa la ventana emergente con SweetAlert2
     Swal.fire({
@@ -78,26 +78,26 @@ this.router.navigateByUrl(`/dashboard/user/edit/${id}`)
 
         // console.log( 'Delete', id );
         // Guarda la subscripcion al Observable para tener control del mismo
-        this.subcriberDeleteUser = this.httpUsers.deleteUserById( id ).subscribe({
-          next: ( data ) => {
-            
-            console.log( data );
+        this.subcriberDeleteUser = this.httpUsers.deleteUserById(id).subscribe({
+          next: (data) => {
+
+            console.log(data);
             this.loadUser();      // Ejecutar
-    this.router.navigateByUrl('/dashboard/user/list')
+            this.router.navigateByUrl('/dashboard/user/list')
 
 
           },
-          error: ( err ) => {
-            console.error( err );
+          error: (err) => {
+            console.error(err);
           },
           complete: () => {
-            console.log( 'Peticion al API para eliminar usuario por ID' );
+            console.log('Peticion al API para eliminar usuario por ID');
           }
         });
-    }
+      }
 
     });
   }
 
-  inUpdate(){}
+  inUpdate() { }
 }

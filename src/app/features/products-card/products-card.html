@@ -1,0 +1,37 @@
+<div class="product-card" (click)="openProduct()">
+
+    <div class="product-image">
+
+        @if (producto?.urlImage) {
+            <img
+                [src]="producto.urlImage"
+                [alt]="producto.name">
+        } @else {
+            <span>Sin imagen</span>
+        }
+
+    </div>
+
+    <div class="product-info">
+
+        <h2>{{ producto?.name }}</h2>
+
+        <p>{{ producto?.description }}</p>
+
+        <div class="product-bottom">
+
+            <strong>
+                ${{ producto?.price | number:'1.0-0' }}
+            </strong>
+
+            <button
+                type="button"
+                (click)="$event.stopPropagation(); onAddToCart()">
+                +
+            </button>
+
+        </div>
+
+    </div>
+
+</div>

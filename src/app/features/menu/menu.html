@@ -65,6 +65,7 @@
 
     @for (product of productsList; track product._id || product.id) {
 
+
     <div class="product-card" (click)="openProduct(product, productDialog)">
 
         <div class="product-image">
@@ -150,7 +151,7 @@
                 ${{ product.price | number:'1.0-0' }}
             </div>
 
-            <button class="add-button">
+            <button class="add-button" (click)="addToCart(product)">
                 Agregar
             </button>
 

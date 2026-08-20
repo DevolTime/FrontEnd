@@ -20,7 +20,7 @@ import { HttpAuth } from '../../core/services/http-auth';
 export default class UserNewForm {
 
   private httpUsers = inject(HttpUsers);
-  private httpAuth= inject(HttpAuth)
+  private httpAuth = inject(HttpAuth)
   private router = inject(Router);
 
   roleList$ = new BehaviorSubject<any[]>([]);
@@ -41,7 +41,7 @@ export default class UserNewForm {
   }
 
   ngOnInit() {
-   
+
 
   }
 
@@ -64,34 +64,34 @@ export default class UserNewForm {
           icon: "success"
         });
 
-            this.httpUsers.createUser(this.formData.value).subscribe({
+        this.httpUsers.createUser(this.formData.value).subscribe({
 
-      next: (res) => {
+          next: (res) => {
 
-console.log('Entró al register');
-        console.log(res);
-  
-        this.router.navigateByUrl('/dashboard');
+            console.log('Entró al register');
+            console.log(res);
 
-      },
+            this.router.navigateByUrl('/dashboard');
 
-      error: (err) => {
+          },
 
-        if (err.status === 409) {
-          this.formData.get('email')?.setErrors({emailExists:true});
-        }
-        console.error(err);
+          error: (err) => {
+
+            if (err.status === 409) {
+              this.formData.get('email')?.setErrors({ emailExists: true });
+            }
+            console.error(err);
+
+          }
+
+
+        });
 
       }
-      
 
-  });
-
+      if (this.formData.invalid) {
+        return;
       }
-
-    if (this.formData.invalid) {
-      return;
-    }
 
 
     })
