@@ -144,7 +144,7 @@ export class Menu implements OnInit {
           title: 'Agregado al carrito',
           text: product.name,
           toast: true,
-          position: 'top-end',
+          position: 'center',
           showConfirmButton: false,
           timer: 1500,
           timerProgressBar: true
