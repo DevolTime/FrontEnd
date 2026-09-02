@@ -1,13 +1,10 @@
-// src/app/core/interceptor/auth-interceptor.ts
-import { HttpErrorResponse, HttpInterceptorFn, HttpResponse } from '@angular/common/http';
-import { catchError, tap, throwError } from 'rxjs';
+import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { HttpAuth } from '../services/http-auth';
-import { Router } from 'express';
 import { inject } from '@angular/core';
+import { catchError, throwError } from 'rxjs';
+import { Router } from '@angular/router';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  // Tu lógica de auth (inyectar token, etc.)
-
 
   const httpAuth= inject(HttpAuth)
   const router = inject(Router);     
@@ -39,21 +36,4 @@ return next(requestHeadersToken).pipe(
   })
 );
 
-};
-
-export const loggerInterceptor: HttpInterceptorFn = (req, next) => {
-  console.log(`[OUT] ${req.method} -> ${req.url}`);
-
-  return next(req).pipe(
-    tap({
-      next: (event) => {
-        if (event instanceof HttpResponse) {
-          console.log(`[IN] ${event.status} ${req.url}`, event.body);
-        }
-      },
-      error: (error) => {
-        console.error(`[ERROR] ${req.method} -> ${req.url}`, error);
-      }
-    })
-  );
 };
