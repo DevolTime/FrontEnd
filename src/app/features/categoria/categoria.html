@@ -7,23 +7,23 @@
 
     <div class="menu-grid">
         @for (category of (categories$ | async); track category._id || category.id) {
-            <section class="category-section">
-                <a [routerLink]="['/menu', category._id || category.id]" class="menu-card">
-                    <div class="img-wrapper">
-                        <img [src]="category.urlImage" [alt]="category.name" class="category-img"
-                            (error)="handleImageError($event)" loading="lazy">
-                        <div class="img-overlay"></div>
-                    </div>
+        <section class="category-section">
+            <a [routerLink]="['/menu', category._id || category.id]" class="menu-card">
+                <div class="img-wrapper">
+                    <img [src]="category.urlImage" [alt]="category.name" class="category-img"
+                        (error)="handleImageError($event)" loading="lazy">
+                    <div class="img-overlay"></div>
+                </div>
 
-                    <div class="card-content">
-                        <h3 class="category-title">{{ category.name }}</h3>
-                    </div>
-                </a>
-            </section>
+                <div class="card-content">
+                    <h3 class="category-title">{{ category.name }}</h3>
+                </div>
+            </a>
+        </section>
         } @empty {
-            <div class="no-data-container">
-                <p class="no-data">🍗 No hay categorías disponibles en este momento.</p>
-            </div>
+        <div class="no-data-container">
+            <p class="no-data">🍗 No hay categorías disponibles en este momento.</p>
+        </div>
         }
     </div>
 </div>

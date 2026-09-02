@@ -174,7 +174,7 @@ export default class ProductosNewForm implements OnInit {
 
 
   OnEdit(id: string) {
-    this.router.navigate(['/dashboard/editproducts', id])
+    this.router.navigate(['dashboard/editproducts', id])
   }
 
   toggleStatus(products: any): void {

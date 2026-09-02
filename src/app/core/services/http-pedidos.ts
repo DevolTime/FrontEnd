@@ -25,13 +25,15 @@ export class HttpPedidos {
 
   deletePedidos(id: string) {
     return this.http.delete(
-      `http://localhost:3000/api/pedidos/${id}`
+
+      `${this.apiUrl}/${id}`
     );
   }
 
   updatePedidos(id: string, pedido: any) {
     return this.http.patch(
-      `http://localhost:3000/api/pedidos/${id}`,
+
+      `${this.apiUrl}/${id}`,
       pedido
     );
   }

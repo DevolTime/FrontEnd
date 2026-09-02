@@ -149,6 +149,9 @@
 /* Estilo para lista vacía */
 .no-data-container {
     grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
     padding: 60px 20px;
     background: white;
