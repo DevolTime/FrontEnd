@@ -26,9 +26,9 @@
             <label>Categorias</label>
             <select formControlName="category">
                 <option value="">Selecciona una categoria</option>
-               @for (cat of (categorylist$|async); track $index) {
+                @for (cat of (categorylist$|async); track $index) {
                 <option [value]="cat._id">{{cat.name}}</option>
-               }
+                }
             </select>
         </div>
 
@@ -54,9 +54,11 @@
         </div>
 
         <div class="items">
-            <label>Descripción</label>
-            <textarea formControlName="description" placeholder="Ingrese la descripción"></textarea>
+            <label for="description">Descripción</label>
+
+            <input id="description" type="text" formControlName="description" placeholder="Ingrese la descripción">
         </div>
+
 
         <div class="form-actions">
             <button type="submit">
@@ -86,7 +88,7 @@
                 <th>Switch</th>
                 <th>Acciones</th>
                 <th>Categoría</th>
-                
+
             </tr>
         </thead>
 
