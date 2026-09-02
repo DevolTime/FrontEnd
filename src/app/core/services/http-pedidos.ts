@@ -9,7 +9,7 @@ export class HttpPedidos {
 
   private http = inject(HttpClient);
   BASE_URL: string = environment.apiUrl;
-  private apiUrl = '${this.BASE_URL}/pedidos';
+  private apiUrl = `${this.BASE_URL}/pedidos`;
 
   newPedidos(Pedidos: any) {
     return this.http.post(this.apiUrl, Pedidos);
@@ -20,19 +20,19 @@ export class HttpPedidos {
   }
 
   getPedidoById(id: string) {
-    return this.http.get<any>('${this.apiUrl}/${id}');
+    return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
 
 
   deletePedidos(id: string) {
     return this.http.delete(
-      'http://localhost:3000/api/pedidos/${id}'
+      `${this.apiUrl}/${id}`
     );
   }
 
   updatePedidos(id: string, pedido: any) {
     return this.http.patch(
-      'http://localhost:3000/api/pedidos/${id}',
+      `${this.apiUrl}/${id}`,
       pedido
     );
   }
