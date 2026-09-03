@@ -72,98 +72,69 @@
 
     <!-- ========================= LISTA ========================= -->
 
-    @if (viewMode === 'list') {
+   @if (viewMode === 'list') {
+  <h1 class="title-form">Lista de Productos</h1>
 
-    <h1 class="title-form">Lista de Productos</h1>
+  <table class="custom-table">
+    <thead>
+      <tr>
+        <th>Producto</th>
+        <th>ID</th>
+        <th>Estado</th>
+        <th>Descripción</th>
+        <th>Posición</th>
+        <th>Categoría</th>
+        <th>Imagen</th>
+        <th>Switch</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
 
-    <table>
+    <tbody>
+      @for (product of (productList$ | async); track $index) {
+        <tr>
+          <td>{{ product.name }}</td>
+          <td>{{ product._id }}</td>
+          <td>{{ product.status }}</td>
+          <td class="col-desc">{{ product.description }}</td>
+          <td>{{ $index + 1 }}</td>
 
-        <thead>
-            <tr>
-                <th>Producto</th>
-                <th>ID</th>
-                <th>Estado</th>
-                <th>Descripción</th>
-                <th>Imagen</th>
-                <th>Switch</th>
-                <th>Acciones</th>
-                <th>Categoría</th>
+          <!-- COLUMNA CATEGORÍA: Muestra el nombre directamente -->
+          <td>
+            {{ product.categoryName || 'Sin categoría' }}
+          </td>
 
-            </tr>
-        </thead>
-
-        <tbody>
-
-            @for (product of (productList$ | async); track $index) {
-
-            <tr>
-
-                <td>{{ product.name }}</td>
-
-                <td>{{ product._id }}</td>
-
-                <td>{{ product.status }}</td>
-
-                <td>{{ product.description }}</td>
-                <td>{{ product.category?.name }}</td>
-
-                <td>
-
-                    @if (product.urlImage) {
-
-                    <img [src]="product.urlImage" [alt]="product.name" class="table-img">
-
-                    } @else {
-
-                    <span>Sin imagen</span>
-
-                    }
-
-                </td>
-
-                <td>
-
-                    <button type="button" class="switch-toggle" [class.active]="product.status === 'disponible'"
-                        (click)="toggleStatus(product)" [title]="product.status === 'disponible'
-                        ? 'Desactivar producto'
-                        : 'Activar producto'">
-
-                        <span class="switch-circle"></span>
-
-                    </button>
-
-                </td>
-
-                <td class="Options">
-
-                    <a href="javascript:void(0)" class="btn-delete" (click)="onDelete(product._id)">
-                        Eliminar
-                    </a>
-
-                    <a href="javascript:void(0)" class="btn-edit" (click)="OnEdit(product._id)">
-                        Editar
-                    </a>
-
-                </td>
-
-            </tr>
-
+          <td>
+            @if (product.urlImage) {
+              <img [src]="product.urlImage" [alt]="product.name" class="table-img">
+            } @else {
+              <span class="no-img">Sin imagen</span>
             }
+          </td>
+          <td>
+            <button 
+              type="button" 
+              class="switch-toggle" 
+              [class.active]="product.status === 'disponible'"
+              (click)="toggleStatus(product)" 
+              [title]="product.status === 'disponible' ? 'Desactivar producto' : 'Activar producto'">
+              <span class="switch-circle"></span>
+            </button>
+          </td>
+          <td class="Options">
+            <a href="javascript:void(0)" class="btn-delete" (click)="onDelete(product._id)">Eliminar</a>
+            <a href="javascript:void(0)" class="btn-edit" (click)="OnEdit(product._id)">Editar</a>
+          </td>
+        </tr>
+      }
+    </tbody>
 
-        </tbody>
-
-        <tfoot>
-            <tr>
-                <td colspan="7">
-                    <small>
-                        No olvide que estas acciones solo pueden ser realizadas por el ADMIN.
-                    </small>
-                </td>
-            </tr>
-        </tfoot>
-
-    </table>
-
-    }
-
-</div>
+    <tfoot>
+      <tr>
+        <td colspan="9">
+          <small>No olvide que estas acciones solo pueden ser realizadas por el ADMIN.</small>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+}
