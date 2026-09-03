@@ -29,6 +29,7 @@ export const routes: Routes = [
             { path: 'registrar-category', loadComponent: () => import('./features/category/category-new-form/category-new-form') },
             { path: 'categories/edit/:id', loadComponent: () => import('./features/category-edit-form/category-edit-form') },
             { path: 'ProductosNewForm', loadComponent: () => import('./features/productos-new-form/productos-new-form') },
+            { path: 'editproducts/:id', loadComponent: () => import('./features/products-edit/products-edit') },
             { path: 'PedidosNewForm', loadComponent: () => import('./features/pedidos/pedidos-newform/pedidos-newform') },
         ]
     },

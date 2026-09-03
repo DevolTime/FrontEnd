@@ -32,7 +32,7 @@ return next(requestHeadersToken).pipe(
     }
 
 
-    return throwError(()=>{})
+    return throwError(() => error)
   })
 );
 

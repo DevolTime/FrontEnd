@@ -24,7 +24,7 @@ export class HttpAuth {
 
 
   loginUser(credentials: any) {
-    return this.http.post<any>('http://localhost:3000/api/auth/login', credentials).pipe(
+    return this.http.post<any>(`${environment.apiUrl}/auth/login`, credentials).pipe(
       // Sirve para generar acciones de acuerdo a X o Y dato
       tap((res) => {
 

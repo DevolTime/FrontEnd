@@ -75,7 +75,7 @@ export class HttpProducts {
 
 
     getProduct() {
-        return this.htpp.get<any>('http://localhost:3000/api/products');
+        return this.htpp.get<any>(this.apiUrl);
     }
     getproductbyid(id: string) {
         return this.htpp.get(
