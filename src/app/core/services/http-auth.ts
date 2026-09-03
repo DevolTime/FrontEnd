@@ -7,6 +7,7 @@ import { environment } from '../../../environments/environment';
 
 @Service()
 export class HttpAuth {
+  private BASE_URL :string =environment.apiUrl
   private readonly TOKEN_KEY = 'token';
   private readonly USER_KEY = 'user';
   private http = inject(HttpClient);
@@ -85,6 +86,26 @@ export class HttpAuth {
   }
   logoutUser():void {
     this.clearAuthData()// Redireccionamos
+  }
+  checkAuthStatus(){
+    const token = this.token;
+    if(!token){
+      this.clearAuthData();
+      return of(false)
+    }
+    return this.http.get<any>(`${this.BASE_URL}/auth/renew-token`).pipe(
+      tap((res)=>{
+        if(res?.token && res?.data){
+          this.setAuthData(res.token, res.data)
+        }
+      }),
+      map((res)=>!!res.token),
+      catchError((err:HttpErrorResponse)=>{
+        console.log(`error al renovar eltoke n`);
+        this.clearAuthData();
+        return of(false)
+      })
+  )
   }
 
   isLoggedIn(): boolean {
