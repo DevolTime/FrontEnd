@@ -32,6 +32,13 @@ export class Cart implements OnInit {
     );
   }
 
+  totalQuantity(cart: any): number {
+    return this.items(cart).reduce(
+      (sum, item) => sum + (item.quantity || 0),
+      0
+    );
+  }
+
   productName(item: any): string {
     return item.product?.name ?? 'Producto';
   }

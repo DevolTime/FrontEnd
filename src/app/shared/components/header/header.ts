@@ -19,4 +19,11 @@ export class Header {
   logout() {
     this.httpAuth.logoutUser();
   }
+
+  scrollToFooter(): void {
+    const footer = document.getElementById('footer');
+    if (footer) {
+      footer.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
 }

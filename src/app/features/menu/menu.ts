@@ -127,6 +127,7 @@ export class Menu implements OnInit {
     }
 
     if (!this.httpAuth.token) {
+      this.dialog.closeAll();
       Swal.fire({
         icon: 'warning',
         title: 'Inicia sesión',
@@ -145,6 +146,7 @@ export class Menu implements OnInit {
 
     this.cartService.addItem(productId).subscribe({
       next: () => {
+        this.dialog.closeAll();
         Swal.fire({
           icon: 'success',
           title: 'Agregado al carrito',
