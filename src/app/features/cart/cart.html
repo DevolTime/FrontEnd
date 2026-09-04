@@ -2,7 +2,9 @@
 
     <h1 class="cart-title">Mi Carrito</h1>
 
-    @if (items.length === 0) {
+    @if ((cart$ | async); as cart) {
+
+    @if ((cart?.items ?? []).length === 0) {
 
     <div class="cart-empty">
         <p class="cart-empty-text">
@@ -20,7 +22,7 @@
 
         <div class="cart-items">
 
-            @for (item of items; track $index) {
+            @for (item of cart?.items ?? []; track $index) {
 
             <div class="cart-item">
 
@@ -42,19 +44,47 @@
                         ${{ itemPrice(item) | number:'1.0-0' }}
                     </span>
 
-                    <span class="cart-item-quantity">
-                        Cantidad: {{ item.quantity }}
-                    </span>
+                    <div class="cart-quantity-control">
+
+                        <button
+                            type="button"
+                            class="cart-qty-btn"
+                            (click)="decrementQty(item)"
+                            aria-label="Quitar uno">
+                            −
+                        </button>
+
+                        <span class="cart-qty-value">
+                            {{ item.quantity }}
+                        </span>
+
+                        <button
+                            type="button"
+                            class="cart-qty-btn"
+                            (click)="incrementQty(item)"
+                            aria-label="Llevar uno más">
+                            +
+                        </button>
+
+                    </div>
 
                 </div>
 
-                <button
-                    type="button"
-                    class="cart-item-remove"
-                    (click)="removeItem(item)"
-                    aria-label="Eliminar producto">
-                    ×
-                </button>
+                <div class="cart-item-actions">
+
+                    <span class="cart-item-subtotal">
+                        ${{ itemPrice(item) * item.quantity | number:'1.0-0' }}
+                    </span>
+
+                    <button
+                        type="button"
+                        class="cart-item-remove"
+                        (click)="removeItem(item)"
+                        aria-label="Eliminar producto">
+                        ×
+                    </button>
+
+                </div>
 
             </div>
 
@@ -68,12 +98,12 @@
 
             <div class="cart-summary-row">
                 <span>Productos</span>
-                <span>{{ items.length }}</span>
+                <span>{{ cart?.items?.length }}</span>
             </div>
 
             <div class="cart-summary-row cart-summary-total">
                 <span>Total</span>
-                <span>${{ total | number:'1.0-0' }}</span>
+                <span>${{ total(cart) | number:'1.0-0' }}</span>
             </div>
 
             <button
@@ -90,6 +120,8 @@
         </aside>
 
     </div>
+
+    }
 
     }
 

@@ -61,6 +61,12 @@ export class HttpCart {
         );
     }
 
+    updateItemQuantity(productId: string, quantity: number) {
+        return this.http.patch<any>(`${this.apiUrl}/items/${productId}`, { quantity }, { headers: this.headers() }).pipe(
+            tap((response) => this.setCart(response.data))
+        );
+    }
+
     clearCart() {
         return this.http.delete<any>(this.apiUrl, { headers: this.headers() }).pipe(
             tap((response) => this.setCart(response.data))
@@ -69,6 +75,10 @@ export class HttpCart {
 
     get cartCount(): number {
         return this.cartCountSubject.getValue();
+    }
+
+    get cart(): any {
+        return this.cartSubject.getValue();
     }
 
     private setCart(cart: any): void {

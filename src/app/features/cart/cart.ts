@@ -1,33 +1,32 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, AsyncPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { Observable } from 'rxjs';
 import { HttpCart } from '../../core/services/http-cart';
 import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, AsyncPipe],
   templateUrl: './cart.html',
   styleUrl: './cart.css',
 })
 export class Cart implements OnInit {
   private cartService = inject(HttpCart);
 
-  cart: any = null;
+  cart$: Observable<any> = this.cartService.cart$;
 
   ngOnInit(): void {
-    this.cartService.cart$.subscribe((cart) => {
-      this.cart = cart;
-    });
+    this.cartService.loadCart().subscribe();
   }
 
-  get items(): any[] {
-    return this.cart?.items ?? [];
+  items(cart: any): any[] {
+    return cart?.items ?? [];
   }
 
-  get total(): number {
-    return this.items.reduce(
+  total(cart: any): number {
+    return this.items(cart).reduce(
       (sum, item) => sum + (item.price ?? item.product?.price ?? 0) * item.quantity,
       0
     );
@@ -64,8 +63,53 @@ export class Cart implements OnInit {
     });
   }
 
+  incrementQty(item: any): void {
+    const productId = item.product?._id ?? item.product?.id;
+    if (!productId) {
+      return;
+    }
+    this.cartService.updateItemQuantity(productId, (item.quantity || 1) + 1).subscribe({
+      error: (err) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: err?.error?.msg || 'No se pudo actualizar la cantidad',
+          confirmButtonColor: '#E65100'
+        });
+      }
+    });
+  }
+
+  decrementQty(item: any): void {
+    const productId = item.product?._id ?? item.product?.id;
+    if (!productId) {
+      return;
+    }
+    const newQty = (item.quantity || 1) - 1;
+
+    // Si llega a 0, se elimina el producto del carrito
+    if (newQty <= 0) {
+      this.removeItem(item);
+      return;
+    }
+
+    this.cartService.updateItemQuantity(productId, newQty).subscribe({
+      error: (err) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: err?.error?.msg || 'No se pudo actualizar la cantidad',
+          confirmButtonColor: '#E65100'
+        });
+      }
+    });
+  }
+
   clearCart(): void {
-    if (this.items.length === 0) {
+    if (!this.cartService.cart) {
+      return;
+    }
+    if ((this.cartService.cart?.items ?? []).length === 0) {
       return;
     }
 
@@ -81,7 +125,6 @@ export class Cart implements OnInit {
       if (result.isConfirmed) {
         this.cartService.clearCart().subscribe({
           next: () => {
-            this.cartService.loadCart().subscribe();
             Swal.fire({
               icon: 'success',
               title: 'Carrito vaciado',
