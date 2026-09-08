@@ -1,0 +1,100 @@
+.carousel-container {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  height: 500px; /* Ajusta este alto al tamaño deseado */
+  overflow: hidden;
+  background-color: #000; /* Fondo oscuro elegante en caso de imágenes horizontales */
+}
+
+.carousel-slides {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.carousel-slide {
+  flex: 0 0 100%; /* Forzar a que CADA slide ocupe exactamente el 100% sin encogerse */
+  width: 100%;
+  height: 100%;
+}
+
+.slide-link {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.carousel-slide img {
+  width: 100%;
+  height: 100%;
+  /* cover asegura que la imagen cubra todo el bloque ordenadamente sin encogerse */
+  object-fit: auto; 
+  object-position: center;
+}
+
+/* Botones de navegación */
+.nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.8);
+  border: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  color: #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease, opacity 0.3s ease;
+  opacity: 0;
+  z-index: 10;
+}
+
+.carousel-container:hover .nav-btn {
+  opacity: 1;
+}
+
+.nav-btn:hover {
+  background: rgba(255, 255, 255, 1);
+}
+
+.prev { left: 15px; }
+.next { right: 15px; }
+
+/* Puntos indicadores */
+.carousel-dots {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dot.active {
+  background-color: #fff;
+  transform: scale(1.2);
+}
+
+/* Adaptación móvil */
+@media (max-width: 768px) {
+  .carousel-container {
+    height: 200px;
+  }
+}
