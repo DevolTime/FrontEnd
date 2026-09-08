@@ -34,7 +34,7 @@ export class HttpAuth {
         if (res?.token && res?.data) {
           this.setAuthData(res.token, res.data)
           // Redireccionamos
-          this.router.navigateByUrl('/dashboard');
+          this.router.navigateByUrl('/home');
         }
 
         //console.log( data );
@@ -110,7 +110,7 @@ export class HttpAuth {
   )
   }
   isAdmin(): boolean{
-    return !!this.token && !!this.role
+    return !!this.token && this.role === 'administrador';
   }
 
   isLoggedIn(): boolean {
@@ -162,7 +162,7 @@ get user():any{
   return this.currentUser$.getValue()
 } 
 
-get role(): Boolean{
-  return this.currentRole$.getValue()
-} 
+get role(): string | null {
+    return this.user?.role || null;
+  }
 }
