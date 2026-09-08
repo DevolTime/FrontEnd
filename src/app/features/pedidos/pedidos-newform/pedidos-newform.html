@@ -1,35 +1,98 @@
+<section class="page-user">
 
-<section class="container_form">
-  
-    
-    <div class="header">
-        <h1 class="title-products">Registrar Pedido nuevo</h1>
-        <label class="Productnew">Ingresar nuevo Pedido</label>
+    <h1 class="title-form">Registrar Pedido nuevo</h1>
 
-        <form [formGroup]="formData" (ngSubmit)="onSubmit()" class="form-container">
+    <form
+        [formGroup]="formData"
+        (ngSubmit)="onSubmit()"
+        class="newUsers"
+    >
 
-            <label>Dirección</label>
-            <input formControlName="direccion_entrega" placeholder="Ingrese la dirección">
-            <label >Precio</label>
-            <input formControlName="precio_total" placeholder= "Ingrese el precio total"> 
-            <label>Productos</label>
-            <input formControlName="Productos" placeholder="Ingrese el Producto">
-            <label>Descripción</label>
-            <textarea formControlName="description" placeholder="Ingrese la descripción"></textarea>
-            <label>Estado</label>
-           <select formControlName="status">
-    <option value="">Seleccione un estado</option>
-<option value="pendiente">pendiente</option>
-    <option value="Confirmado">Confirmado</option>
-    <option value="En preparación">En preparación</option>
-    <option value="Listo para recoger">Listo para recoger</option>
-    <option value="En camino">En camino</option>
-    <option value="Pedido retrasado">Pedido retrasado</option>
-    <option value="Pedido cancelado">Pedido cancelado</option>
-</select>
+        <!-- DIRECCIÓN -->
+        <div class="items">
+            <label for="direccion_entrega">Dirección</label>
 
-            <button type="submit">Registrar Producto</button>
+            <input
+                id="direccion_entrega"
+                type="text"
+                formControlName="direccion_entrega"
+                placeholder="Ingrese la dirección"
+            >
+        </div>
 
-        </form>
-    </div>
+
+        <!-- PRECIO -->
+        <div class="items">
+            <label for="precio_total">Precio</label>
+
+            <input
+                id="precio_total"
+                type="number"
+                formControlName="precio_total"
+                placeholder="Ingrese el precio total"
+            >
+        </div>
+
+
+        <!-- PRODUCTOS -->
+        <div class="items">
+            <label for="Productos">Productos</label>
+
+            <input
+                id="Productos"
+                type="text"
+                formControlName="Productos"
+                placeholder="Ingrese el producto"
+            >
+        </div>
+
+
+        <!-- DESCRIPCIÓN -->
+        <div class="items">
+            <label for="description">Descripción</label>
+
+            <input
+                id="description"
+                type="text"
+                formControlName="description"
+                placeholder="Ingrese la descripción"
+            >
+        </div>
+
+
+        <!-- ESTADO -->
+        <div class="items">
+            <label for="status">Estado</label>
+
+            <select
+                id="status"
+                formControlName="status"
+            >
+                <option value="">Seleccione un estado</option>
+                <option value="pendiente">Pendiente</option>
+                <option value="Confirmado">Confirmado</option>
+                <option value="En preparación">En preparación</option>
+                <option value="Listo para recoger">Listo para recoger</option>
+                <option value="En camino">En camino</option>
+                <option value="Pedido retrasado">Pedido retrasado</option>
+                <option value="Pedido cancelado">Pedido cancelado</option>
+            </select>
+        </div>
+
+
+        <!-- BOTÓN -->
+        <div class="form-actions">
+
+            <button
+                type="submit"
+                [disabled]="formData.invalid"
+                [class.btn-disable]="formData.invalid"
+            >
+                Registrar Pedido
+            </button>
+
+        </div>
+
+    </form>
+
 </section>

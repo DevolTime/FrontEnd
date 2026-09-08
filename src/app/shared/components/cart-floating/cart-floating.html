@@ -8,5 +8,9 @@
     </div>
 
     <!-- Badge contador -->
-    <span class="cart-badge" *ngIf="cartItemCount > 0">{{ cartItemCount }}</span>
+    @if ((cartCount$ | async); as cartCount) {
+        @if (cartCount > 0) {
+            <span class="cart-badge">{{ cartCount }}</span>
+        }
+    }
 </button>

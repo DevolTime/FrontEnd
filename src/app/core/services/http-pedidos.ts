@@ -3,8 +3,7 @@ import { inject, Service } from '@angular/core';
 import { environment } from '../../../environments/environment';
 
 @Service({
-
-})
+  })
 export class HttpPedidos {
 
   private http = inject(HttpClient);
@@ -26,12 +25,14 @@ export class HttpPedidos {
 
   deletePedidos(id: string) {
     return this.http.delete(
+
       `${this.apiUrl}/${id}`
     );
   }
 
   updatePedidos(id: string, pedido: any) {
     return this.http.patch(
+
       `${this.apiUrl}/${id}`,
       pedido
     );

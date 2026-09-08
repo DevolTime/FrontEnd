@@ -1,5 +1,6 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
+
 import { HttpAuth } from '../services/http-auth';
 import { tap } from 'rxjs';
 
@@ -15,3 +16,4 @@ return httpAuth.checkAuthStatus().pipe(
   })
 );
 };
+
