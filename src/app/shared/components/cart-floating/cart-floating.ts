@@ -1,7 +1,8 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, AsyncPipe } from '@angular/common';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { HttpCart } from '../../../core/services/http-cart';
@@ -9,7 +10,7 @@ import { HttpCart } from '../../../core/services/http-cart';
 @Component({
   selector: 'app-cart-floating',
   standalone: true,
-  imports: [CommonModule, FontAwesomeModule],
+  imports: [CommonModule, FontAwesomeModule, AsyncPipe],
   templateUrl: './cart-floating.html',
   styleUrl: './cart-floating.css',
 })
@@ -19,7 +20,7 @@ export class CartFloating implements OnInit {
 
   faShoppingCart = faShoppingCart;
   isVisible = false;
-  cartItemCount = 0;
+  cartCount$: Observable<number> = this.cartService.cartCount$;
 
   private allowedRoutes = ['/home', '/menu', '/categoria', '/'];
 
@@ -33,12 +34,6 @@ export class CartFloating implements OnInit {
       .subscribe((event: NavigationEnd) => {
         this.checkVisibility(event.urlAfterRedirects);
       });
-
-    // 3. Mantener el contador sincronizado con el backend
-    // (la carga del carrito la gestiona HttpCart al detectar sesión)
-    this.cartService.cartCount$.subscribe((count) => {
-      this.cartItemCount = count;
-    });
   }
 
   private checkVisibility(currentUrl: string): void {

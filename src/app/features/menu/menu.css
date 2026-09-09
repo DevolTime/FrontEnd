@@ -9,11 +9,6 @@
     --card-shadow-hover: 0 20px 40px rgba(230, 81, 0, 0.18);
 }
 
-
-/* =========================
-   CONTENEDOR PRINCIPAL
-   ========================= */
-
 .page-container {
     display: flex;
     flex-direction: column;
@@ -23,11 +18,6 @@
     background-color: #FAFAFA;
     min-height: 100vh;
 }
-
-
-/* =========================
-   HEADER
-   ========================= */
 
 .header-section {
     width: 100%;
@@ -44,11 +34,6 @@
     grid-column: 1 / -1;
 }
 
-
-/* =========================
-   GRID DEL MENÚ
-   ========================= */
-
 .menu-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, 280px);
@@ -58,18 +43,11 @@
     width: 100%;
 }
 
-
-/* =========================
-   CARD DE CATEGORÍA
-   ========================= */
-
 .menu-card {
     position: relative;
     background-color: var(--bg-card);
     border-radius: 30px;
-    /* Cambiado de 24% a 30px fijos */
     overflow: hidden;
-    /* Corta la imagen para que respete las esquinas redondeadas */
     text-decoration: none;
     display: flex;
     flex-direction: column;
@@ -82,11 +60,6 @@
     transform: translateY(-8px);
     box-shadow: var(--card-shadow-hover);
 }
-
-
-/* =========================
-   IMAGEN DE CATEGORÍA
-   ========================= */
 
 .img-wrapper {
     position: relative;
@@ -124,11 +97,6 @@
 .menu-card:hover .img-overlay {
     opacity: 0.2;
 }
-
-
-/* =========================
-   CONTENIDO DE LA CARD CATEGORÍA
-   ========================= */
 
 .card-content {
     padding: 16px 20px;
@@ -183,11 +151,6 @@
 .menu-card:hover .arrow-icon {
     transform: translateX(5px);
 }
-
-
-/* =========================================
-   TARJETA DEL PRODUCTO
-========================================= */
 
 .product-card {
     position: relative;
@@ -296,11 +259,6 @@
     font-size: 14px;
 }
 
-
-/* =========================
-   LISTA VACÍA
-   ========================= */
-
 .no-data-container {
     grid-column: 1 / -1;
     text-align: center;
@@ -316,11 +274,6 @@
     font-weight: 500;
 }
 
-
-/* =========================
-   DIALOG / DIÁLOGO MODAL
-   ========================= */
-
 .product-dialog-content {
     position: relative;
     min-height: 500px;
@@ -328,9 +281,7 @@
     grid-template-columns: 48% 52%;
     background: #ffffff;
     border-radius: 30px;
-    /* Bordes redondeados del modal */
     overflow: hidden;
-    /* Permite que la imagen del lado izquierdo respete las esquinas redondeadas superior e inferior */
     font-family: 'Poppins', sans-serif;
 }
 
@@ -449,11 +400,6 @@
 .add-button:active {
     transform: scale(0.98);
 }
-
-
-/* =========================
-   RESPONSIVE
-   ========================= */
 
 @media (max-width: 700px) {
     .product-dialog-content {

@@ -5,33 +5,79 @@ import {
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
-import { AsyncPipe } from '@angular/common';
+
+import { CurrencyPipe } from '@angular/common';
+
 import { BehaviorSubject } from 'rxjs';
+
 import { HttpPedidos } from '../../../core/services/http-pedidos';
+
 import { Router } from '@angular/router';
+
 import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-pedidos-newform',
   standalone: true,
-  imports: [ReactiveFormsModule],
+
+  imports: [
+    ReactiveFormsModule,
+    CurrencyPipe
+  ],
+
   templateUrl: './pedidos-newform.html',
+
   styleUrl: './pedidos-newform.css',
 })
+
+
 export default class PedidosNewform implements OnInit {
 
-  public pedidoList$ = new BehaviorSubject<any[]>([]);
+
+  // ==========================================
+  // SERVICIOS
+  // ==========================================
 
   private httpPedidos = inject(HttpPedidos);
+
   private router = inject(Router);
 
-  formData: FormGroup;
 
-  PedidoId: string | null = null;
+  // ==========================================
+  // LISTA
+  // ==========================================
 
-  viewMode: 'form' | 'list' = 'form';
+  public pedidoList$ =
+    new BehaviorSubject<any[]>([]);
 
-  pedidos: any[] = [];
+  public pedidos: any[] = [];
+
+
+  // ==========================================
+  // FORMULARIO ADMIN
+  // ==========================================
+
+  public formData: FormGroup;
+
+
+  // ==========================================
+  // ID
+  // ==========================================
+
+  public PedidoId: string | null = null;
+
+
+  // ==========================================
+  // VISTA
+  // ==========================================
+
+  public viewMode: 'form' | 'list' = 'form';
+
+
+  // ==========================================
+  // CONSTRUCTOR
+  // ==========================================
 
   constructor() {
 
@@ -62,9 +108,9 @@ export default class PedidosNewform implements OnInit {
   }
 
 
-  // ==============================
-  // MOSTRAR FORMULARIO
-  // ==============================
+  // ==========================================
+  // CREAR
+  // ==========================================
 
   showCreate(): void {
 
@@ -75,18 +121,61 @@ export default class PedidosNewform implements OnInit {
   }
 
 
-  // ==============================
-  // REINICIAR FORMULARIO
-  // ==============================
+  // ==========================================
+  // LISTAR
+  // ==========================================
+
+  showList(): void {
+
+    console.log('LISTAR PRESIONADO');
+
+    this.viewMode = 'list';
+
+    this.httpPedidos.getPedidos().subscribe({
+
+      next: (data: any) => {
+
+        console.log('RESPUESTA DEL BACKEND:', data);
+
+        const lista = data?.data ?? data;
+
+        console.log('LISTA:', lista);
+
+        this.pedidos = Array.isArray(lista)
+          ? lista
+          : [];
+
+        this.pedidoList$.next(this.pedidos);
+
+      },
+
+      error: (error: any) => {
+
+        console.error('ERROR GET PEDIDOS:', error);
+
+      }
+
+    });
+
+  }
+
+
+  // ==========================================
+  // LIMPIAR
+  // ==========================================
 
   private resetform(): void {
 
     this.formData.reset({
 
       direccion_entrega: '',
+
       precio_total: '',
+
       Productos: '',
+
       description: '',
+
       status: ''
 
     });
@@ -96,22 +185,9 @@ export default class PedidosNewform implements OnInit {
   }
 
 
-  // ==============================
-  // MOSTRAR LISTA
-  // ==============================
-
-  showList(): void {
-
-    this.viewMode = 'list';
-
-    this.loadPedidos();
-
-  }
-
-
-  // ==============================
+  // ==========================================
   // CARGAR PEDIDOS
-  // ==============================
+  // ==========================================
 
   loadPedidos(): void {
 
@@ -119,19 +195,48 @@ export default class PedidosNewform implements OnInit {
 
       next: (data: any) => {
 
-        const list = data.data ? data.data : data;
+        console.log(
+          'Pedidos recibidos:',
+          data
+        );
 
-        this.pedidoList$.next(list);
 
-        this.pedidos = list;
+        const lista = data?.data
+          ? data.data
+          : data;
+
+
+        this.pedidos =
+          Array.isArray(lista)
+            ? lista
+            : [];
+
+
+        this.pedidoList$.next(
+          this.pedidos
+        );
+
+
+        console.log(
+          'Pedidos para mostrar:',
+          this.pedidos
+        );
 
       },
 
-      error: (err: any) => {
+
+      error: (error: any) => {
 
         console.error(
           'Error al cargar pedidos:',
-          err
+          error
+        );
+
+
+        Swal.fire(
+          'Error',
+          'No se pudieron cargar los pedidos.',
+          'error'
         );
 
       }
@@ -141,9 +246,9 @@ export default class PedidosNewform implements OnInit {
   }
 
 
-  // ==============================
-  // CREAR PEDIDO
-  // ==============================
+  // ==========================================
+  // CREAR PEDIDO DESDE ADMIN
+  // ==========================================
 
   onSubmit(): void {
 
@@ -155,40 +260,40 @@ export default class PedidosNewform implements OnInit {
 
     }
 
+
     const body = {
 
       direccion_entrega:
-        this.formData.get('direccion_entrega')?.value,
+        this.formData.get(
+          'direccion_entrega'
+        )?.value,
 
       precio_total:
-        this.formData.get('precio_total')?.value,
+        this.formData.get(
+          'precio_total'
+        )?.value,
 
       Productos:
-        this.formData.get('Productos')?.value,
+        this.formData.get(
+          'Productos'
+        )?.value,
 
       description:
-        this.formData.get('description')?.value,
+        this.formData.get(
+          'description'
+        )?.value,
 
       status:
-        this.formData.get('status')?.value
+        this.formData.get(
+          'status'
+        )?.value
 
     };
 
 
-    console.log(
-      'Enviando pedido:',
-      body
-    );
-
-
     this.httpPedidos.newPedidos(body).subscribe({
 
-      next: (data: any) => {
-
-        console.log(
-          'Pedido creado con éxito:',
-          data
-        );
+      next: () => {
 
         Swal.fire(
           '¡Creado!',
@@ -196,18 +301,25 @@ export default class PedidosNewform implements OnInit {
           'success'
         );
 
+
         this.resetform();
+
+
+        this.viewMode = 'list';
+
 
         this.loadPedidos();
 
       },
 
+
       error: (error: any) => {
 
         console.error(
-          'Error al guardar pedido:',
+          'Error al crear pedido:',
           error
         );
+
 
         Swal.fire(
           'Error',
@@ -222,9 +334,9 @@ export default class PedidosNewform implements OnInit {
   }
 
 
-  // ==============================
-  // ELIMINAR PEDIDO
-  // ==============================
+  // ==========================================
+  // ELIMINAR
+  // ==========================================
 
   onDelete(id: string): void {
 
@@ -248,57 +360,53 @@ export default class PedidosNewform implements OnInit {
 
     }).then((result) => {
 
-      if (result.isConfirmed) {
-
-        this.httpPedidos.deletePedidos(id).subscribe({
-
-          next: () => {
-
-            Swal.fire({
-
-              title: '¡Eliminado!',
-
-              text: 'El pedido ha sido eliminado.',
-
-              icon: 'success'
-
-            });
-
-            this.formData.reset();
-
-            this.PedidoId = null;
-
-            this.loadPedidos();
-
-          },
-
-          error: (err: any) => {
-
-            console.error(
-              'Error al eliminar pedido:',
-              err
-            );
-
-            Swal.fire(
-              'Error',
-              'Hubo un problema al eliminar el pedido.',
-              'error'
-            );
-
-          }
-
-        });
-
+      if (!result.isConfirmed) {
+        return;
       }
+
+
+      this.httpPedidos.deletePedidos(id).subscribe({
+
+        next: () => {
+
+          Swal.fire(
+            '¡Eliminado!',
+            'El pedido ha sido eliminado.',
+            'success'
+          );
+
+
+          this.loadPedidos();
+
+        },
+
+
+        error: (error: any) => {
+
+          console.error(
+            'Error al eliminar:',
+            error
+          );
+
+
+          Swal.fire(
+            'Error',
+            'No se pudo eliminar el pedido.',
+            'error'
+          );
+
+        }
+
+      });
 
     });
 
   }
 
 
-  // ==============================
-  // EDITAR PEDIDO
-  // ==============================
+  // ==========================================
+  // EDITAR
+  // ==========================================
 
   OnEdit(id: string): void {
 
@@ -310,9 +418,9 @@ export default class PedidosNewform implements OnInit {
   }
 
 
-  // ==============================
+  // ==========================================
   // CAMBIAR ESTADO
-  // ==============================
+  // ==========================================
 
   toggleStatus(pedido: any): void {
 
@@ -324,17 +432,26 @@ export default class PedidosNewform implements OnInit {
 
     const body = {
 
+      name_usuario:
+        pedido.name_usuario,
+
       direccion_entrega:
         pedido.direccion_entrega,
 
+      direccion_opcional:
+        pedido.direccion_opcional,
+
+      barrio:
+        pedido.barrio,
+
+      telefeno:
+        pedido.telefeno,
+
+      productos:
+        pedido.productos,
+
       precio_total:
         String(pedido.precio_total),
-
-      Productos:
-        pedido.Productos,
-
-      description:
-        pedido.description,
 
       status:
         newStatus
@@ -349,23 +466,25 @@ export default class PedidosNewform implements OnInit {
 
       next: () => {
 
-        this.pedidos = this.pedidos.map(item => {
+        this.pedidos =
+          this.pedidos.map(
+            (item: any) => {
 
-          if (item._id === pedido._id) {
+              if (
+                item._id === pedido._id
+              ) {
 
-            return {
+                return {
+                  ...item,
+                  status: newStatus
+                };
 
-              ...item,
+              }
 
-              status: newStatus
+              return item;
 
-            };
-
-          }
-
-          return item;
-
-        });
+            }
+          );
 
 
         this.pedidoList$.next([
@@ -374,16 +493,18 @@ export default class PedidosNewform implements OnInit {
 
       },
 
-      error: (err: any) => {
+
+      error: (error: any) => {
 
         console.error(
-          'Error al cambiar el estatus:',
-          err
+          'Error al cambiar estado:',
+          error
         );
+
 
         Swal.fire(
           'Error',
-          'No se pudo actualizar el estatus',
+          'No se pudo actualizar el estado.',
           'error'
         );
 
@@ -394,9 +515,9 @@ export default class PedidosNewform implements OnInit {
   }
 
 
-  // ==============================
-  // INICIALIZAR
-  // ==============================
+  // ==========================================
+  // INICIAR
+  // ==========================================
 
   ngOnInit(): void {
 

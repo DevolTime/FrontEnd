@@ -1,96 +1,336 @@
 <section class="page-user">
 
-    <h1 class="title-form">Registrar Pedido nuevo</h1>
+    <!-- ========================================== -->
+    <!-- BOTONES -->
+    <!-- ========================================== -->
 
-    <form
-        [formGroup]="formData"
-        (ngSubmit)="onSubmit()"
-        class="newUsers"
-    >
+    <div class="side-actions">
 
-        <!-- DIRECCIÓN -->
-        <div class="items">
-            <label for="direccion_entrega">Dirección</label>
-
-            <input
-                id="direccion_entrega"
-                type="text"
-                formControlName="direccion_entrega"
-                placeholder="Ingrese la dirección"
-            >
-        </div>
+        <button
+            type="button"
+            class="btn-create"
+            (click)="showCreate()"
+        >
+            Crear
+        </button>
 
 
-        <!-- PRECIO -->
-        <div class="items">
-            <label for="precio_total">Precio</label>
+        <button
+            type="button"
+            class="btn-list"
+            (click)="showList()"
+        >
+            Listar
+        </button>
 
-            <input
-                id="precio_total"
-                type="number"
-                formControlName="precio_total"
-                placeholder="Ingrese el precio total"
-            >
-        </div>
+    </div>
 
 
-        <!-- PRODUCTOS -->
-        <div class="items">
-            <label for="Productos">Productos</label>
+    <!-- ========================================== -->
+    <!-- FORMULARIO ADMIN -->
+    <!-- ========================================== -->
 
-            <input
-                id="Productos"
-                type="text"
-                formControlName="Productos"
-                placeholder="Ingrese el producto"
-            >
-        </div>
-        <!-- DESCRIPCIÓN -->
-        <div class="items">
-            <label for="description">Descripción</label>
+    @if (viewMode === 'form') {
 
-            <input
-                id="description"
-                type="text"
-                formControlName="description"
-                placeholder="Ingrese la descripción"
-            >
-        </div>
+        <h1 class="title-form">
+            Registrar Pedido nuevo
+        </h1>
 
 
-        <!-- ESTADO -->
-        <div class="items">
-            <label for="status">Estado</label>
+        <form
+            [formGroup]="formData"
+            (ngSubmit)="onSubmit()"
+            class="newUsers"
+        >
 
-            <select
-                id="status"
-                formControlName="status"
-            >
-                <option value="">Seleccione un estado</option>
-                <option value="pendiente">Pendiente</option>
-                <option value="Confirmado">Confirmado</option>
-                <option value="En preparación">En preparación</option>
-                <option value="Listo para recoger">Listo para recoger</option>
-                <option value="En camino">En camino</option>
-                <option value="Pedido retrasado">Pedido retrasado</option>
-                <option value="Pedido cancelado">Pedido cancelado</option>
-            </select>
-        </div>
+            <div class="items">
+
+                <label for="direccion_entrega">
+                    Dirección
+                </label>
+
+                <input
+                    id="direccion_entrega"
+                    type="text"
+                    formControlName="direccion_entrega"
+                    placeholder="Ingrese la dirección"
+                >
+
+            </div>
 
 
-        <!-- BOTÓN -->
-        <div class="form-actions">
+            <div class="items">
 
-            <button
-                type="submit"
-                [disabled]="formData.invalid"
-                [class.btn-disable]="formData.invalid"
-            >
-                Registrar Pedido
-            </button>
+                <label for="precio_total">
+                    Precio
+                </label>
 
-        </div>
+                <input
+                    id="precio_total"
+                    type="number"
+                    formControlName="precio_total"
+                    placeholder="Ingrese el precio total"
+                >
 
-    </form>
+            </div>
+
+
+            <div class="items">
+
+                <label for="Productos">
+                    Productos
+                </label>
+
+                <input
+                    id="Productos"
+                    type="text"
+                    formControlName="Productos"
+                    placeholder="Ingrese el producto"
+                >
+
+            </div>
+
+
+            <div class="items">
+
+                <label for="description">
+                    Descripción
+                </label>
+
+                <input
+                    id="description"
+                    type="text"
+                    formControlName="description"
+                    placeholder="Ingrese la descripción"
+                >
+
+            </div>
+
+
+            <div class="items">
+
+                <label for="status">
+                    Estado
+                </label>
+
+                <select
+                    id="status"
+                    formControlName="status"
+                >
+
+                    <option value="">
+                        Seleccione un estado
+                    </option>
+
+                    <option value="pendiente">
+                        Pendiente
+                    </option>
+
+                    <option value="Confirmado">
+                        Confirmado
+                    </option>
+
+                    <option value="En preparación">
+                        En preparación
+                    </option>
+
+                    <option value="Listo para recoger">
+                        Listo para recoger
+                    </option>
+
+                    <option value="En camino">
+                        En camino
+                    </option>
+
+                    <option value="Pedido retrasado">
+                        Pedido retrasado
+                    </option>
+
+                    <option value="Pedido cancelado">
+                        Pedido cancelado
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <button
+                    type="submit"
+                    [disabled]="formData.invalid"
+                    [class.btn-disable]="formData.invalid"
+                >
+                    Registrar Pedido
+                </button>
+
+            </div>
+
+        </form>
+
+    }
+
+
+    <!-- ========================================== -->
+    <!-- LISTA DE PEDIDOS DE CLIENTES -->
+    <!-- ========================================== -->
+
+    @if (viewMode === 'list') {
+
+        <h1 class="title-form">
+            Pedidos de los clientes
+        </h1>
+
+
+        <table class="custom-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Cliente</th>
+
+                    <th>Dirección</th>
+
+                    <th>Dirección opcional</th>
+
+                    <th>Barrio</th>
+
+                    <th>Teléfono</th>
+
+                    <th>Productos</th>
+
+                    <th>Total</th>
+
+                    <th>Estado</th>
+
+                    <th>Acciones</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                @for (
+                    pedido of pedidos;
+                    track pedido._id
+                ) {
+
+                    <tr>
+
+                        <!-- CLIENTE -->
+                        <td>
+                            {{ pedido.name_usuario }}
+                        </td>
+
+
+                        <!-- DIRECCIÓN -->
+                        <td>
+                            {{ pedido.direccion_entrega }}
+                        </td>
+
+
+                        <!-- DIRECCIÓN OPCIONAL -->
+                        <td>
+                            {{ pedido.direccion_opcional || 'N/A' }}
+                        </td>
+
+
+                        <!-- BARRIO -->
+                        <td>
+                            {{ pedido.barrio }}
+                        </td>
+
+
+                        <!-- TELÉFONO -->
+                        <td>
+                            {{ pedido.telefeno }}
+                        </td>
+
+
+                        <!-- PRODUCTOS -->
+                        <td>
+                            {{ pedido.productos }}
+                        </td>
+
+
+                        <!-- TOTAL -->
+                        <td>
+
+                            {{
+                                pedido.precio_total
+                                | currency:'COP':'symbol':'1.0-0'
+                            }}
+
+                        </td>
+
+
+                        <!-- ESTADO -->
+                        <td>
+
+                            <button
+                                type="button"
+                                class="status-button"
+                                (click)="toggleStatus(pedido)"
+                            >
+
+                                {{ pedido.status }}
+
+                            </button>
+
+                        </td>
+
+
+                        <!-- ACCIONES -->
+                        <td class="Options">
+
+                            <button
+                                type="button"
+                                class="btn-edit"
+                                (click)="OnEdit(pedido._id)"
+                            >
+                                Editar
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="btn-delete"
+                                (click)="onDelete(pedido._id)"
+                            >
+                                Eliminar
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                }
+
+            </tbody>
+
+
+            <tfoot>
+
+                <tr>
+
+                    <td colspan="10">
+
+                        <small>
+                            No olvide que estas acciones solo pueden ser realizadas por el ADMIN.
+                        </small>
+
+                    </td>
+
+                </tr>
+
+            </tfoot>
+
+        </table>
+
+    }
 
 </section>

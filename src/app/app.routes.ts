@@ -14,10 +14,7 @@ export const routes: Routes = [
     { path: 'menu/:categoryId', loadComponent: () => import('./features/menu/menu').then(m => m.Menu) },
     { path: 'menu', loadComponent: () => import('./features/menu/menu').then(m => m.Menu) },
     { path: 'categoria', loadComponent: () => import('./features/categoria/categoria').then(m => m.Categoria) },
-    { path: 'contacto', loadComponent: () => import('./features/contacto/contacto').then(m => m.Contacto) },
     { path: 'Pedidos', loadComponent: () => import('./features/pedidos/user-pedidos/user-pedidos') },
-
-
 
     { path: 'cart', loadComponent: () => import('./features/cart/cart').then(m => m.Cart) },
     { path: 'cart', loadComponent: () => import('./shared/components/cart-floating/cart-floating').then(m => m.CartFloating) },

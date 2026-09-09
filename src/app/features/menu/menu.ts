@@ -54,13 +54,19 @@ export class Menu implements OnInit {
       this.productsList = this.filterProducts(this.productSnapshot);
 
       if (this.selectedCategoryId) {
-        this.categoryService.getCategoryById(this.selectedCategoryId).subscribe({
+        this.categoryService.getCategories().subscribe({
           next: (res) => {
-            console.log(res);
-            this.titleCategory$.next(res.data.name);
+            const list = res.data ? res.data : res;
+            const category = list.find(
+              (c: any) =>
+                c._id === this.selectedCategoryId ||
+                c.id === this.selectedCategoryId
+            );
+            this.titleCategory$.next(category ? category.name : '');
           },
           error: (err) => {
             console.error(err);
+            this.titleCategory$.next('');
           },
         });
       } else {
@@ -121,6 +127,7 @@ export class Menu implements OnInit {
     }
 
     if (!this.httpAuth.token) {
+      this.dialog.closeAll();
       Swal.fire({
         icon: 'warning',
         title: 'Inicia sesión',
@@ -139,6 +146,7 @@ export class Menu implements OnInit {
 
     this.cartService.addItem(productId).subscribe({
       next: () => {
+        this.dialog.closeAll();
         Swal.fire({
           icon: 'success',
           title: 'Agregado al carrito',

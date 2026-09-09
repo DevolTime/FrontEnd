@@ -1,6 +1,9 @@
 <section class="page-user">
 
-    <h1 class="title-form">Registrar Pedido</h1>
+    <h1 class="title-form">
+        Realizar Pedido
+    </h1>
+
 
     <form
         [formGroup]="formData"
@@ -10,7 +13,10 @@
 
         <!-- NOMBRE -->
         <div class="items">
-            <label for="name_usuario">Nombre completo</label>
+
+            <label for="name_usuario">
+                Nombre completo
+            </label>
 
             <input
                 id="name_usuario"
@@ -18,11 +24,16 @@
                 formControlName="name_usuario"
                 placeholder="Ingrese su nombre"
             >
+
         </div>
+
 
         <!-- DIRECCIÓN -->
         <div class="items">
-            <label for="direccion_entrega">Dirección</label>
+
+            <label for="direccion_entrega">
+                Dirección
+            </label>
 
             <input
                 id="direccion_entrega"
@@ -30,23 +41,33 @@
                 formControlName="direccion_entrega"
                 placeholder="Ingrese la dirección"
             >
+
         </div>
+
 
         <!-- DIRECCIÓN OPCIONAL -->
         <div class="items">
-            <label for="direccion_opcional">Dirección opcional</label>
+
+            <label for="direccion_opcional">
+                Dirección opcional
+            </label>
 
             <input
                 id="direccion_opcional"
                 type="text"
                 formControlName="direccion_opcional"
-                placeholder="Apartamento, casa, torre, etc."
+                placeholder="Apartamento, torre, casa, etc."
             >
+
         </div>
+
 
         <!-- BARRIO -->
         <div class="items">
-            <label for="barrio">Barrio</label>
+
+            <label for="barrio">
+                Barrio
+            </label>
 
             <input
                 id="barrio"
@@ -54,35 +75,50 @@
                 formControlName="barrio"
                 placeholder="Ingrese el barrio"
             >
+
         </div>
+
 
         <!-- TELÉFONO -->
         <div class="items">
-            <label for="telefeno">Teléfono</label>
+
+            <label for="telefeno">
+                Teléfono
+            </label>
 
             <input
                 id="telefeno"
-                type="number"
+                type="tel"
                 formControlName="telefeno"
                 placeholder="Ingrese su teléfono"
             >
+
         </div>
+
 
         <!-- PRODUCTOS -->
         <div class="items">
-            <label for="productos">Productos seleccionados</label>
 
-            <textarea
+            <label for="productos">
+                Productos
+            </label>
+
+            <input
                 id="productos"
+                type="text"
                 formControlName="productos"
-                readonly
-                rows="5"
-            ></textarea>
+                placeholder="Productos seleccionados"
+            >
+
         </div>
+
 
         <!-- PRECIO -->
         <div class="items">
-            <label for="precio_total">Precio Total</label>
+
+            <label for="precio_total">
+                Precio total
+            </label>
 
             <input
                 id="precio_total"
@@ -90,8 +126,11 @@
                 formControlName="precio_total"
                 readonly
             >
+
         </div>
 
+
+        <!-- BOTÓN -->
         <div class="form-actions">
 
             <button

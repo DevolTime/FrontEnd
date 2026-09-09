@@ -17,10 +17,12 @@ export class HttpAuth {
   private isBrowser: boolean = isPlatformBrowser(this.platformId)
   currentUser$ = new BehaviorSubject<any>(this.getTokenFromStorage())
   currentToken$ = new BehaviorSubject<any>(this.getTokenFromStorage())
+  currentRole$ = new BehaviorSubject<any>(this.getTokenFromStorage())
 
 
   user$ = this.currentUser$.asObservable()
   token$ =this.currentToken$.asObservable()
+  role$ = this.currentRole$.asObservable()
 
 
   loginUser(credentials: any) {
@@ -32,7 +34,7 @@ export class HttpAuth {
         if (res?.token && res?.data) {
           this.setAuthData(res.token, res.data)
           // Redireccionamos
-          this.router.navigateByUrl('/dashboard');
+          this.router.navigateByUrl('/home');
         }
 
         //console.log( data );
@@ -107,9 +109,12 @@ export class HttpAuth {
       })
   )
   }
+  isAdmin(): boolean{
+    return !!this.token && this.role === 'administrador';
+  }
 
   isLoggedIn(): boolean {
-    return !!this.token && !!this.user
+    return !!this.token && !!this.user 
   }
   private getTokenFromStorage():string |null{
     if(this.isBrowser){
@@ -156,4 +161,8 @@ get token(): string|null{
 get user():any{
   return this.currentUser$.getValue()
 } 
+
+get role(): string | null {
+    return this.user?.role || null;
+  }
 }

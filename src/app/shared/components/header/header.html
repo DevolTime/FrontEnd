@@ -9,10 +9,10 @@
         <ul class="nav_links" id="nav_links">
             <li class="nav_list"><a routerLink="/home">Inicio</a></li>
             <li class="nav_list"><a routerLink="/categoria">Categoria</a></li>
-            <li class="nav_list"><a routerLink="/contacto">Contacto</a></li>
+            <li class="nav_list"><a (click)="scrollToFooter()" class="hand">Contacto</a></li>
 
-            <li class="nav_list"><a routerLink="dashboard/user/list">Dashboard</a></li>
-
+            @if (httpAuth.isAdmin()) {
+    <li class="nav_list"><a routerLink="dashboard/user/list">Dashboard</a></li> }
         </ul>
 
         @if(httpAuth.user$| async; as user){
@@ -20,6 +20,7 @@
             <img src="/assets/images/Icon2.png" class="logo hand" (click)="logout()">
         </ul>
         }
+        
         @else {<ul class="cart_links" id="cart_links">
             <li class="nav_list"><a routerLink="/login"><img src="/assets/images/icon.png" class="logo hand"></a></li>
         </ul>}
