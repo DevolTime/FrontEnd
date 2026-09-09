@@ -16,7 +16,6 @@
                 @if (formData.get('email')?.errors?.['required']) {
                     <small class="error">El correo es obligatorio.</small>
                 }
-
                 @if (formData.get('email')?.errors?.['email']) {
                     <small class="error">Ingresa un correo válido.</small>
                 }
@@ -31,6 +30,7 @@
                 id="password"
                 placeholder="Ingresa tu contraseña">
         </div>
+        @if (summitted) {<small class="error">Credenciales invalidas........</small>}
 
         <div class="form-actions">
             <button
@@ -40,13 +40,9 @@
                 [class.btn-disable]="formData.invalid">
                 Ingresar
             </button>
-
         </div>
+
         <div class="items">
-     <li class="pollo_nopollo"><a  routerLink="/register">¿Quieres pollo? registrate <strong class="huevo">aqui<fa-icon [icon]="faegg"></fa-icon></strong> </a></li>
-    </div>
-
-
-
+     <li class="pollo_nopollo"><a  routerLink="/register">¿Quieres pollo? registrate <strong class="huevo">aqui<fa-icon [icon]="faegg"></fa-icon></strong> </a></li>    </div>
     </form>
 </div>

@@ -13,7 +13,7 @@ import { faEgg } from '@fortawesome/free-solid-svg-icons';
   styleUrl: './login.css',
 })
 export default class Login {
-
+  summitted= false
   faegg=faEgg
   
   formData: FormGroup;
@@ -29,7 +29,7 @@ export default class Login {
   }
 
   onSubmit() {
-
+this.summitted = false
     // Verificar si el formulario es valido
     if( this.formData.valid ) {
       // Muestro los vaalores
@@ -38,12 +38,19 @@ export default class Login {
       // Usar el servicio para conectar con la API y verificar la autenticacion del usuario
       this.httpAuth.loginUser( this.formData.value ).subscribe({
         next: ( res ) => {
-          console.log( res );   // { msg: '...', data: { ... }, token: '...' }
+        if (typeof res === 'string') {// { msg: '...', data: { ... }, token: '...' }
+            this.summitted = true; 
+          } else {
+            this.summitted = false;
+          // Limpiamos los campos del formulario
+            this.formData.reset();
+          }   
 
-          this.formData.reset();  // Limpiamos los campos del formulario
         },
         error: ( err ) => {
           console.error( err );
+          this.summitted = true;
+
         },
         complete: () => {
           console.log( 'Execute complete' );
