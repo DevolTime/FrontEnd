@@ -1,41 +1,70 @@
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { inject, Service } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
-@Service({
-  })
+
+@Injectable({
+  providedIn: 'root'
+})
+
+
 export class HttpPedidos {
 
+
   private http = inject(HttpClient);
-  BASE_URL: string = environment.apiUrl;
+  BASE_URL: String = environment.apiUrl;
+
   private apiUrl = `${this.BASE_URL}/pedidos`;
 
-  newPedidos(Pedidos: any) {
-    return this.http.post(this.apiUrl, Pedidos);
+  newPedidos(pedido: any): Observable<any> {
+
+    return this.http.post(
+
+      this.apiUrl,
+
+      pedido
+
+    );
+
   }
 
-  getPedidos() {
-    return this.http.get<any>(this.apiUrl);
+
+  getPedidos(): Observable<any> {
+
+    return this.http.get(
+
+      this.apiUrl
+
+    );
+
   }
 
-  getPedidoById(id: string) {
-    return this.http.get<any>(`${this.apiUrl}/${id}`);
-  }
 
+  deletePedidos(id: string): Observable<any> {
 
-  deletePedidos(id: string) {
     return this.http.delete(
 
       `${this.apiUrl}/${id}`
+
     );
+
   }
 
-  updatePedidos(id: string, pedido: any) {
+
+  updatePedidos(
+    id: string,
+    pedido: any
+  ): Observable<any> {
+
     return this.http.patch(
 
       `${this.apiUrl}/${id}`,
+
       pedido
+
     );
+
   }
 
 }
