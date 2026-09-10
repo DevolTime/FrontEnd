@@ -45,36 +45,130 @@
             class="newUsers"
         >
 
-            <div class="items">
+<div class="items">
 
-                <label for="direccion_entrega">
-                    Dirección
-                </label>
+            <label for="name_usuario">
+                Nombre del cliente
+            </label>
 
-                <input
-                    id="direccion_entrega"
-                    type="text"
-                    formControlName="direccion_entrega"
-                    placeholder="Ingrese la dirección"
-                >
+            <input
+                id="name_usuario"
+                type="text"
+                formControlName="name_usuario"
+                placeholder="Nombre del cliente"
+            >
 
-            </div>
+            @if (formData.get('name_usuario')?.invalid &&
+            (formData.get('name_usuario')?.dirty ||
+            formData.get('name_usuario')?.touched)) {
+            <small class="error">El nombre es obligatorio</small>
+            }
+
+        </div>
 
 
-            <div class="items">
+        <div class="items">
 
-                <label for="precio_total">
-                    Precio
-                </label>
+            <label for="barrio">
+                Barrio
+            </label>
 
-                <input
-                    id="precio_total"
-                    type="number"
-                    formControlName="precio_total"
-                    placeholder="Ingrese el precio total"
-                >
+            <input
+                id="barrio"
+                type="text"
+                formControlName="barrio"
+                placeholder="Ingrese el barrio"
+            >
 
-            </div>
+            @if (formData.get('barrio')?.invalid &&
+            (formData.get('barrio')?.dirty ||
+            formData.get('barrio')?.touched)) {
+            <small class="error">El barrio es obligatorio</small>
+            }
+
+        </div>
+
+
+        <div class="items">
+
+            <label for="telefeno">
+                Teléfono
+            </label>
+
+            <input
+                id="telefeno"
+                type="tel"
+                formControlName="telefeno"
+                placeholder="Ingrese el teléfono"
+            >
+
+            @if (formData.get('telefeno')?.invalid &&
+            (formData.get('telefeno')?.dirty ||
+            formData.get('telefeno')?.touched)) {
+            <small class="error">El teléfono es obligatorio</small>
+            }
+
+        </div>
+
+
+        <div class="items">
+
+            <label for="direccion_entrega">
+                Dirección
+            </label>
+
+            <input
+                id="direccion_entrega"
+                type="text"
+                formControlName="direccion_entrega"
+                placeholder="Ingrese la dirección"
+            >
+
+            @if (formData.get('direccion_entrega')?.invalid &&
+            (formData.get('direccion_entrega')?.dirty ||
+            formData.get('direccion_entrega')?.touched)) {
+            <small class="error">La dirección es obligatoria</small>
+            }
+
+        </div>
+
+
+        <div class="items">
+
+            <label for="direccion_opcional">
+                Dirección opcional
+            </label>
+
+            <input
+                id="direccion_opcional"
+                type="text"
+                formControlName="direccion_opcional"
+                placeholder="Dirección opcional (opcional)"
+            >
+
+        </div>
+
+
+        <div class="items">
+
+            <label for="precio_total">
+                Precio
+            </label>
+
+            <input
+                id="precio_total"
+                type="number"
+                formControlName="precio_total"
+                placeholder="Ingrese el precio total"
+            >
+
+            @if (formData.get('precio_total')?.invalid &&
+            (formData.get('precio_total')?.dirty ||
+            formData.get('precio_total')?.touched)) {
+            <small class="error">El precio es obligatorio</small>
+            }
+
+        </div>
 
 
             <div class="items">

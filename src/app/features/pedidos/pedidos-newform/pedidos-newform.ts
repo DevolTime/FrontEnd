@@ -87,8 +87,24 @@ export default class PedidosNewform implements OnInit, OnDestroy {
 
     this.formData = new FormGroup({
 
+      name_usuario: new FormControl('', [
+        Validators.required
+      ]),
+
       direccion_entrega: new FormControl('', [
         Validators.required
+      ]),
+
+      direccion_opcional: new FormControl(''),
+
+      barrio: new FormControl('', [
+        Validators.required
+      ]),
+
+      telefeno: new FormControl('', [
+        Validators.required,
+        Validators.minLength(7),
+        Validators.maxLength(15)
       ]),
 
       precio_total: new FormControl('', [
@@ -184,7 +200,15 @@ export default class PedidosNewform implements OnInit, OnDestroy {
 
     this.formData.reset({
 
+      name_usuario: '',
+
       direccion_entrega: '',
+
+      direccion_opcional: '',
+
+      barrio: '',
+
+      telefeno: '',
 
       precio_total: '',
 
@@ -302,25 +326,40 @@ export default class PedidosNewform implements OnInit, OnDestroy {
 
     const body = {
 
+      name_usuario:
+        this.formData.get(
+          'name_usuario'
+        )?.value,
+
       direccion_entrega:
         this.formData.get(
           'direccion_entrega'
         )?.value,
 
-      precio_total:
+      direccion_opcional:
         this.formData.get(
-          'precio_total'
+          'direccion_opcional'
+        )?.value || '',
+
+      barrio:
+        this.formData.get(
+          'barrio'
         )?.value,
 
-      Productos:
+      telefeno:
+        this.formData.get(
+          'telefeno'
+        )?.value,
+
+      productos:
         this.formData.get(
           'Productos'
         )?.value,
 
-      description:
-        this.formData.get(
-          'description'
-        )?.value,
+      precio_total:
+        Number(this.formData.get(
+          'precio_total'
+        )?.value),
 
       status:
         this.formData.get(
