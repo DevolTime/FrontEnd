@@ -12,6 +12,7 @@ background:#fff;
 box-shadow:0 0.2rem 1.5rem rgba(0,0,0,.08);
 position:sticky;
 top:0;
+z-index:1000;
 }
 
 .navbar{
@@ -92,4 +93,73 @@ color:#2f2b16;
 .menu_toggle :hover{
     color:#d62d20;
 
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 860px) {
+    .navbar{
+        height:6rem;
+        padding:0 18px;
+        justify-content:space-between;
+        gap:12px;
+    }
+    .logo{
+        height:5.4rem;
+    }
+    .menu_toggle{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        width:42px;
+        height:42px;
+        margin-left:auto;
+        z-index:60;
+    }
+    .nav_links{
+        position:absolute;
+        top:6rem;
+        left:0;
+        right:0;
+        flex-direction:column;
+        align-items:stretch;
+        gap:0;
+        background:#fff;
+        box-shadow:0 1rem 2rem rgba(0,0,0,.14);
+        padding:8px 0 14px;
+        opacity:0;
+        visibility:hidden;
+        transform:translateY(-12px);
+        transition:opacity .25s ease, transform .25s ease, visibility .25s;
+        z-index:50;
+        max-height:calc(100vh - 6rem);
+        overflow-y:auto;
+        border-bottom:2px solid #d62d20;
+    }
+    .nav_links.open{
+        opacity:1;
+        visibility:visible;
+        transform:translateY(0);
+    }
+    .nav_list a{
+        display:block;
+        padding:14px 20px;
+        text-align:center;
+        font-size:1.8rem;
+    }
+    .nav_list a.active::after,
+    .nav_list a:hover::after{
+        display:none;
+    }
+    .nav_list a:hover{
+        background:#fff5f3;
+    }
+}
+
+@media (max-width: 400px) {
+    .navbar{
+        padding:0 12px;
+    }
+    .nav_list a{
+        font-size:1.6rem;
+    }
 }

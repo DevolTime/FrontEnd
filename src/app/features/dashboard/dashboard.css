@@ -155,4 +155,188 @@ html {
   font-size: 26px;
   font-weight: 700;
   color: #1a1a1a;    /* casi negro, texto principal grande */
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 240px;
+  }
+  .content {
+    padding: 24px 20px;
+  }
+}
+
+.mobile-menu-btn {
+  display: none;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 10px;
+  background: #dc2626;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  transition: background .2s ease;
+}
+
+.mobile-menu-btn:hover {
+  background: #b91c1c;
+}
+
+.sidebar-overlay {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .adminDasboard {
+    flex-direction: column;
+  }
+
+  .content {
+    padding: 20px 16px;
+    min-width: 0;
+  }
+
+  .content-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .mobile-menu-btn {
+    display: flex;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 6rem;
+    left: 0;
+    bottom: 0;
+    height: auto;
+    width: 280px;
+    max-width: 85vw;
+    z-index: 1100;
+    border-right: 1px solid #eee;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, .15);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    transform: translateX(-100%);
+    transition: transform .3s cubic-bezier(.25, 1, .5, 1);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .sidebarConte {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    padding: 16px 12px;
+  }
+
+  .sidebar .title {
+    margin-bottom: 10px;
+    font-size: 15px;
+  }
+
+  .navlist {
+    flex-direction: column;
+    overflow: visible;
+    gap: 6px;
+  }
+
+  .icono {
+    padding: 10px 12px;
+    font-size: 1.4rem;
+  }
+
+  .nav-arrow {
+    display: block;
+  }
+
+  .promocard {
+    margin-top: auto;
+    padding: 12px 14px;
+    border-radius: 12px;
+  }
+
+  .promocard .promotext {
+    display: none;
+  }
+
+  .promocard .promotitle {
+    margin: 4px 0 8px;
+  }
+
+  .promobtn {
+    width: 100%;
+    padding: 9px 12px;
+  }
+
+  .sidebar-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    top: 6rem;
+    background: rgba(0, 0, 0, .45);
+    z-index: 1050;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .3s ease, visibility .3s;
+  }
+
+  .sidebar-overlay.show {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+@media (max-width: 480px) {
+  .content-header h1 {
+    font-size: 20px;
+  }
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .valor {
+    font-size: 22px;
+  }
+  .card {
+    padding: 16px;
+  }
+
+  /* Drawer aún más compacto en teléfonos */
+  .sidebarConte {
+    padding: 12px 10px;
+  }
+
+  .sidebar .title {
+    margin-bottom: 8px;
+    font-size: 1.4rem;
+  }
+
+  .navlist {
+    gap: 4px;
+  }
+
+  .icono {
+    padding: 9px 10px;
+    font-size: 1.3rem;
+    border-radius: 10px;
+  }
+
+  .promocard {
+    padding: 8px 10px;
+  }
+
+  .promocard .promoicon,
+  .promocard .promotitle {
+    display: none;
+  }
 }  

@@ -485,3 +485,25 @@
         font-size: 1.3rem;
     }
 }
+
+@media (max-width: 480px) {
+    .page-container {
+        padding: 24px 12px;
+    }
+
+    .menu-title {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+    }
+
+    .menu-grid {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+
+    .product-card,
+    .menu-card {
+        width: 100%;
+        max-width: 340px;
+        justify-self: center;
+    }
+}

@@ -1,12 +1,11 @@
 <div class="adminDasboard">
 
-
-  <aside class="sidebar">
+  <aside class="sidebar" [class.open]="menuOpen">
     <div class="sidebarConte">
       <h2 class="title">Categories</h2>
 
       <nav class="navlist">
-        <a *ngFor="let item of navItems" [routerLink]="item.route" routerLinkActive="active" class="icono">
+        <a *ngFor="let item of navItems" [routerLink]="item.route" routerLinkActive="active" class="icono" (click)="closeMenu()">
           <span class="navicon">{{ item.icon }}</span>
           <span class="nav-label">{{ item.label }}</span>
           <span class="nav-arrow">›</span>
@@ -16,14 +15,18 @@
         <span class="promoicon">⚡</span>
         <p class="promotitle">Resumen rápido</p>
         <p class="promotext">{{ totalUsers |async }} usuarios registrados</p>
-        <button class="promobtn" (click)="logout()">Cerrar sesión</button>
+        <button class="promobtn" (click)="logout(); closeMenu()">Cerrar sesión</button>
       </div>
 
     </div>
   </aside>
+
+  <div class="sidebar-overlay" [class.show]="menuOpen" (click)="closeMenu()"></div>
+
   <main class="content">
 
     <header class="content-header">
+      <button class="mobile-menu-btn" (click)="toggleMenu()" aria-label="Abrir menú">☰</button>
       <h1>Dashboard</h1>
     </header>
 

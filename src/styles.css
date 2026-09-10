@@ -241,3 +241,99 @@ tfoot td {
 .hand {
     cursor: pointer;
 }
+
+/* ===== RESPONSIVE (admin global) ===== */
+@media (max-width: 840px) {
+    .newUsers {
+        grid-template-columns: 1fr;
+        gap: 1.6rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .page-user {
+        margin: 20px auto;
+        padding: 0 12px;
+    }
+
+    .title-form {
+        font-size: 2.2rem;
+        margin: 2rem 0 2rem;
+    }
+
+    .newUsers {
+        padding: 2rem;
+        gap: 1.6rem;
+    }
+
+    .btn-new {
+        margin-left: 0;
+    }
+
+    .side-actions {
+        margin-left: 0 !important;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .form-actions button {
+        width: 100%;
+        max-width: none;
+        padding: 14px 20px;
+    }
+
+    .login-form {
+        padding: 2.2rem;
+        margin: 3rem auto;
+    }
+
+    /* Tablas: scroll horizontal en pantallas pequeñas */
+    .page-user table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    thead th,
+    tbody td,
+    tfoot td {
+        padding: 14px 12px;
+        font-size: 1.4rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .page-user {
+        padding: 0 8px;
+    }
+
+    .title-form {
+        font-size: 1.9rem;
+    }
+
+    .newUsers {
+        padding: 1.6rem;
+    }
+
+    .form-actions button {
+        font-size: 1.5rem;
+        padding: 13px 16px;
+    }
+
+    thead th,
+    tbody td,
+    tfoot td {
+        padding: 12px 10px;
+        font-size: 1.3rem;
+    }
+
+    .Options button {
+        min-width: 60px;
+        padding: 8px 10px;
+    }
+
+    .btn-edit {
+        margin-right: 4px;
+    }
+}

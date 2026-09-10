@@ -4,9 +4,10 @@
         <a href="index.html">
             <img src="/assets/images/Logo.png" class="logo">
         </a>
-        <div class="menu_toggle" id="menu_toggle">
+        <div class="menu_toggle" id="menu_toggle" (click)="toggleMenu()" aria-label="Abrir menú">
+            <fa-icon [icon]="faBars"></fa-icon>
         </div>
-        <ul class="nav_links" id="nav_links">
+        <ul class="nav_links" id="nav_links" [class.open]="menuOpen" (click)="closeMenu()">
             <li class="nav_list"><a routerLink="/home">Inicio</a></li>
             <li class="nav_list"><a routerLink="/categoria">Categoria</a></li>
             <li class="nav_list"><a (click)="scrollToFooter()" class="hand">Contacto</a></li>
