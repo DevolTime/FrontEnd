@@ -1,72 +1,85 @@
-<section class="cantainer_form">
-    <div class="main-layout">
-        @if (viewMode === 'form') {
-        <div class="container">
-            <h2 class="tittle-category">Actualizar Categoría</h2>
-            <p class="subtittle-category">Modifique los datos de la categoría</p>
+<section class="page-user">
 
-            <form [formGroup]="formData" (ngSubmit)="onSubmit()" class="form-container">
+    <h2 class="title-form">Actualizar Categoría</h2>
 
-                <!--  Nombre -->
-                <div class="form-category">
-                    <label for="name">Nombre:</label>
-                    <input formControlName="name" type="text" class="form-control" id="name"
-                        placeholder="Nombre de la categoría">
+    <a routerLink="/dashboard/registrar-category" [queryParams]="{ tab: 'list' }" class="btn-new">← Volver</a>
 
-                    @if (formData.get('name')?.invalid && (formData.get('name')?.dirty ||
-                    formData.get('name')?.touched)) {
-                    @if (formData.get('name')?.errors?.['required']) {
-                    <small class="error">El nombre es obligatorio</small>
-                    }
-                    @if (formData.get('name')?.errors?.['minlength']) {
-                    <small class="error">El nombre debe contener al menos 3 caracteres</small>
-                    }
-                    @if (formData.get('name')?.errors?.['maxlength']) {
-                    <small class="error">El nombre no debe superar los 50 caracteres</small>
-                    }
-                    }
-                </div>
+    @if (viewMode === 'form') {
 
-                <!--  Imagen -->
-                <div class="form-category">
-                    <label for="img">Imagen:</label>
+    <form [formGroup]="formData" (ngSubmit)="onSubmit()" class="newUsers">
 
-                    <!-- Muestra la vista previa de la imagen actual (o la seleccionada) -->
-                    @if (currentImageUrl) {
-                    <div class="current-image-preview">
-                        <p>Imagen actual / previa:</p>
-                        <img [src]="currentImageUrl" alt="Vista previa de la categoría" class="preview-thumb">
-                    </div>
-                    }
+        <!-- Nombre -->
+        <div class="items">
 
-                    <!-- Input file sin formControlName (correctamente capturado por evento) -->
-                    <input type="file" class="form-control" id="img" accept="image/*" (change)="onFileSelected($event)">
-                </div>
+            <label for="name">Nombre:</label>
 
-                <!--  Estatus  -->
-                <div class="form-category">
-                    <label for="status">Estatus:</label>
-                    <select formControlName="status" class="form-control" id="status">
-                        <option value="" disabled>Seleccionar estatus</option>
-                        <!-- Usamos [ngValue] para preservar el tipo Booleano nativo -->
-                        <option [ngValue]="true">Activo</option>
-                        <option [ngValue]="false">Inactivo</option>
-                    </select>
+            <input formControlName="name" type="text" id="name" placeholder="Nombre de la categoría">
 
-                    @if (formData.get('status')?.invalid && (formData.get('status')?.dirty ||
-                    formData.get('status')?.touched)) {
-                    <small class="error">El estatus es obligatorio</small>
-                    }
-                </div>
+            @if (formData.get('name')?.invalid && (formData.get('name')?.dirty ||
+            formData.get('name')?.touched)) {
+            @if (formData.get('name')?.errors?.['required']) {
+            <small class="error">El nombre es obligatorio</small>
+            }
+            @if (formData.get('name')?.errors?.['minlength']) {
+            <small class="error">El nombre debe contener al menos 3 caracteres</small>
+            }
+            @if (formData.get('name')?.errors?.['maxlength']) {
+            <small class="error">El nombre no debe superar los 50 caracteres</small>
+            }
+            }
 
-                <!--  Acciones -->
-                <div class="actions">
-                    <button type="submit" class="btn btn-primary" [disabled]="formData.invalid">
-                        Actualizar
-                    </button>
-                </div>
-            </form>
         </div>
-        }
-    </div>
+
+        <!-- Estado -->
+        <div class="items">
+
+            <label for="status">Estatus:</label>
+
+            <select formControlName="status" id="status">
+
+                <option value="" disabled>Seleccionar estatus</option>
+                <option [ngValue]="true">Activo</option>
+                <option [ngValue]="false">Inactivo</option>
+
+            </select>
+
+            @if (formData.get('status')?.invalid && (formData.get('status')?.dirty ||
+            formData.get('status')?.touched)) {
+            <small class="error">El estatus es obligatorio</small>
+            }
+
+        </div>
+
+        <!-- Imagen -->
+        <div class="items">
+
+            <label for="img">Imagen:</label>
+
+            @if (currentImageUrl) {
+
+            <div class="current-image-preview">
+
+                <img [src]="currentImageUrl" alt="Vista previa de la categoría" class="preview-thumb">
+
+            </div>
+
+            }
+
+            <input type="file" class="form-control-file" id="img" accept="image/*" (change)="onFileSelected($event)">
+
+        </div>
+
+        <!-- Botón -->
+        <div class="form-actions">
+
+            <button type="submit" [disabled]="formData.invalid" [class.btn-disable]="formData.invalid">
+                Actualizar
+            </button>
+
+        </div>
+
+    </form>
+
+    }
+
 </section>

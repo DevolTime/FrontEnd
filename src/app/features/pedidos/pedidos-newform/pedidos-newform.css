@@ -1,0 +1,116 @@
+.side-actions {
+
+    display: flex;
+    gap: 12px;
+    margin: 0 0 2rem 2rem;
+
+}
+
+.side-actions button.btn-new {
+
+    padding: 10px 20px;
+    background: #d61d1d;
+    color: #fff;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1.6rem;
+    cursor: pointer;
+    transition: .25s;
+
+}
+
+.side-actions button.btn-new:hover {
+
+    background: #b91515;
+
+}
+
+.side-actions button.btn-new:not(.active) {
+
+    background: #fff;
+    color: #d61d1d;
+    border-color: #d61d1d;
+
+}
+
+.side-actions button.btn-new:not(.active):hover {
+
+    background: #fdecec;
+
+}
+
+.status-button {
+
+    border: none;
+    border-radius: 999px;
+    padding: 7px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #b91c1c;
+    background: #ffeded;
+    cursor: pointer;
+    transition: all .2s ease;
+
+}
+
+.page-user {
+
+    max-width: none;
+
+}
+
+.status-button:hover {
+
+    background: #b91c1c;
+    color: #ffffff;
+
+}
+
+.productos-list {
+
+    margin: 0;
+    padding: 0;
+
+    list-style: none;
+
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+}
+
+.producto-item {
+
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+
+    font-size: 13px;
+    line-height: 1.35;
+    color: #374151;
+
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: #f8fafc;
+
+    width: fit-content;
+    max-width: 100%;
+
+}
+
+.producto-bullet {
+
+    color: #f97316;
+    font-weight: 700;
+    flex-shrink: 0;
+
+}
+
+.producto-nombre {
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+}

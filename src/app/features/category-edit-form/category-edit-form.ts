@@ -1,13 +1,13 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HttpCategory } from '../../core/services/http-category';
 import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-category-edit-form',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './category-edit-form.html',
   styleUrl: './category-edit-form.css',
 })

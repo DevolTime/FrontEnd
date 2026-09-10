@@ -113,6 +113,13 @@
                 Vaciar carrito
             </button>
 
+            <button
+                type="button"
+                class="cart-pay"
+                (click)="paymentStep = 'choice'">
+                Pagar
+            </button>
+
             <a routerLink="/categoria" class="cart-continue-link">
                 Seguir comprando
             </a>
@@ -120,6 +127,141 @@
         </aside>
 
     </div>
+
+    @if (paymentStep === 'choice') {
+
+    <div class="payment-panel">
+
+        <h2 class="payment-title">¿Cómo quieres tu pedido?</h2>
+
+        <div class="payment-options">
+
+            <button
+                type="button"
+                class="payment-option"
+                (click)="selectPaymentMode('restaurante')">
+                <span class="payment-option-title">Comer en el restaurante</span>
+                <span class="payment-option-sub">Pides y pagas aquí</span>
+            </button>
+
+            <button
+                type="button"
+                class="payment-option"
+                (click)="selectPaymentMode('domicilio')">
+                <span class="payment-option-title">Domicilio</span>
+                <span class="payment-option-sub">Recibe tu pedido en casa</span>
+            </button>
+
+        </div>
+
+    </div>
+
+    }
+
+    @if (paymentStep === 'restaurante') {
+
+    <div class="payment-panel">
+
+        <button type="button" class="payment-back" (click)="backToChoice()">
+            ← Volver
+        </button>
+
+        <h2 class="payment-title">Pagar en el restaurante</h2>
+
+        <form [formGroup]="restauranteForm" (ngSubmit)="payRestaurante()" class="payment-form">
+
+            <div class="items">
+                <label for="rs_name">Nombre completo</label>
+                <input
+                    id="rs_name"
+                    type="text"
+                    formControlName="name_usuario"
+                    placeholder="Ingrese su nombre">
+            </div>
+
+            <div class="items">
+                <label for="rs_metodo">Método de pago</label>
+                <select id="rs_metodo" formControlName="metodo_pago">
+                    <option value="Efectivo">Efectivo</option>
+                    <option value="Tarjeta">Tarjeta</option>
+                </select>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit">Pagar</button>
+            </div>
+
+        </form>
+
+    </div>
+
+    }
+
+    @if (paymentStep === 'domicilio') {
+
+    <div class="payment-panel">
+
+        <button type="button" class="payment-back" (click)="backToChoice()">
+            ← Volver
+        </button>
+
+        <h2 class="payment-title">Pedido a domicilio</h2>
+
+        <form [formGroup]="domicilioForm" (ngSubmit)="submitDomicilio()" class="newUsers">
+
+            <div class="items">
+                <label for="dom_name">Nombre completo</label>
+                <input id="dom_name" type="text" formControlName="name_usuario" placeholder="Ingrese su nombre">
+            </div>
+
+            <div class="items">
+                <label for="dom_dir">Dirección</label>
+                <input id="dom_dir" type="text" formControlName="direccion_entrega" placeholder="Ingrese la dirección">
+            </div>
+
+            <div class="items">
+                <label for="dom_dir2">Dirección opcional</label>
+                <input id="dom_dir2" type="text" formControlName="direccion_opcional" placeholder="Apartamento, torre, casa, etc.">
+            </div>
+
+            <div class="items">
+                <label for="dom_barrio">Barrio</label>
+                <input id="dom_barrio" type="text" formControlName="barrio" placeholder="Ingrese el barrio">
+            </div>
+
+            <div class="items">
+                <label for="dom_tel">Teléfono</label>
+                <input id="dom_tel" type="tel" formControlName="telefeno" placeholder="Ingrese su teléfono">
+            </div>
+
+            <div class="items">
+                <label for="dom_prod">Productos</label>
+                <ul class="productos-list">
+                    @for (prod of getProductosList(domicilioForm.get('productos')?.value ?? ''); track $index) {
+                    <li class="producto-item">
+                        <span class="producto-bullet">•</span>
+                        <span class="producto-nombre">{{ prod }}</span>
+                    </li>
+                    }
+                </ul>
+            </div>
+
+            <div class="items">
+                <label for="dom_total">Precio total</label>
+                <input id="dom_total" type="number" formControlName="precio_total" readonly>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" [disabled]="domicilioForm.invalid" [class.btn-disable]="domicilioForm.invalid">
+                    Confirmar Pedido
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+
+    }
 
     }
 

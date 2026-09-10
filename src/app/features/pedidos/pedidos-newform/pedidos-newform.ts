@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, afterNextRender } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -8,7 +8,7 @@ import {
 
 import { CurrencyPipe } from '@angular/common';
 
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, interval, Subscription } from 'rxjs';
 
 import { HttpPedidos } from '../../../core/services/http-pedidos';
 
@@ -32,7 +32,7 @@ import Swal from 'sweetalert2';
 })
 
 
-export default class PedidosNewform implements OnInit {
+export default class PedidosNewform implements OnInit, OnDestroy {
 
 
   // ==========================================
@@ -42,6 +42,9 @@ export default class PedidosNewform implements OnInit {
   private httpPedidos = inject(HttpPedidos);
 
   private router = inject(Router);
+
+  // Intervalo para actualizar la lista en tiempo real
+  private refreshTimer: Subscription | null = null;
 
 
   // ==========================================
@@ -105,6 +108,14 @@ export default class PedidosNewform implements OnInit {
 
     });
 
+    // Garantiza la carga SOLO en el navegador (tras la hidratación SSR).
+    // En SSR el ngOnInit corre sin token y la hidratación no siempre
+    // vuelve a disparar la petición, por eso la lista salía vacía
+    // hasta presionar "Listar".
+    afterNextRender(() => {
+      this.loadPedidos();
+    });
+
   }
 
 
@@ -115,6 +126,8 @@ export default class PedidosNewform implements OnInit {
   showCreate(): void {
 
     this.viewMode = 'form';
+
+    this.stopRefresh();
 
     this.resetform();
 
@@ -130,6 +143,8 @@ export default class PedidosNewform implements OnInit {
     console.log('LISTAR PRESIONADO');
 
     this.viewMode = 'list';
+
+    this.startRefresh();
 
     this.httpPedidos.getPedidos().subscribe({
 
@@ -186,6 +201,26 @@ export default class PedidosNewform implements OnInit {
 
 
   // ==========================================
+  // PRODUCTOS (para la lista)
+  // ==========================================
+
+  getProductosList(productos: string): string[] {
+
+    if (typeof productos !== 'string' || !productos.trim()) {
+
+      return [];
+
+    }
+
+    return productos
+      .split(',')
+      .map((p) => p.trim())
+      .filter(Boolean);
+
+  }
+
+
+  // ==========================================
   // CARGAR PEDIDOS
   // ==========================================
 
@@ -232,12 +267,15 @@ export default class PedidosNewform implements OnInit {
           error
         );
 
+        if (typeof window !== 'undefined') {
 
-        Swal.fire(
-          'Error',
-          'No se pudieron cargar los pedidos.',
-          'error'
-        );
+          Swal.fire(
+            'Error',
+            'No se pudieron cargar los pedidos.',
+            'error'
+          );
+
+        }
 
       }
 
@@ -521,7 +559,43 @@ export default class PedidosNewform implements OnInit {
 
   ngOnInit(): void {
 
-    this.loadPedidos();
+    // Vista por defecto: formulario de crear pedido.
+
+  }
+
+
+  // ==========================================
+  // ACTUALIZACIÓN EN TIEMPO REAL
+  // ==========================================
+
+  private startRefresh(): void {
+
+    this.stopRefresh();
+
+    this.refreshTimer = interval(5000).subscribe(() => {
+
+      if (this.viewMode === 'list') {
+        this.loadPedidos();
+      }
+
+    });
+
+  }
+
+
+  private stopRefresh(): void {
+
+    if (this.refreshTimer) {
+      this.refreshTimer.unsubscribe();
+      this.refreshTimer = null;
+    }
+
+  }
+
+
+  ngOnDestroy(): void {
+
+    this.stopRefresh();
 
   }
 

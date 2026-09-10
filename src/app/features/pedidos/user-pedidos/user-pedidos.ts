@@ -21,7 +21,6 @@ import Swal from 'sweetalert2';
 
   imports: [
     ReactiveFormsModule,
-    CurrencyPipe
   ],
 
   templateUrl: './user-pedidos.html',
