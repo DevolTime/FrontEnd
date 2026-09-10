@@ -212,7 +212,7 @@
             <tbody>
 
                 @for (
-                    pedido of pedidos;
+                    pedido of (pedidoList$ | async);
                     track pedido._id
                 ) {
 

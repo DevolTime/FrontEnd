@@ -6,7 +6,7 @@ import {
   Validators
 } from '@angular/forms';
 
-import { CurrencyPipe } from '@angular/common';
+import { AsyncPipe, CurrencyPipe } from '@angular/common';
 
 import { BehaviorSubject, interval, Subscription } from 'rxjs';
 
@@ -23,7 +23,8 @@ import Swal from 'sweetalert2';
 
   imports: [
     ReactiveFormsModule,
-    CurrencyPipe
+    CurrencyPipe,
+    AsyncPipe
   ],
 
   templateUrl: './pedidos-newform.html',
@@ -403,6 +404,14 @@ export default class PedidosNewform implements OnInit, OnDestroy {
       }
 
 
+      // Eliminación optimista: la fila desaparece de inmediato
+      this.pedidos = this.pedidos.filter(
+        (pedido) => pedido._id !== id
+      );
+
+      this.pedidoList$.next(this.pedidos);
+
+
       this.httpPedidos.deletePedidos(id).subscribe({
 
         next: () => {
@@ -412,7 +421,6 @@ export default class PedidosNewform implements OnInit, OnDestroy {
             'El pedido ha sido eliminado.',
             'success'
           );
-
 
           this.loadPedidos();
 
@@ -432,6 +440,8 @@ export default class PedidosNewform implements OnInit, OnDestroy {
             'No se pudo eliminar el pedido.',
             'error'
           );
+
+          this.loadPedidos();
 
         }
 
