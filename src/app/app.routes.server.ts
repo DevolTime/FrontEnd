@@ -5,5 +5,6 @@ export const serverRoutes: ServerRoute[] = [
   { path: 'menu/:categoryId', renderMode: RenderMode.Client },
   { path: 'dashboard/categories/edit/:id', renderMode: RenderMode.Client },
   { path: 'dashboard/editproducts/:id', renderMode: RenderMode.Client },
+  { path: 'dashboard/PedidosNewForm', renderMode: RenderMode.Client },
   { path: '**', renderMode: RenderMode.Prerender }
 ];

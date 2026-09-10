@@ -1,14 +1,20 @@
 <section class="page-user">
 
     <!-- ========================================== -->
-    <!-- BOTONES -->
+    <!-- TÍTULO Y BOTONES -->
     <!-- ========================================== -->
+
+    <h1 class="title-form">
+        @if (viewMode === 'form') { Registrar Pedido nuevo }
+        @else { Pedidos de los clientes }
+    </h1>
 
     <div class="side-actions">
 
         <button
             type="button"
-            class="btn-create"
+            class="btn-new"
+            [class.active]="viewMode === 'form'"
             (click)="showCreate()"
         >
             Crear
@@ -17,7 +23,8 @@
 
         <button
             type="button"
-            class="btn-list"
+            class="btn-new"
+            [class.active]="viewMode === 'list'"
             (click)="showList()"
         >
             Listar
@@ -31,11 +38,6 @@
     <!-- ========================================== -->
 
     @if (viewMode === 'form') {
-
-        <h1 class="title-form">
-            Registrar Pedido nuevo
-        </h1>
-
 
         <form
             [formGroup]="formData"
@@ -178,11 +180,6 @@
 
     @if (viewMode === 'list') {
 
-        <h1 class="title-form">
-            Pedidos de los clientes
-        </h1>
-
-
         <table class="custom-table">
 
             <thead>
@@ -253,7 +250,28 @@
 
                         <!-- PRODUCTOS -->
                         <td>
-                            {{ pedido.productos }}
+
+                            <ul class="productos-list">
+
+                                @for (
+                                    prod of getProductosList(pedido.productos);
+                                    track $index
+                                ) {
+
+                                    <li class="producto-item">
+
+                                        <span class="producto-bullet">•</span>
+
+                                        <span class="producto-nombre">
+                                            {{ prod }}
+                                        </span>
+
+                                    </li>
+
+                                }
+
+                            </ul>
+
                         </td>
 
 

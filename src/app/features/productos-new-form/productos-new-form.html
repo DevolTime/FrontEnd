@@ -1,14 +1,26 @@
-<div class="side-actions">
-    <a class="btn-new " (click)="showCreate()">Crear</a>
-    <a class="btn-new" (click)="showList()">Buscar</a>
-</div>
-
 <div class="page-user">
+
+    <!-- ========================= TÍTULO Y BOTONES ========================= -->
+
+    <h1 class="title-form">
+        @if (viewMode === 'form') { Registrar producto nuevo }
+        @else { Lista de Productos }
+    </h1>
+
+    <div class="side-actions">
+
+        <button type="button" class="btn-new" [class.active]="viewMode === 'form'" (click)="showCreate()">
+            Crear
+        </button>
+
+        <button type="button" class="btn-new" [class.active]="viewMode === 'list'" (click)="showList()">
+            Buscar
+        </button>
+
+    </div>
 
     <!-- ========================= FORMULARIO ========================= -->
     @if (viewMode === 'form') {
-
-    <h1 class="title-form">Registrar producto nuevo</h1>
 
     <form [formGroup]="formData" (ngSubmit)="onsubmit()" class="newUsers">
 
@@ -73,13 +85,11 @@
     <!-- ========================= LISTA ========================= -->
 
    @if (viewMode === 'list') {
-  <h1 class="title-form">Lista de Productos</h1>
 
   <table class="custom-table">
     <thead>
       <tr>
         <th>Producto</th>
-        <th>ID</th>
         <th>Estado</th>
         <th>Descripción</th>
         <th>Posición</th>
@@ -94,9 +104,20 @@
       @for (product of (productList$ | async); track $index) {
         <tr>
           <td>{{ product.name }}</td>
-          <td>{{ product._id }}</td>
-          <td>{{ product.status }}</td>
-          <td class="col-desc">{{ product.description }}</td>
+          <td>
+            <button
+              type="button"
+              class="status-button"
+              (click)="toggleStatus(product)">
+              {{ product.status }}
+            </button>
+          </td>
+          <td class="col-desc">
+              <span class="producto-chip">
+                <span class="chip-bullet">•</span>
+                <span class="chip-text" [title]="product.description">{{ product.description }}</span>
+              </span>
+            </td>
           <td>{{ $index + 1 }}</td>
 
           <!-- COLUMNA CATEGORÍA: Muestra el nombre directamente -->
@@ -122,8 +143,8 @@
             </button>
           </td>
           <td class="Options">
-            <a href="javascript:void(0)" class="btn-delete" (click)="onDelete(product._id)">Eliminar</a>
-            <a href="javascript:void(0)" class="btn-edit" (click)="OnEdit(product._id)">Editar</a>
+            <button type="button" class="btn-delete" (click)="onDelete(product._id)">Eliminar</button>
+            <button type="button" class="btn-edit" (click)="OnEdit(product._id)">Editar</button>
           </td>
         </tr>
       }

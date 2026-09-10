@@ -1,15 +1,12 @@
 <div class="adminDasboard">
 
-  
+
   <aside class="sidebar">
     <div class="sidebarConte">
       <h2 class="title">Categories</h2>
 
       <nav class="navlist">
-        <a *ngFor="let item of navItems"
-           [routerLink]="item.route"
-           routerLinkActive="active"
-           class="icono">
+        <a *ngFor="let item of navItems" [routerLink]="item.route" routerLinkActive="active" class="icono">
           <span class="navicon">{{ item.icon }}</span>
           <span class="nav-label">{{ item.label }}</span>
           <span class="nav-arrow">›</span>

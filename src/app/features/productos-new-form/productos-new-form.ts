@@ -82,12 +82,18 @@ export default class ProductosNewForm implements OnInit {
         // Guardamos las categorías
         this.categorylist$.next(categories);
 
-        // Mapeamos los productos cruzando el ID de la categoría con su nombre
+        // Mapeamos los productos cruzando el ID de la categoría con su nombre.
+        // El backend puede devolver `category` como objeto poblado {_id, name}
+        // o como string (ID). Se soportan ambos casos.
         const mappedProducts = rawProducts.map((prod: any) => {
-          const categoryObj = categories.find((cat: any) => cat._id === prod.category);
+          const cat = prod.category ?? {};
+          const categoryName =
+            typeof cat === 'object' && cat?.name
+              ? cat.name
+              : (categories.find((c: any) => c._id === cat)?.name ?? 'Sin categoría');
           return {
             ...prod,
-            categoryName: categoryObj ? categoryObj.name : 'Sin categoría'
+            categoryName
           };
         });
 
