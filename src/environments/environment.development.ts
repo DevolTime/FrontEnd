@@ -1,6 +1,6 @@
 export const environment = {
     production: false, // Este proyecto esta ejecutandose en local
-    apiUrl: 'https://backend-q7zp.onrender.com:3000/api', // (BackEnd) URL local mientras se desarrolla
+    apiUrl: 'https://backend-q7zp.onrender.com/api', // (BackEnd) URL local mientras se desarrolla
 };
 
 
